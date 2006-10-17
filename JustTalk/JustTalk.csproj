@@ -1,0 +1,188 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{368358F2-FEA6-46D7-95F1-4EE73EA20576}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JustTalk</RootNamespace>
+    <AssemblyName>JustTalk</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddGroup.Designer.cs">
+      <DependentUpon>AddGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.cs" />
+    <Compile Include="ConverstationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConverstationWindow.Designer.cs">
+      <DependentUpon>ConverstationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddContacts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddContacts.Designer.cs">
+      <DependentUpon>AddContacts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ImageComboBox.Designer.cs">
+      <DependentUpon>ImageComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Group.cs" />
+    <Compile Include="ImageComboBoxItem.cs" />
+    <Compile Include="RenameGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenameGroup.Designer.cs">
+      <DependentUpon>RenameGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JustTalk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JustTalk.Designer.cs">
+      <DependentUpon>JustTalk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddGroup.resx">
+      <DependentUpon>AddGroup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddContacts.resx">
+      <DependentUpon>AddContacts.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameGroup.resx">
+      <DependentUpon>RenameGroup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JustTalk.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>JustTalk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\connect.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\door.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disconnect.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulbico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulboff.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulb_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulb_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_comment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrench.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
