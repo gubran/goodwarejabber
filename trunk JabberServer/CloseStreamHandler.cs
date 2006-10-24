@@ -20,10 +20,10 @@ namespace Goodware.Jabber.Server {
                 //notify other subscribers that user is unavailble
                 //by Marko
                 //begin
-                JabberID userid=session.getJID;
+                JabberID userid=session.getJID();
                
                 Packet unavailiblePacket = new Packet("presence");
-                unavailiblePacket.setFrom(userid);
+                unavailiblePacket.setFrom(userid.ToString());
                 unavailiblePacket.setAttribute("type", "unavailable");
                 userIndex.getUser(userid.User).getRoster().updateSubscribers(unavailiblePacket);
                 //it is not tested, but it should work
