@@ -74,9 +74,14 @@ namespace Goodware.Jabber.Server {
                 output.Write(packet.ToString());    // smeneto od DarkoA
                 output.Flush();                     // smeneto od DarkoA
               } else {
-                  Console.WriteLine("Store & forward: " + packet.ToString());
-                User user = userIndex.getUser(new JabberID(recipient).getUser());
-                user.storeMessage(packet);
+                  //begin change by marko
+                  if (!packet.Element.Equals("presence"))
+                  {     //presence packets dont need to be stored for offline use
+                      Console.WriteLine("Store & forward: " + packet.ToString());
+                      User user = userIndex.getUser(new JabberID(recipient).getUser());
+                      user.storeMessage(packet);
+                  }
+                  //end change by marko
               }
 			} catch (Exception ex){
 				Console.WriteLine(ex.Message);
