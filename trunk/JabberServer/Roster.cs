@@ -54,11 +54,11 @@ namespace Goodware.Jabber.Server
                 SenderID = new JabberID(sender);
             }
             //added by marko
-            presence.From = SenderID.User+"@"+SenderID.Domain;
-            
+            presence.From = SenderID.User + "@" + SenderID.Domain;
+
             //original line:
             //String subscriber = isUserSent ? recipientID.ToString() : SenderID.ToString();
-              String subscriber = recipientID.ToString();
+            String subscriber = recipientID.ToString();
 
             if (type == null)
             {
@@ -91,7 +91,7 @@ namespace Goodware.Jabber.Server
                 if (priority != null)
                 {
                     //some code to set the priority of the session
-                   
+
                     try
                     {
                         session.setPriority(int.Parse(priority));
@@ -99,36 +99,37 @@ namespace Goodware.Jabber.Server
                     catch (Exception ex)
                     {
                         Console.WriteLine("Error in incoming priority, setting priority to default: 1");
-                        session.setPriority(1);
+                        session.setPriority(0);
                     }
                 }
 
                 //deliver to all users presence subscribers
                 updateSubscribers(presence);
+                informSubscriber();
                 return;
             }
 
             if (type.Equals("probe"))
-            {   
-                
+            {
+
                 //needed for server to server communication!!!!
                 Console.WriteLine("Roster: We don't handle probes yet " + presence.ToString());
                 return;
 
 
             }
-           
-            
-            
+
+
+
             //Marko believes it is checked for exceptions
             //Subscriber sendersSubscriberItem = (Subscriber)subscribers[subscriber];
-              Subscriber sendersSubscriberItem = new Subscriber();
+            Subscriber sendersSubscriberItem = new Subscriber();
 
-              Hashtable Rosters = JabberServer.RosterHashtable;//get reference to rosters
-            
-           
+            Hashtable Rosters = JabberServer.RosterHashtable;//get reference to rosters
+
+
             //prepare sender's roster
-            UserRoster senderRoster =Rosters[this.user] as UserRoster;//getting senders roster
+            UserRoster senderRoster = Rosters[this.user] as UserRoster;//getting senders roster
             if (senderRoster == null)
             {
                 senderRoster = new UserRoster();
@@ -150,9 +151,9 @@ namespace Goodware.Jabber.Server
             {
                 Rosters.Add(recipientID.User, recipientRoster);
             }
-            
-                sendersSubscriberItem = senderRoster.subscribers[subscriber] as Subscriber;//extra
-            
+
+            sendersSubscriberItem = senderRoster.subscribers[subscriber] as Subscriber;//extra
+
             if (sendersSubscriberItem == null)
             {
                 //create subscription item
@@ -165,59 +166,59 @@ namespace Goodware.Jabber.Server
             }
 
             //begin subscription managment
-            if (type.Equals("subscribe") )
+            if (type.Equals("subscribe"))
             {
                 sendersSubscriberItem.ask = type;//set up subscription status
             }
             else if (type.Equals("subscribed"))//if subscription accepted
             {
                 sendersSubscriberItem.ask = null;
-                    if (sendersSubscriberItem.subscription.Equals("from"))
-                    {
-                        sendersSubscriberItem.subscription = "both";
-                    }
-                    else if (sendersSubscriberItem.subscription.Equals("none"))
-                    {
-                        sendersSubscriberItem.subscription = "to";
-                    }
-             
+                if (sendersSubscriberItem.subscription.Equals("from"))
+                {
+                    sendersSubscriberItem.subscription = "both";
+                }
+                else if (sendersSubscriberItem.subscription.Equals("none"))
+                {
+                    sendersSubscriberItem.subscription = "to";
+                }
+
             }
             else if (type.Equals("unsubscribed"))
             {//sender does not want to give presence updates to recipient
                 sendersSubscriberItem.ask = null;
-               
-                    if (sendersSubscriberItem.subscription.Equals("to"))
-                    {
-                        sendersSubscriberItem.subscription = "none";
-                    }
 
-                    else if (sendersSubscriberItem.subscription.Equals("both"))
-                    {
-                        sendersSubscriberItem.subscription = "from";
-                    }
-                    
-                                    
-                    //notify recipient of sender's unavailble status:
-                    Packet unavailiblePacket = new Packet("presence");
-                    unavailiblePacket.setFrom(presence.From);
-                    unavailiblePacket.To = presence.To;
-                    unavailiblePacket.setAttribute("type", "unavailable");
-                    MessageHandler.deliverPacket(unavailiblePacket);
-              
+                if (sendersSubscriberItem.subscription.Equals("to"))
+                {
+                    sendersSubscriberItem.subscription = "none";
+                }
+
+                else if (sendersSubscriberItem.subscription.Equals("both"))
+                {
+                    sendersSubscriberItem.subscription = "from";
+                }
+
+
+                //notify recipient of sender's unavailble status:
+                Packet unavailiblePacket = new Packet("presence");
+                unavailiblePacket.setFrom(presence.From);
+                unavailiblePacket.To = presence.To;
+                unavailiblePacket.setAttribute("type", "unavailable");
+                MessageHandler.deliverPacket(unavailiblePacket);
+
             }
             else if (type.Equals("unsubscribe"))
             {//sender no longer interested in recieving presence updates from recipient
                 sendersSubscriberItem.ask = null;
-               
-                    if (sendersSubscriberItem.subscription.Equals("both"))
-                    {
-                        sendersSubscriberItem.subscription = "to";
-                    }
-                    else   if (sendersSubscriberItem.subscription.Equals("from"))
-                    {
-                        sendersSubscriberItem.subscription = "none";
-                    }
-                  
+
+                if (sendersSubscriberItem.subscription.Equals("both"))
+                {
+                    sendersSubscriberItem.subscription = "to";
+                }
+                else if (sendersSubscriberItem.subscription.Equals("from"))
+                {
+                    sendersSubscriberItem.subscription = "none";
+                }
+
             }
             //update the corresponding changes in <items> table in sender's record used for delivery
             Packet item = (Packet)senderRoster.items[subscriber];
@@ -236,7 +237,7 @@ namespace Goodware.Jabber.Server
                 //Forward the subscription packet to recipient
                 MessageHandler.deliverPacketToAll(user, iq);//may need some correction!
             }
-            
+
             //processing of recipients roster begins
             if (sendersSubscriberItem.ask == null)
             {
@@ -255,89 +256,90 @@ namespace Goodware.Jabber.Server
                 if (type.Equals("subscribed"))//if subscription accepted
                 {
                     recipientsSubscriberItem.ask = null;
-                        if (recipientsSubscriberItem.subscription.Equals("none"))
-                        {
-                            recipientsSubscriberItem.subscription = "from";
-                        }
-                 
-                        else if (recipientsSubscriberItem.subscription.Equals("to"))
-                        {
-                            recipientsSubscriberItem.subscription = "both";
-                        }
-                       
+                    if (recipientsSubscriberItem.subscription.Equals("none"))
+                    {
+                        recipientsSubscriberItem.subscription = "from";
+                    }
+
+                    else if (recipientsSubscriberItem.subscription.Equals("to"))
+                    {
+                        recipientsSubscriberItem.subscription = "both";
+                    }
+
                 }
                 else if (type.Equals("unsubscribed"))
                 {//sender no longer interested in giving presence updates to recipient
-                     recipientsSubscriberItem.ask = null;
-                         if (recipientsSubscriberItem.subscription.Equals("both"))
-                         {
-                             recipientsSubscriberItem.subscription = "to";
-                         }
-                         else  if (recipientsSubscriberItem.subscription.Equals("from"))
-                         {
-                             recipientsSubscriberItem.subscription = "none";
-                         }
-                       
-                 }
-                 else if (type.Equals("unsubscribe"))
-                 {//sender no longer interested in recieving presence updates from recipient
-                     recipientsSubscriberItem.ask = null;
-                      if (recipientsSubscriberItem.subscription.Equals("to"))
-                         {
-                             recipientsSubscriberItem.subscription = "none";
-                         }
+                    recipientsSubscriberItem.ask = null;
+                    if (recipientsSubscriberItem.subscription.Equals("both"))
+                    {
+                        recipientsSubscriberItem.subscription = "to";
+                    }
+                    else if (recipientsSubscriberItem.subscription.Equals("from"))
+                    {
+                        recipientsSubscriberItem.subscription = "none";
+                    }
 
-                         else if (recipientsSubscriberItem.subscription.Equals("both"))
-                         {
-                             recipientsSubscriberItem.subscription = "from";
-                         }
+                }
+                else if (type.Equals("unsubscribe"))
+                {//sender no longer interested in recieving presence updates from recipient
+                    recipientsSubscriberItem.ask = null;
+                    if (recipientsSubscriberItem.subscription.Equals("to"))
+                    {
+                        recipientsSubscriberItem.subscription = "none";
+                    }
 
-                         //notify sender of unavailble status:
-                         Packet unavailiblePacket = new Packet("presence");
-                         unavailiblePacket.setFrom(presence.To);
-                         unavailiblePacket.To = presence.From;
-                         unavailiblePacket.setAttribute("type", "unavailable");
-                         MessageHandler.deliverPacket(unavailiblePacket);
-                   
-                 }
-             
+                    else if (recipientsSubscriberItem.subscription.Equals("both"))
+                    {
+                        recipientsSubscriberItem.subscription = "from";
+                    }
+
+                    //notify sender of unavailble status:
+                    Packet unavailiblePacket = new Packet("presence");
+                    unavailiblePacket.setFrom(presence.To);
+                    unavailiblePacket.To = presence.From;
+                    unavailiblePacket.setAttribute("type", "unavailable");
+                    MessageHandler.deliverPacket(unavailiblePacket);
+
+                }
+
                 //update the corresponding changes in <items> table in sender's record used for delivery
                 Packet item2 = (Packet)recipientRoster.items[user + "@" + JabberServer.server_name];
                 if (item2 != null)
-                 {
-                     item2.setAttribute("subscription", recipientsSubscriberItem.subscription);
-                     item2.setAttribute("ask", recipientsSubscriberItem.ask);
-                     Packet iq = new Packet("iq");
-                     iq.Type = "set";
-                     Packet query = new Packet("query");
-                     query.setAttribute("xmlns", "jabber:iq:roster");
-                     query.setParent(iq);
-                     item2.setParent(query);
-                     iq.To = recipientID.User+"@"+recipientID.Domain;
-                     //Forward the subscription packet to recipient
-                     MessageHandler.deliverPacketToAll(user, iq);//may need some correction!
-                 }
-               
+                {
+                    item2.setAttribute("subscription", recipientsSubscriberItem.subscription);
+                    item2.setAttribute("ask", recipientsSubscriberItem.ask);
+                    Packet iq = new Packet("iq");
+                    iq.Type = "set";
+                    Packet query = new Packet("query");
+                    query.setAttribute("xmlns", "jabber:iq:roster");
+                    query.setParent(iq);
+                    item2.setParent(query);
+                    iq.To = recipientID.User + "@" + recipientID.Domain;
+                    //Forward the subscription packet to recipient
+                    MessageHandler.deliverPacketToAll(user, iq);//may need some correction!
+                }
+
             }
-                      
+
             MessageHandler.deliverPacket(presence);
-                   
-        
+
+
         }//UpdatePresense
 
         public void updateSubscribers(Packet packet)
         {//checked, works!
-            if ((Server.JabberServer.RosterHashtable[this.user] as UserRoster)!=null){
-            foreach (object obj in (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Keys)
+            if ((Server.JabberServer.RosterHashtable[this.user] as UserRoster) != null)
             {
-                Subscriber sub = (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers[obj] as Subscriber;
-                if (sub.subscription.Equals("to")||sub.subscription.Equals("both"))//inform only subscribers!
+                foreach (object obj in (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Keys)
                 {
-                    packet.To = obj as String;
-                    MessageHandler.deliverPacket(packet);
+                    Subscriber sub = (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers[obj] as Subscriber;
+                    if (sub.subscription.Equals("to") || sub.subscription.Equals("both"))//inform only subscribers!
+                    {
+                        packet.To = obj as String;
+                        MessageHandler.deliverPacket(packet);
+                    }
                 }
             }
-        }
         }//Update subscribers
 
 
@@ -367,17 +369,17 @@ namespace Goodware.Jabber.Server
                 //for each <item> packet in the query
                 Object child = rosterItems;
                 if (child is Packet)
-                {                                    
+                {
                     Packet itemPacket = child as Packet;
                     String subJID = itemPacket.getAttribute("jid");
-                    
-                    
-                        
+
+
+
                     //create Subscriber object if needed
                     //Subscriber sendersSubscriberItem = this.subscribers[subJID] as Subscriber;
                     if ((Server.JabberServer.RosterHashtable[this.user] as UserRoster) == null)
                     {
-                        Server.JabberServer.RosterHashtable[this.user]=new UserRoster();
+                        Server.JabberServer.RosterHashtable[this.user] = new UserRoster();
                     }
                     Subscriber sub = (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers[subJID] as Subscriber;
                     if (sub == null)
@@ -385,7 +387,7 @@ namespace Goodware.Jabber.Server
                         sub = new Subscriber();
                         sub.subscription = "none";
                         sub.ask = null;
-                       (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Add(subJID, sub);
+                        (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Add(subJID, sub);
                     }
 
                     if (itemPacket.getAttribute("subscription") != null)
@@ -411,21 +413,21 @@ namespace Goodware.Jabber.Server
                             if (sub == null)
                             {
                                 sub = new Subscriber();
-                            }    
-                                sub.subscription = "none";
-                                sub.ask = null;
-                                (Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).subscribers[this.user + "@" + Server.JabberServer.server_name] = sub;
-                                //(Server.JabberServer.RosterHashtable[subJID] as UserRoster).subscribers.Add(subJID, sendersSubscriberItem);
+                            }
+                            sub.subscription = "none";
+                            sub.ask = null;
+                            (Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).subscribers[this.user + "@" + Server.JabberServer.server_name] = sub;
+                            //(Server.JabberServer.RosterHashtable[subJID] as UserRoster).subscribers.Add(subJID, sendersSubscriberItem);
                             //}
-                                if ((Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).items.ContainsKey(this.user + "@" + Server.JabberServer.server_name))
+                            if ((Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).items.ContainsKey(this.user + "@" + Server.JabberServer.server_name))
                             {
                                 //update <item> packet
                                 //itemPacket.removeAttribute("subscription");
-                                
+
                                 Packet mypacket = (Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).items[this.user + "@" + Server.JabberServer.server_name] as Packet;
                                 mypacket.setAttribute("subscription", "none");
                                 mypacket.setAttribute("ask", null);
-                                (Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).items[this.user+"@"+Server.JabberServer.server_name] = mypacket;
+                                (Server.JabberServer.RosterHashtable[otherID.User] as UserRoster).items[this.user + "@" + Server.JabberServer.server_name] = mypacket;
                             }
                         }
 
@@ -454,13 +456,58 @@ namespace Goodware.Jabber.Server
             }
             //Roster push
             packet.Type = "set";
-            JabberID jidTo =packet.getSession().getJID();
+            JabberID jidTo = packet.getSession().getJID();
             packet.To = jidTo.User + "@" + jidTo.Domain;
-            packet.removeAttribute("from");  
+            packet.removeAttribute("from");
             //needs to be verified
             MessageHandler.deliverPacket(packet);
+        }//update roster
+        public void informSubscriber()
+        {
+            //needs to be checked!
+            if ((Server.JabberServer.RosterHashtable[this.user] as UserRoster) != null)
+            {
+                foreach (object obj in (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Keys)
+                {
+                    Subscriber sub = (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers[obj] as Subscriber;
+                    if (sub.subscription.Equals("from") || sub.subscription.Equals("both"))//inform sender of his subscribers status!
+                    {
+                        JabberID myid = new JabberID(obj.ToString());//other's subscribers id
+                        if (myid.Domain.Equals(Server.JabberServer.server_name))//if from this server
+                        {
+                            if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values == null)
+                            {
+                                // if Server.JabberServer.getUserIndex().getUser(myid.User).getSessions()
+                                //user is online
+                                Packet presencePacket = new Packet("presence");
+                                presencePacket.From = myid.ToString();
+                                presencePacket.To = new JabberID(this.user + "@" + Server.JabberServer.server_name).ToString();
+                                presencePacket.setAttribute("type", "availible");
+                                MessageHandler.deliverPacket(presencePacket);
+
+                            }// if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values==null)
+                            else
+                            {
+                                //user is offline
+                                Packet presencePacket = new Packet("presence");
+                                presencePacket.From = myid.ToString();
+                                presencePacket.To = new JabberID(this.user + "@" + Server.JabberServer.server_name).ToString();
+                                presencePacket.setAttribute("type", "unavailible");
+                                MessageHandler.deliverPacket(presencePacket);
+                            }
+
+                        }//  if(myid.Domain.Equals(Server.JabberServer.server_name))
+                        else
+                        {
+                            //generate probe for S2S communication!@TODO
+                        }
+                        
+                    }//if (sub.subscription.Equals("from") || sub.subscription.Equals("both"))
+                }//foreach (object obj in (Server.JabberServer.RosterHashtable[this.user] as UserRoster).subscribers.Keys)
+
+            }//if ((Server.JabberServer.RosterHashtable[this.user] as UserRoster) != null)
+
+
         }
-
-
     }
 }

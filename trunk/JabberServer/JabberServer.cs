@@ -19,7 +19,11 @@ namespace Goodware.Jabber.Server {
         public static int jabber_port = 5222;
 		public static String server_name = "localhost";
 
-        UserIndex index = new UserIndex();
+        static UserIndex index = new UserIndex();
+        public static UserIndex getUserIndex()
+        { 
+            return index;
+        }
         PacketQueue packetQueue = new PacketQueue();
 
 		protected JabberServer() {
