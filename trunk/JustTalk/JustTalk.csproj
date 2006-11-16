@@ -177,6 +177,12 @@
   <ItemGroup>
     <None Include="Resources\wrench.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\JabberSvn\JabberClient\JabberClient.csproj">
+      <Project>{73C35A74-B5AC-4D91-8735-92D02A4C3E62}</Project>
+      <Name>JabberClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
