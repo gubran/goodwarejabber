@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthHandler.cs" />
+    <Compile Include="JabberClient.cs" />
     <Compile Include="RosterHandler.cs" />
     <Compile Include="CloseStreamHandler.cs" />
     <Compile Include="IQHandler.cs" />
