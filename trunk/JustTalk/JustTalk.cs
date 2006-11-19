@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Goodware.Jabber.Client;
 
 namespace JustTalk {
     public partial class JustTalk : Form {
@@ -197,6 +198,11 @@ namespace JustTalk {
 		// Add contact from menu
 		private void addContactToolStripButton_Click(object sender, EventArgs e) {
 			addContactToolStripMenuItem_Click(sender, e);
+		}
+
+		private void optionsToolStripButton_Click(object sender, EventArgs e) {
+			OptionsDialog options = new OptionsDialog();
+			options.ShowDialog();
 		}
     }
 }
