@@ -39,11 +39,11 @@ namespace Goodware.Jabber.Server {
 			for (Packet packet = packetQueue.dequeue(); packet != null; packet = packetQueue.dequeue()) {
                 Packet child;
                 String matchString;
-				Console.WriteLine("Reciving packet: " + packet.ToString());
+				Console.WriteLine("Receiving packet: " + packet.ToString());
                 if (packet.Element.Equals("iq", StringComparison.OrdinalIgnoreCase)) {
                     child = packet.getFirstChild("query");
                     //if (child == null) { matchString = "iq"; } else { matchString = child.getNamespace(); }
-                    if (child == null) { matchString = "jabber:iq:register"; } else { matchString = child.getNamespace(); }
+                    if (child == null) { matchString = "jabber:iq:register"; } else { matchString = child.Namespace; }
                 } else {
                     matchString = packet.Element;
                 }
