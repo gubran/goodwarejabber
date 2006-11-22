@@ -1,4 +1,4 @@
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
 	partial class ImageComboBox {
 		/// <summary>
 		/// Required designer variable.

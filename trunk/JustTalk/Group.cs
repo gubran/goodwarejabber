@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
 	class Group : TreeNode, IComparable {
 		public Group(String name) : base(name) {
 			base.ToolTipText = "Group: " + name;

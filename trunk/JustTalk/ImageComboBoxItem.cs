@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
 	class ImageComboBoxItem {
 		private string _text;
 

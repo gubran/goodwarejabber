@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
 	partial class AboutBox : Form {
 		public AboutBox() {
 			InitializeComponent();

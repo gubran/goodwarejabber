@@ -1,4 +1,4 @@
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
     partial class AddContact {
         /// <summary>
         /// Required designer variable.

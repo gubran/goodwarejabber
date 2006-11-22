@@ -6,55 +6,83 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Goodware.Jabber.Client;
+//using Goodware.Jabber;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
     public partial class JustTalk : Form {
         private bool connected;
         private TreeNode NodeToBeMoved;
+		private JabberModel model;
 
         public JustTalk() {
             InitializeComponent();
+			InitializeModel();
             this.connected = false;
 			Group def = new Group("Default Group");
 			def.ContextMenuStrip = defaultGroupContextMenuStrip;
 			contactsTreeView.Nodes.Add(def);
-			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;
+			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;	// Sorter to sort the contacts in the groups
         }
 
-		// Exit (ne toj vo Novi Sad)
+		private void InitializeModel() {
+			TestThread modelThread = new TestThread();
+			model = new JabberModel(modelThread);
+
+			model.ServerName = "localhost";
+			model.ServerAddress = "127.0.0.1";
+			model.Port = "5222";
+			model.User = "misos";
+
+			//Додадено од Милош/Васко
+			model.AuthMode = "plain";     // ??
+			model.Resource = "home";
+			model.Password = "test";
+			//Крај додадено
+
+			modelThread.Model = model;
+		}
+
+		// Exit
         private void exitTrayMenuItem_Click(object sender, EventArgs e) {
             this.Dispose(true);
         }
 		
-		// Contect switch
+		// Connect switch
         private void connectTrayMenuItem_Click(object sender, EventArgs e) {
             if(!this.connected) {
-				if(this.connect()) {
+				if (this.connect()) {
 					this.connectTrayMenuItem.Text = "Disconnect";
-					this.connectTrayMenuItem.Image = global::JustTalk.Properties.Resources.disconnect;
-					this.connectToolStripButton.Image = global::JustTalk.Properties.Resources.disconnect;
+					this.connectTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
+					this.connectToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
 					this.connectToolStripButton.ToolTipText = "Disconnect";
 					this.connectedStatus.Text = "Connected";
-					this.connectedStatus.Image = global::JustTalk.Properties.Resources.connect;
-					this.trayIcon.Icon = global::JustTalk.Properties.Resources.lightbulbico;
+					this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
+					this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulbico;
 					this.connected = true;
+				} else {
+					MessageBox.Show("Unable to connect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
             } else {
 				if(this.disconnect()) {
 					this.connectTrayMenuItem.Text = "Connect";
-					this.connectTrayMenuItem.Image = global::JustTalk.Properties.Resources.connect;
-					this.connectToolStripButton.Image = global::JustTalk.Properties.Resources.connect;
+					this.connectTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
+					this.connectToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 					this.connectToolStripButton.ToolTipText = "Connect";
 					this.connectedStatus.Text = "Disconnected";
-					this.connectedStatus.Image = global::JustTalk.Properties.Resources.disconnect;
-					this.trayIcon.Icon = global::JustTalk.Properties.Resources.lightbulboff;
+					this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
+					this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulboff;
 					this.connected = false;
 				}
 			}			
         }
 
         public bool connect() {
-			return true;	// Actual connect
+			try {
+				model.connect();
+			} catch (Exception ex) {
+				return false;
+			}
+			return true;		// Actual connect
         }
 
 		public bool disconnect() {
@@ -182,17 +210,17 @@ namespace JustTalk {
 
 		// Set status online
 		private void onlineToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::JustTalk.Properties.Resources.lightbulb;
+			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
 		}
 
 		// Set status away
 		private void awayToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::JustTalk.Properties.Resources.lightbulb_off;
+			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
 		}
 
 		// Set status busy
 		private void busyToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::JustTalk.Properties.Resources.lightbulb_delete;
+			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
 		}
 
 		// Add contact from menu
