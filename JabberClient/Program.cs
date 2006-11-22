@@ -9,7 +9,7 @@ using Goodware.Jabber.Library;
 namespace Goodware.Jabber.Client {
     public class Program {		
 		static void Main(string[] args) {
-			Console.WriteLine("Jabber Text Client");
+	/*		Console.WriteLine("Jabber Text Client");
 
             TestThreadMONOLOGUE clientThread = new TestThreadMONOLOGUE();
 			JabberModel clientModel = new JabberModel(clientThread);
@@ -40,11 +40,11 @@ namespace Goodware.Jabber.Client {
             Console.WriteLine("Press any key to exit");
            // Console.ReadLine();
             Console.WriteLine("Press any key to exit");
-           // Console.ReadLine();
+           // Console.ReadLine();*/
         }
 
 	}
-
+/*
     public class TestThreadMONOLOGUE : TestThread {
 
         public override void run() {
@@ -64,7 +64,7 @@ namespace Goodware.Jabber.Client {
 
         Console.WriteLine("== Recieving message 2 ==");
         packet = waitFor("message", null);
-          */
+          
           //Iain Test Thread
           //Console.Write("waiting for connect");
           //Console.ReadLine();
@@ -121,6 +121,6 @@ namespace Goodware.Jabber.Client {
           Console.WriteLine(ex.ToString());
       }
     } // run()
-  }
+  }*/
  
 }
