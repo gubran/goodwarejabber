@@ -48,6 +48,8 @@
     <Compile Include="AddGroup.Designer.cs">
       <DependentUpon>AddGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\AuthHandler.cs" />
+    <Compile Include="Handlers\CloseStreamHandler.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ConverstationWindow.cs">
       <SubType>Form</SubType>
@@ -69,12 +71,18 @@
     </Compile>
     <Compile Include="Group.cs" />
     <Compile Include="ImageComboBoxItem.cs" />
+    <Compile Include="Handlers\IQHandler.cs" />
+    <Compile Include="Handlers\MessageHandler.cs" />
+    <Compile Include="Handlers\OpenStreamHandler.cs" />
+    <Compile Include="JabberModel.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OptionsDialog.Designer.cs">
       <DependentUpon>OptionsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\PresenceHandler.cs" />
+    <Compile Include="Handlers\RegisterHandler.cs" />
     <Compile Include="RenameGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +140,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Handlers\RosterHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\connect.ico" />
@@ -188,10 +197,6 @@
     <None Include="Resources\wrench.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\JabberSvn\JabberClient\JabberClient.csproj">
-      <Project>{73C35A74-B5AC-4D91-8735-92D02A4C3E62}</Project>
-      <Name>JabberClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\JabberLibrary\JabberLibrary.csproj">
       <Project>{5D2DFAD3-E5F7-496B-88AB-0FBBAD3F1B43}</Project>
       <Name>JabberLibrary</Name>

@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Goodware.Jabber.Client;
-//using Goodware.Jabber;
 
 namespace Goodware.Jabber.GUI {
     public partial class JustTalk : Form {
@@ -25,8 +24,8 @@ namespace Goodware.Jabber.GUI {
         }
 
 		private void InitializeModel() {
-			TestThread modelThread = new TestThread();
-			model = new JabberModel(modelThread);
+			//TestThread modelThread = new TestThread();
+			model = new JabberModel(this);
 
 			model.ServerName = "localhost";
 			model.ServerAddress = "127.0.0.1";
@@ -39,7 +38,7 @@ namespace Goodware.Jabber.GUI {
 			model.Password = "test";
 			//Крај додадено
 
-			modelThread.Model = model;
+			//modelThread.Model = model;
 		}
 
 		// Exit
@@ -86,6 +85,11 @@ namespace Goodware.Jabber.GUI {
         }
 
 		public bool disconnect() {
+			try {
+				model.disconnect();
+			} catch (Exception ex) {
+				return false;
+			}
 			return true;	// Actual disconnect
 		}
 
