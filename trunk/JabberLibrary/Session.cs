@@ -83,7 +83,6 @@ namespace Goodware.Jabber.Library {
 		}
 		public Session(Socket socket) {
 			Socket = (socket);
-
 		}
 
         //додадено од Дарко Алексовски
