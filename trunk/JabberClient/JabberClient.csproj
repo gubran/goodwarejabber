@@ -37,18 +37,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthHandler.cs" />
-    <Compile Include="RosterHandler.cs" />
-    <Compile Include="CloseStreamHandler.cs" />
-    <Compile Include="IQHandler.cs" />
-    <Compile Include="JabberModel.cs" />
-    <Compile Include="MessageHandler.cs" />
-    <Compile Include="OpenStreamHandler.cs" />
-    <Compile Include="PresenceHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterHandler.cs" />
-    <Compile Include="TestThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JabberLibrary\JabberLibrary.csproj">
