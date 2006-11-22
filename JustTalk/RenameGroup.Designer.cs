@@ -1,4 +1,4 @@
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
     partial class RenameGroup {
         /// <summary>
         /// Required designer variable.

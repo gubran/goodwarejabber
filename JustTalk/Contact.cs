@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
 	// Enumaration for the presence status
 	enum Status { online = 1, busy, offline }
 

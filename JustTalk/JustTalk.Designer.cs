@@ -1,4 +1,4 @@
-namespace JustTalk
+namespace Goodware.Jabber.GUI
 {
     partial class JustTalk
     {
@@ -92,7 +92,7 @@ namespace JustTalk
 			// 
 			// addContactDefaultToolStripMenuItem
 			// 
-			this.addContactDefaultToolStripMenuItem.Image = global::JustTalk.Properties.Resources.user_add;
+			this.addContactDefaultToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_add;
 			this.addContactDefaultToolStripMenuItem.Name = "addContactDefaultToolStripMenuItem";
 			this.addContactDefaultToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
 			this.addContactDefaultToolStripMenuItem.Text = "&Add Contact";
@@ -110,7 +110,7 @@ namespace JustTalk
 			// 
 			// addContactToolStripMenuItem
 			// 
-			this.addContactToolStripMenuItem.Image = global::JustTalk.Properties.Resources.user_add;
+			this.addContactToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_add;
 			this.addContactToolStripMenuItem.Name = "addContactToolStripMenuItem";
 			this.addContactToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
 			this.addContactToolStripMenuItem.Text = "&Add Contact";
@@ -123,7 +123,7 @@ namespace JustTalk
 			// 
 			// renameGroupToolStripMenuItem
 			// 
-			this.renameGroupToolStripMenuItem.Image = global::JustTalk.Properties.Resources.group_edit;
+			this.renameGroupToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_edit;
 			this.renameGroupToolStripMenuItem.Name = "renameGroupToolStripMenuItem";
 			this.renameGroupToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
 			this.renameGroupToolStripMenuItem.Text = "Re&name Group";
@@ -131,7 +131,7 @@ namespace JustTalk
 			// 
 			// removeGroupToolStripMenuItem
 			// 
-			this.removeGroupToolStripMenuItem.Image = global::JustTalk.Properties.Resources.group_delete;
+			this.removeGroupToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_delete;
 			this.removeGroupToolStripMenuItem.Name = "removeGroupToolStripMenuItem";
 			this.removeGroupToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
 			this.removeGroupToolStripMenuItem.Text = "&Remove Group";
@@ -148,7 +148,7 @@ namespace JustTalk
 			// 
 			// connectTrayMenuItem
 			// 
-			this.connectTrayMenuItem.Image = global::JustTalk.Properties.Resources.connect;
+			this.connectTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 			this.connectTrayMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.connectTrayMenuItem.Name = "connectTrayMenuItem";
 			this.connectTrayMenuItem.Size = new System.Drawing.Size(125, 22);
@@ -162,7 +162,7 @@ namespace JustTalk
 			// 
 			// exitTrayMenuItem
 			// 
-			this.exitTrayMenuItem.Image = global::JustTalk.Properties.Resources.door;
+			this.exitTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.door;
 			this.exitTrayMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.exitTrayMenuItem.Name = "exitTrayMenuItem";
 			this.exitTrayMenuItem.Size = new System.Drawing.Size(125, 22);
@@ -197,7 +197,7 @@ namespace JustTalk
 			// 
 			// helpToolStripMenuItem1
 			// 
-			this.helpToolStripMenuItem1.Image = global::JustTalk.Properties.Resources.help;
+			this.helpToolStripMenuItem1.Image = global::Goodware.Jabber.GUI.Properties.Resources.help;
 			this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
 			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
 			this.helpToolStripMenuItem1.Text = "Help";
@@ -265,7 +265,7 @@ namespace JustTalk
 			// 
 			// addGroupToolStripMenuItem
 			// 
-			this.addGroupToolStripMenuItem.Image = global::JustTalk.Properties.Resources.group_add;
+			this.addGroupToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_add;
 			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
 			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.addGroupToolStripMenuItem.Text = "&Add Group";
@@ -293,7 +293,7 @@ namespace JustTalk
 			// 
 			// connectedStatus
 			// 
-			this.connectedStatus.Image = global::JustTalk.Properties.Resources.disconnect;
+			this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
 			this.connectedStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.connectedStatus.Name = "connectedStatus";
 			this.connectedStatus.Size = new System.Drawing.Size(87, 17);
@@ -317,7 +317,7 @@ namespace JustTalk
             this.onlineToolStripMenuItem,
             this.awayToolStripMenuItem,
             this.busyToolStripMenuItem});
-			this.statusToolStripDropDownButton.Image = global::JustTalk.Properties.Resources.lightbulb;
+			this.statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
 			this.statusToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.statusToolStripDropDownButton.Name = "statusToolStripDropDownButton";
 			this.statusToolStripDropDownButton.Size = new System.Drawing.Size(67, 22);
@@ -325,7 +325,7 @@ namespace JustTalk
 			// 
 			// onlineToolStripMenuItem
 			// 
-			this.onlineToolStripMenuItem.Image = global::JustTalk.Properties.Resources.lightbulb;
+			this.onlineToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
 			this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
 			this.onlineToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
 			this.onlineToolStripMenuItem.Text = "Online";
@@ -333,7 +333,7 @@ namespace JustTalk
 			// 
 			// awayToolStripMenuItem
 			// 
-			this.awayToolStripMenuItem.Image = global::JustTalk.Properties.Resources.lightbulb_off;
+			this.awayToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
 			this.awayToolStripMenuItem.Name = "awayToolStripMenuItem";
 			this.awayToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
 			this.awayToolStripMenuItem.Text = "Away";
@@ -341,7 +341,7 @@ namespace JustTalk
 			// 
 			// busyToolStripMenuItem
 			// 
-			this.busyToolStripMenuItem.Image = global::JustTalk.Properties.Resources.lightbulb_delete;
+			this.busyToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
 			this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
 			this.busyToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
 			this.busyToolStripMenuItem.Text = "Busy";
@@ -350,7 +350,7 @@ namespace JustTalk
 			// connectToolStripButton
 			// 
 			this.connectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.connectToolStripButton.Image = global::JustTalk.Properties.Resources.connect;
+			this.connectToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 			this.connectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.connectToolStripButton.Name = "connectToolStripButton";
 			this.connectToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -361,7 +361,7 @@ namespace JustTalk
 			// optionsToolStripButton
 			// 
 			this.optionsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.optionsToolStripButton.Image = global::JustTalk.Properties.Resources.wrench;
+			this.optionsToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.wrench;
 			this.optionsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.optionsToolStripButton.Name = "optionsToolStripButton";
 			this.optionsToolStripButton.Size = new System.Drawing.Size(23, 20);
@@ -383,7 +383,7 @@ namespace JustTalk
 			// addGroupToolStripButton
 			// 
 			this.addGroupToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.addGroupToolStripButton.Image = global::JustTalk.Properties.Resources.group_add;
+			this.addGroupToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_add;
 			this.addGroupToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addGroupToolStripButton.Name = "addGroupToolStripButton";
 			this.addGroupToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -394,7 +394,7 @@ namespace JustTalk
 			// addContactToolStripButton
 			// 
 			this.addContactToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.addContactToolStripButton.Image = global::JustTalk.Properties.Resources.user_add;
+			this.addContactToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_add;
 			this.addContactToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addContactToolStripButton.Name = "addContactToolStripButton";
 			this.addContactToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -414,7 +414,7 @@ namespace JustTalk
 			// 
 			// talkToolStripMenuItem
 			// 
-			this.talkToolStripMenuItem.Image = global::JustTalk.Properties.Resources.user_comment;
+			this.talkToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_comment;
 			this.talkToolStripMenuItem.Name = "talkToolStripMenuItem";
 			this.talkToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.talkToolStripMenuItem.Text = "&Talk";
@@ -427,14 +427,14 @@ namespace JustTalk
 			// 
 			// editContactToolStripMenuItem
 			// 
-			this.editContactToolStripMenuItem.Image = global::JustTalk.Properties.Resources.user_edit;
+			this.editContactToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_edit;
 			this.editContactToolStripMenuItem.Name = "editContactToolStripMenuItem";
 			this.editContactToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.editContactToolStripMenuItem.Text = "&Edit Contact";
 			// 
 			// removeContactToolStripMenuItem
 			// 
-			this.removeContactToolStripMenuItem.Image = global::JustTalk.Properties.Resources.user_delete;
+			this.removeContactToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_delete;
 			this.removeContactToolStripMenuItem.Name = "removeContactToolStripMenuItem";
 			this.removeContactToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.removeContactToolStripMenuItem.Text = "&Remove Contact";

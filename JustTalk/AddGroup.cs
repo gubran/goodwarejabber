@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace JustTalk {
+namespace Goodware.Jabber.GUI {
     public partial class AddGroup : Form {
         public AddGroup() {
             InitializeComponent();
