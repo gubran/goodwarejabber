@@ -38,7 +38,7 @@ namespace Goodware.Jabber.GUI {
 			this.cancelButton.Location = new System.Drawing.Point(88, 50);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
-			this.cancelButton.TabIndex = 11;
+			this.cancelButton.TabIndex = 2;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseVisualStyleBackColor = true;
 			// 
@@ -56,7 +56,7 @@ namespace Goodware.Jabber.GUI {
 			this.nameTextBox.Location = new System.Drawing.Point(42, 12);
 			this.nameTextBox.Name = "nameTextBox";
 			this.nameTextBox.Size = new System.Drawing.Size(121, 20);
-			this.nameTextBox.TabIndex = 6;
+			this.nameTextBox.TabIndex = 0;
 			this.nameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.nameTextBox_Validating);
 			// 
 			// OkButton
@@ -64,7 +64,7 @@ namespace Goodware.Jabber.GUI {
 			this.OkButton.Location = new System.Drawing.Point(4, 50);
 			this.OkButton.Name = "OkButton";
 			this.OkButton.Size = new System.Drawing.Size(75, 23);
-			this.OkButton.TabIndex = 12;
+			this.OkButton.TabIndex = 1;
 			this.OkButton.Text = "OK";
 			this.OkButton.UseVisualStyleBackColor = true;
 			// 

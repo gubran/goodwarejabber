@@ -5,10 +5,10 @@ using System.Windows.Forms;
 using System.Reflection;
 
 namespace Goodware.Jabber.GUI {
-	// Enumaration for the presence status
-	enum Status { online = 1, busy, offline }
+	// Enumeration for the presence status
+	public enum Status { online = 1, busy, offline }
 
-	class Contact : TreeNode, IComparable {
+	public class Contact : TreeNode, IComparable {
 		private String jabbberID;
 		private String name;
 		private Status status;
@@ -66,6 +66,8 @@ namespace Goodware.Jabber.GUI {
 		// The contact's name (optional)
 		public new String Name {
 			get {
+				if(String.IsNullOrEmpty(name))
+					return this.JabberID;
 				return name;
 			}
 			set {

@@ -6,43 +6,38 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Goodware.Jabber.Client;
+using Goodware.Jabber.Library;
+
+delegate void del(String text);	// A delegate for status
 
 namespace Goodware.Jabber.GUI {
     public partial class JustTalk : Form {
         private bool connected;
         private TreeNode NodeToBeMoved;
 		private JabberModel model;
+		private Dictionary<string, ConverstationWindow> conversations;
+		private Dictionary<string, Contact> contacts;
+		private Dictionary<string, Group> groups;
 
         public JustTalk() {
             InitializeComponent();
-			InitializeModel();
+			//InitializeModel();
             this.connected = false;
 			Group def = new Group("Default Group");
 			def.ContextMenuStrip = defaultGroupContextMenuStrip;
 			contactsTreeView.Nodes.Add(def);
 			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;	// Sorter to sort the contacts in the groups
+			conversations = new Dictionary<string, ConverstationWindow>();
+			contacts = new Dictionary<string, Contact>();
+			model = new JabberModel(this);		// TODO: Revise this
         }
 
-		private void InitializeModel() {
-			//TestThread modelThread = new TestThread();
-			model = new JabberModel(this);
-
-			model.ServerName = "localhost";
-			model.ServerAddress = "127.0.0.1";
-			model.Port = "5222";
-			model.User = "misos";
-
-			//Додадено од Милош/Васко
-			model.AuthMode = "plain";     // ??
-			model.Resource = "home";
-			model.Password = "test";
-			//Крај додадено
-
-			//modelThread.Model = model;
+		private void InitializeModel() {			
 		}
 
 		// Exit
         private void exitTrayMenuItem_Click(object sender, EventArgs e) {
+			this.disconnect();
             this.Dispose(true);
         }
 		
@@ -57,7 +52,9 @@ namespace Goodware.Jabber.GUI {
 					this.connectedStatus.Text = "Connected";
 					this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 					this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulbico;
-					this.connected = true;
+					this.optionsToolStripButton.Enabled = false;
+					this.Text = model.User + "@" + model.ServerName + " - JustTalk";
+					this.connected = true;					
 				} else {
 					MessageBox.Show("Unable to connect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
@@ -70,14 +67,24 @@ namespace Goodware.Jabber.GUI {
 					this.connectedStatus.Text = "Disconnected";
 					this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
 					this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulboff;
+					this.optionsToolStripButton.Enabled = true;
+					this.Text = "JustTalk";
 					this.connected = false;
 				}
 			}			
         }
 
         public bool connect() {
-			try {
+			try {				
+				model.ServerName = Properties.Settings.Default.ServerName;
+				model.ServerAddress = Properties.Settings.Default.ServerAddress;
+				model.Port = Properties.Settings.Default.Port;
+				model.User = Properties.Settings.Default.Username;
+				model.AuthMode = Properties.Settings.Default.AuthMode;	//Додадено од Милош/Васко
+				model.Resource = Properties.Settings.Default.Resource;
+				model.Password = Properties.Settings.Default.Password;
 				model.connect();
+				model.authenticate();
 			} catch (Exception ex) {
 				return false;
 			}
@@ -95,7 +102,12 @@ namespace Goodware.Jabber.GUI {
 
         // Add a new contact
         private void addContactToolStripMenuItem_Click(object sender, EventArgs e) {
-			//contactsTreeView.SelectedNode.Nodes.Add(new Contact());
+			/*AddContact dialog = new AddContact();
+			if(dialog.ShowDialog() == DialogResult.OK) {
+				//dialog.nameTextBox.Text;		
+				//dialog.groupComboBox.SelectedItem;
+				//model.sendPresence(dialog.jabberIDTextBox.Text, )
+			}*/
 			AddContact dialog = new AddContact();
 			dialog.groupComboBox.DataSource = contactsTreeView.Nodes;
 			dialog.groupComboBox.SelectedItem = contactsTreeView.SelectedNode;
@@ -103,12 +115,12 @@ namespace Goodware.Jabber.GUI {
 				Contact temp = new Contact();				
 				temp.JabberID = dialog.jabberIDTextBox.Text;
 				temp.Name = dialog.nameTextBox.Text;
-				//temp.Status = Status.offline;
 				temp.Status = (Status)((new Random()).Next(1, 4));	// TODO: Delete test line
 				temp.ContextMenuStrip = contactsContextMenuStrip;
-				//contactsTreeView.SelectedNode.Nodes.Add(temp);
+				contacts[temp.JabberID] = temp;
 				TreeNode group = ((TreeNode)dialog.groupComboBox.SelectedItem);
-				group.Nodes.Add(temp);		
+				group.Nodes.Add(temp);
+				contactsTreeView.Sort();
 			}
         }
 
@@ -141,23 +153,32 @@ namespace Goodware.Jabber.GUI {
             if(MessageBox.Show("The contact '" + contactsTreeView.SelectedNode.Text
                 + "' will be removed. Proceed?", "Remove Contact", MessageBoxButtons.OKCancel) == DialogResult.OK) {
                 if(MessageBox.Show("The contact '" + contactsTreeView.SelectedNode.Text
-                    + "' could actualy be a cool person. Proceed?", "Realy Remove Contact", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                    + "' could actually be a cool person. Proceed?", "Realy Remove Contact", MessageBoxButtons.OKCancel) == DialogResult.OK) {
                     contactsTreeView.SelectedNode.Remove();
                 }
             }
         }
 
-        // Open a conversation wiindow
+        // Open a conversation window
         private void talkToolStripMenuItem_Click(object sender, EventArgs e) {
-            ConverstationWindow c = new ConverstationWindow();
-            c.Show();
+            //ConverstationWindow c = new ConverstationWindow();
+            //c.Show();
         }
 
-        // Open a conversation wiindow
+        // Open a conversation window
         private void contactsTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
             if(e.Node.Level == 1) {
-                ConverstationWindow c = new ConverstationWindow();
-                c.Show();
+				Contact contact = (Contact)e.Node;
+				try {
+					conversations[contact.JabberID].Focus();
+				} catch (KeyNotFoundException ex) {
+					conversations[contact.JabberID] = new ConverstationWindow(contact, this);
+					//Console.WriteLine("Hash val: " + contact.JabberID);
+					conversations[contact.JabberID].Show();
+				} catch(Exception ex) {
+					// TODO: Do something here if needed
+				} finally {
+				}					                
             }
         }
 
@@ -170,7 +191,7 @@ namespace Goodware.Jabber.GUI {
             }
         }
 
-		// Make a moving efect
+		// Make a moving effect
         private void contactsTreeView_DragEnter(object sender, DragEventArgs e) {
             e.Effect = DragDropEffects.Move;
         }
@@ -236,5 +257,44 @@ namespace Goodware.Jabber.GUI {
 			OptionsDialog options = new OptionsDialog();
 			options.ShowDialog();
 		}
-    }
+
+		// Communication methods ----------------------------------------------------
+		public void SendMessage(String recipient, String body) {
+			Console.WriteLine("Send message: " + recipient + ": " + body);
+			model.sendMessage(recipient, null, null, null, null, body);
+		}
+
+		// Invokes a method to receive message in a conversation window, delegate is used for cross thread calls
+		public void ReceiveMessage(JabberID from, string body) {
+			Console.WriteLine("Gui received message from: " + from);
+			if(!conversations.ContainsKey(from.User + "@" + from.Domain)) {
+				Contact c;
+				if(contacts.ContainsKey(from.User + "@" + from.Domain))
+					c = contacts[from.User + "@" + from.Domain];
+				else
+					c = new Contact(from.User + "@" + from.Domain);
+				conversations[from.User + "@" + from.Domain] = new ConverstationWindow(c, this);
+				conversations[from.User + "@" + from.Domain].Show();
+			} else {
+				conversations[from.User + "@" + from.Domain].Activate();
+			}
+			conversations[from.User + "@" + from.Domain].ReceiveMessage(body);
+			//del rcvm = conversations[from.User + "@" + from.Domain].ReceiveMessage;
+			//conversations[from.User + "@" + from.Domain].Invoke(rcvm, new Object[] { body });*/
+		}
+
+
+
+		private void groupchatToolStripButton_Click(object sender, EventArgs e) {
+			GroupchatDialog dialog = new GroupchatDialog();
+			if(dialog.ShowDialog() == DialogResult.OK) {
+				GroupchatWindow groupWindow = new GroupchatWindow();
+				groupWindow.Show();
+			}
+		}
+
+		private void JustTalk_FormClosing(object sender, FormClosingEventArgs e) {
+			this.disconnect();
+		}
+	}
 }
