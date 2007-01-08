@@ -48,6 +48,18 @@
     <Compile Include="AddGroup.Designer.cs">
       <DependentUpon>AddGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="GroupchatDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupchatDialog.Designer.cs">
+      <DependentUpon>GroupchatDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GroupchatWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupchatWindow.Designer.cs">
+      <DependentUpon>GroupchatWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="Handlers\CloseStreamHandler.cs" />
     <Compile Include="Contact.cs" />
@@ -109,6 +121,18 @@
       <DependentUpon>AddContacts.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConverstationWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConverstationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GroupchatDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GroupchatDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GroupchatWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GroupchatWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OptionsDialog.cs</DependentUpon>
@@ -141,6 +165,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Handlers\RosterHandler.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\connect.ico" />
@@ -201,6 +226,10 @@
       <Project>{5D2DFAD3-E5F7-496B-88AB-0FBBAD3F1B43}</Project>
       <Name>JabberLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\keyboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
