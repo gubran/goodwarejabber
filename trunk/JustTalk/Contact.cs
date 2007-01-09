@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Goodware.Jabber.GUI {
 	// Enumeration for the presence status
-	public enum Status { online = 1, busy, offline }
+	public enum Status { chat = 1, dnd, unavailable, away, xa, inviteSent, inviteAccepted }
 
 	public class Contact : TreeNode, IComparable {
 		private String jabbberID;
@@ -14,7 +14,7 @@ namespace Goodware.Jabber.GUI {
 		private Status status;
 
 		public Contact() {
-			Status = Status.offline;						
+			Status = Status.unavailable;						
 		}
 		
 		/// <summary>

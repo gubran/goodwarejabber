@@ -88,6 +88,13 @@ namespace Goodware.Jabber.GUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap group_chat {
+            get {
+                object obj = ResourceManager.GetObject("group_chat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap group_delete {
             get {
                 object obj = ResourceManager.GetObject("group_delete", resourceCulture);

@@ -1,7 +1,5 @@
 using System.IO;
-
 using System;
-
 using Goodware.Jabber.Library;
 
 
@@ -9,11 +7,7 @@ using Goodware.Jabber.Library;
 
 
 namespace Goodware.Jabber.Server {
-
 	public class OpenStreamHandler : PacketListener {
-
-	
-
 		UserIndex userIndex;
 
 	

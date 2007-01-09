@@ -62,13 +62,13 @@ namespace Goodware.Jabber.Server
 
             if (type == null)
             {
-                type = "availible";
+                type = "available";
             }
             //packet filling ends
 
 
             //packet routing begins
-            if (type.Equals("availible") || type.Equals("unavailible"))
+            if (type.Equals("available") || type.Equals("unavailable"))
             {
                 //user-managed presence updates are delivered untouched
                 if (!recipientID.ToString().Equals(Server.JabberServer.server_name))
@@ -83,7 +83,7 @@ namespace Goodware.Jabber.Server
 
                 //update the session's presence status
 
-                sessionPresence.Availible = type.Equals("availible");
+                sessionPresence.Availible = type.Equals("available");
                 sessionPresence.Show = presence.getChildValue("show");
                 sessionPresence.Status = presence.getChildValue("status");
                 String priority = presence.getChildValue("priority");
@@ -475,25 +475,56 @@ namespace Goodware.Jabber.Server
                         JabberID myid = new JabberID(obj.ToString());//other's subscribers id
                         if (myid.Domain.Equals(Server.JabberServer.server_name))//if from this server
                         {
-                            if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values == null)
+                            //new code!
+                           
+                            
+                            
+                            
+                            
+                            
+                            if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values==null)
                             {
                                 // if Server.JabberServer.getUserIndex().getUser(myid.User).getSessions()
-                                //user is online
-                                Packet presencePacket = new Packet("presence");
-                                presencePacket.From = myid.ToString();
-                                presencePacket.To = new JabberID(this.user + "@" + Server.JabberServer.server_name).ToString();
-                                presencePacket.setAttribute("type", "availible");
-                                MessageHandler.deliverPacket(presencePacket);
-
-                            }// if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values==null)
-                            else
-                            {
                                 //user is offline
                                 Packet presencePacket = new Packet("presence");
                                 presencePacket.From = myid.ToString();
                                 presencePacket.To = new JabberID(this.user + "@" + Server.JabberServer.server_name).ToString();
-                                presencePacket.setAttribute("type", "unavailible");
+                                presencePacket.setAttribute("type", "unavailable");
                                 MessageHandler.deliverPacket(presencePacket);
+
+                            }// if (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values!=null)
+                            else
+                            {
+                                foreach (Object obj2 in (Server.JabberServer.getUserIndex().getUser(myid.User).getSessions().Values))
+                                {//for each active session
+                                    Session sess = obj2 as Session;
+ 
+                                    Packet presencePacket = new Packet("presence");
+                                    presencePacket.From = myid.ToString();
+                                    presencePacket.To = new JabberID(this.user + "@" + Server.JabberServer.server_name).ToString();
+                                    if (sess.getPresence().isAvailible())
+                                    {
+                                        presencePacket.setAttribute("type", "available");
+                                        if(sess.getPresence().getShow()!=null)
+                                            presencePacket.Children.Add(new Packet("show",sess.getPresence().getShow()));
+ 
+                                        
+                                        if(sess.getPresence().getStatus()!=null)
+                                            presencePacket.Children.Add(new Packet("status",sess.getPresence().getStatus()));
+
+
+                                        if (sess.getPresence().getPriority() != null)
+                                            presencePacket.Children.Add(new Packet("priority", sess.getPresence().getPriority()));
+ 
+                                        //other info may be added!
+                                    }
+                                    else
+                                        presencePacket.setAttribute("type", "unavailable");
+                                    MessageHandler.deliverPacket(presencePacket);
+
+                                }//for each active session
+                            
+                              
                             }
 
                         }//  if(myid.Domain.Equals(Server.JabberServer.server_name))

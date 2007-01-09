@@ -29,6 +29,7 @@ namespace Goodware.Jabber.GUI {
 			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;	// Sorter to sort the contacts in the groups
 			conversations = new Dictionary<string, ConverstationWindow>();
 			contacts = new Dictionary<string, Contact>();
+			groups = new Dictionary<string, Group>();
 			model = new JabberModel(this);		// TODO: Revise this
         }
 
@@ -85,6 +86,8 @@ namespace Goodware.Jabber.GUI {
 				model.Password = Properties.Settings.Default.Password;
 				model.connect();
 				model.authenticate();
+				model.sendRosterGet();
+				model.sendPresence(null, "available", "chat", null, null);
 			} catch (Exception ex) {
 				return false;
 			}
@@ -102,13 +105,17 @@ namespace Goodware.Jabber.GUI {
 
         // Add a new contact
         private void addContactToolStripMenuItem_Click(object sender, EventArgs e) {
-			/*AddContact dialog = new AddContact();
-			if(dialog.ShowDialog() == DialogResult.OK) {
-				//dialog.nameTextBox.Text;		
-				//dialog.groupComboBox.SelectedItem;
-				//model.sendPresence(dialog.jabberIDTextBox.Text, )
-			}*/
 			AddContact dialog = new AddContact();
+			dialog.groupComboBox.DataSource = contactsTreeView.Nodes;
+			dialog.groupComboBox.SelectedItem = contactsTreeView.SelectedNode;
+			if(dialog.ShowDialog() == DialogResult.OK) {				
+				model.sendPresence(dialog.jabberIDTextBox.Text, "subscribe", null, null, null);
+				if(dialog.groupComboBox.SelectedItem != null && !dialog.groupComboBox.SelectedItem.ToString().Equals("Default Group"))
+					model.sendRosterSet(dialog.jabberIDTextBox.Text, dialog.nameTextBox.Text, dialog.groupComboBox.SelectedItem.ToString());
+				else
+					model.sendRosterSet(dialog.jabberIDTextBox.Text, dialog.nameTextBox.Text, (String)null);
+			}
+/*			AddContact dialog = new AddContact();
 			dialog.groupComboBox.DataSource = contactsTreeView.Nodes;
 			dialog.groupComboBox.SelectedItem = contactsTreeView.SelectedNode;
 			if(dialog.ShowDialog() == DialogResult.OK) {
@@ -121,7 +128,7 @@ namespace Goodware.Jabber.GUI {
 				TreeNode group = ((TreeNode)dialog.groupComboBox.SelectedItem);
 				group.Nodes.Add(temp);
 				contactsTreeView.Sort();
-			}
+			}*/
         }
 
         // Remove a group
@@ -136,10 +143,10 @@ namespace Goodware.Jabber.GUI {
         private void addGroupToolStripMenuItem_Click(object sender, EventArgs e) {
             AddGroup dialog = new AddGroup();
             if(dialog.ShowDialog() == DialogResult.OK) {                
-                //TreeNode temp = new TreeNode(dialog.nameTextBox.Text);
-				Group temp = new Group(dialog.nameTextBox.Text);
-                temp.ContextMenuStrip = gropupContextMenuStrip;
-                contactsTreeView.Nodes.Add(temp);
+				Group newGroup = new Group(dialog.nameTextBox.Text);
+				groups[dialog.nameTextBox.Text] = newGroup;
+				newGroup.ContextMenuStrip = gropupContextMenuStrip;
+				contactsTreeView.Nodes.Add(newGroup);
             }
         }
 
@@ -233,7 +240,7 @@ namespace Goodware.Jabber.GUI {
 			connectTrayMenuItem_Click(sender, e);
 		}
 
-		// Set status online
+		// Set status chat
 		private void onlineToolStripMenuItem_Click(object sender, EventArgs e) {
 			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
 		}
@@ -243,7 +250,7 @@ namespace Goodware.Jabber.GUI {
 			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
 		}
 
-		// Set status busy
+		// Set status dnd
 		private void busyToolStripMenuItem_Click(object sender, EventArgs e) {
 			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
 		}
@@ -267,23 +274,37 @@ namespace Goodware.Jabber.GUI {
 		// Invokes a method to receive message in a conversation window, delegate is used for cross thread calls
 		public void ReceiveMessage(JabberID from, string body) {
 			Console.WriteLine("Gui received message from: " + from);
-			if(!conversations.ContainsKey(from.User + "@" + from.Domain)) {
+			if(!conversations.ContainsKey(from.User + "@" + from.Domain)) {		// Check if there is already open conversation window
 				Contact c;
-				if(contacts.ContainsKey(from.User + "@" + from.Domain))
+				if(contacts.ContainsKey(from.User + "@" + from.Domain))			// Check if sender is in Contact list
 					c = contacts[from.User + "@" + from.Domain];
 				else
 					c = new Contact(from.User + "@" + from.Domain);
-				conversations[from.User + "@" + from.Domain] = new ConverstationWindow(c, this);
-				conversations[from.User + "@" + from.Domain].Show();
+				conversations[from.User + "@" + from.Domain] = new ConverstationWindow(c, this);	// Open new conversation window
+				conversations[from.User + "@" + from.Domain].Show();								// Show if new window
 			} else {
-				conversations[from.User + "@" + from.Domain].Activate();
+				conversations[from.User + "@" + from.Domain].Activate();							// Just activate if already opened
 			}
-			conversations[from.User + "@" + from.Domain].ReceiveMessage(body);
+			conversations[from.User + "@" + from.Domain].ReceiveMessage(body);						// Receive message
 			//del rcvm = conversations[from.User + "@" + from.Domain].ReceiveMessage;
 			//conversations[from.User + "@" + from.Domain].Invoke(rcvm, new Object[] { body });*/
 		}
 
-
+		public void AddContact(String jid, String name, String group, Status status) {
+			Console.WriteLine("Adding: " + jid + ", " + name+ ", " +group + ", " + status);
+			Group groupNode;
+			if(group == null)
+				groupNode = (Group)contactsTreeView.Nodes[0];
+			else {
+				if(!contactsTreeView.Nodes.ContainsKey(group))
+					contactsTreeView.Nodes.Add(new Group(group));
+				groupNode = (Group)contactsTreeView.Nodes[group];
+			}
+			Contact contact = new Contact(jid);
+			contact.Name = name;
+			contact.Status = status;
+			groupNode.Nodes.Add(contact);
+		}
 
 		private void groupchatToolStripButton_Click(object sender, EventArgs e) {
 			GroupchatDialog dialog = new GroupchatDialog();

@@ -75,14 +75,7 @@
     <Compile Include="AddContacts.Designer.cs">
       <DependentUpon>AddContacts.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ImageComboBox.Designer.cs">
-      <DependentUpon>ImageComboBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Group.cs" />
-    <Compile Include="ImageComboBoxItem.cs" />
     <Compile Include="Handlers\IQHandler.cs" />
     <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Handlers\OpenStreamHandler.cs" />
@@ -230,6 +223,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Resources\keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group_chat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -36,7 +36,7 @@ namespace Goodware.Jabber.Client {
 			//Крај додадено
 
 			//marko
-			queueThread.addPacketListener(new RosterHandler(), "jabber:iq:roster");
+			queueThread.addPacketListener(new RosterHandler(this), "jabber:iq:roster");
 			//kraj marko
 			queueThread.setDaemon(true);
 			queueThread.start();
@@ -378,5 +378,27 @@ this.user + "</username><password>" + this.Password + "</password></query></iq>"
 		}
 
 		//end added by marko
+
+		public void sendRosterSet(String jid, String name, string group)//hashtable type may be changed
+		{
+			Packet packet = new Packet("iq");
+			packet.Type = "set";
+			packet.ID = "roster_set";
+			Packet query = new Packet("query");
+			query.setAttribute("xmlns", "jabber:iq:roster");
+			query.setParent(packet);
+			Packet item = new Packet("item");
+			item.setAttribute("jid", jid);
+			if(name != null) {
+				item.setAttribute("name", name);
+			}
+			item.setParent(query);
+			//code to form the packets
+			if(group != null) {
+				new Packet("group", group).setParent(item);
+			}
+			session.Writer.Write(packet.ToString());
+			session.Writer.Flush();
+		}
 	}
 }

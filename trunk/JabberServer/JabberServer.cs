@@ -45,13 +45,13 @@ namespace Goodware.Jabber.Server {
 			serverSocket.Listen(20);
             // Додадено од Милош/Васко
             // Нов „статички“ јузер
-            User nov=index.addUser("misos");
+            User nov=index.addUser("milos");
             nov.setPassword("test");
 
-            User nov2 = index.addUser("misos2");
+            User nov2 = index.addUser("darko");
             nov2.setPassword("test");
             
-            User nov3 = index.addUser("misos3");
+            User nov3 = index.addUser("bojan");
             nov3.setPassword("test");
             
             // Крај додадено

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Goodware.Jabber.Library;
 
-public delegate void RecieveMessageDelegate(JabberID jid, string body);
-
 namespace Goodware.Jabber.Client {
+	public delegate void RecieveMessageDelegate(JabberID jid, string body);
+
     public class MessageHandler : PacketListener {
 		private JabberModel model;
 
