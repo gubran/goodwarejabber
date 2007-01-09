@@ -136,7 +136,8 @@ namespace Goodware.Jabber.Library {
 				jid.Append("@");
 			}
 			jid.Append(domain);
-			if (resource != null) {
+            if (resource != null && !resource.Equals(""))
+            {
 				jid.Append("/");
 				jid.Append(resource);
 			}

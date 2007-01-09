@@ -50,7 +50,9 @@
     <Compile Include="CloseStreamHandler.cs" />
     <Compile Include="DeliveryHandler.cs" />
     <Compile Include="GroupChatManager.cs" />
+    <Compile Include="JabberInputHandler.cs" />
     <Compile Include="MessageHandler.cs" />
+    <Compile Include="ProcessThread.cs" />
     <Compile Include="UserRoster.cs" />
     <Compile Include="OpenStreamHandler.cs" />
     <Compile Include="PresenceHandler.cs" />

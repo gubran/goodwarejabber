@@ -38,7 +38,7 @@ namespace Goodware.Jabber.Server {
             // Fill in sender as resource that sent message (anti-spoofing)
             packet.setFrom(packet.getSession().getJID().ToString());
 
-            if (packet.getAttribute("type").Equals("groupchat",StringComparison.OrdinalIgnoreCase)) {
+            if (packet.getAttribute("type")!=null && packet.getAttribute("type").Equals("groupchat",StringComparison.OrdinalIgnoreCase)) {
                 if (chatMan.isChatPacket(packet)) {
                     chatMan.handleChatMessage(packet);
                 } else {
@@ -66,7 +66,14 @@ namespace Goodware.Jabber.Server {
                     return;
                 }
               } else {
-                output = userIndex.getWriter(recipient);
+                  if (userIndex.containsUser(recipient))
+                 {
+                      output = userIndex.getWriter(recipient);
+                 }
+                 else
+                  {
+                      return;
+                  }
 //				Console.WriteLine("String"+userIndex.getUser(recipient).ToString());
               }
               if (output != null){
@@ -75,8 +82,8 @@ namespace Goodware.Jabber.Server {
                 output.Flush();                     // smeneto od DarkoA
               } else {
                   //begin change by marko
-                  if (!packet.Element.Equals("presence"))
-                  {     //presence packets dont need to be stored for offline use
+                  if (!packet.Element.Equals("presence") || (packet["type"] != null && (packet["type"].Equals("subscribe") || packet["type"].Equals("subscribed") || packet["type"].Equals("unsubscribe") || packet["type"].Equals("unsubscribed"))))
+                  {     //update presence packets (available & unavailable) don't need to be stored for offline use
                       Console.WriteLine("Store & forward: " + packet.ToString());
                       User user = userIndex.getUser(new JabberID(recipient).getUser());
                       user.storeMessage(packet);
@@ -84,7 +91,8 @@ namespace Goodware.Jabber.Server {
                   //end change by marko
               }
 			} catch (Exception ex){
-				Console.WriteLine(ex.Message);
+				Console.WriteLine(ex.StackTrace);
+
 				
                 Console.WriteLine("MessageHandler: ", ex);
             }

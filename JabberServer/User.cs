@@ -13,14 +13,17 @@ namespace Goodware.Jabber.Server {
     		// Od Marko
     	  //added roster support by marko simple
         Roster roster;
-        public Roster getRoster(){ return this.roster;}
-        public void setNewRoster(string username)
-        {roster=new Roster(username);
-        UserRoster myroster = new UserRoster();
-        myroster.user = this.username;
+        public Roster getRoster(){ 
+            return this.roster;
+        }
         
-        //when adding a user, create a corresponding item
-        Server.JabberServer.RosterHashtable.Add(this.username, myroster);
+        public void setNewRoster(string username) {
+            roster=new Roster(username);
+            UserRoster myroster = new UserRoster();
+            myroster.user = this.username;
+        
+            //when adding a user, create a corresponding item
+            Server.JabberServer.RosterHashtable.Add(this.username, myroster);
 
         }
 

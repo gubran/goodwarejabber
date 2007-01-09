@@ -45,6 +45,17 @@ namespace Goodware.Jabber.Server {
             user.addSession(session);
             sessionIndex.Add(session, user);
         }
+
+        public bool containsSession(Session session)
+        {
+            return sessionIndex.Contains(session);
+        }
+        public bool containsUser(String user)
+        {
+            return userIndex.Contains(new JabberID(user).User);
+        }
+
+
         public void removeSession(Session session) {
             sessionIndex.Remove(session);
             if (session.getJID() == null) {
