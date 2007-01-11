@@ -267,23 +267,30 @@ namespace Goodware.Jabber.GUI {
 
 		// Move a contact to a another group
         private void contactsTreeView_DragDrop(object sender, DragEventArgs e) {
- /*          Point position = new Point(e.X, e.Y);
+			Point position = new Point(e.X, e.Y);
             position = contactsTreeView.PointToClient(position);
             TreeNode dropNode = contactsTreeView.GetNodeAt(position);
             if(dropNode.Level == 1) {
                 dropNode = dropNode.Parent;
             }
-            contactsTreeView.Nodes.Remove(NodeToBeMoved);
-            dropNode.Nodes.Add(NodeToBeMoved);*/
+			Group group = (Group)dropNode;
+			Contact contact = (Contact)NodeToBeMoved;
+			model.sendRosterSet(contact.JabberID, contact.Name, group.Name);            
         }
 
 		// Rename a group
 		private void renameGroupToolStripMenuItem_Click(object sender, EventArgs e) {
-/*			TreeNode node = contactsTreeView.SelectedNode;
-			RenameGroup dialog = new RenameGroup(node.Text);
+			Group group = (Group)contactsTreeView.SelectedNode;
+			RenameGroup dialog = new RenameGroup(group.Name);
+			String newGroup;
 			if(dialog.ShowDialog() == DialogResult.OK) {
-				node.Text = dialog.newNameTextBox.Text;
-			}*/
+				newGroup = dialog.newNameTextBox.Text;
+				foreach(TreeNode node in group.Nodes) {
+					Contact c = (Contact)node;
+					model.sendRosterSet(c.JabberID, c.Name, newGroup);
+				}
+			}
+			group.Remove();
 		}
 		
 		// Show about box
@@ -361,9 +368,12 @@ namespace Goodware.Jabber.GUI {
 			Group groupNode;
 			if(group == null)										// If no group is sent use default(0)
 				groupNode = (Group)contactsTreeView.Nodes[0];
-			else {													// Group is sent
-				if(!contactsTreeView.Nodes.ContainsKey(group))		// If the group doesn't exists
-					contactsTreeView.Nodes.Add(new Group(group));	// Make one
+			else {															// Group is sent
+				if(!contactsTreeView.Nodes.ContainsKey(group)) {			// If the group doesn't exists
+					Group newGroup = new Group(group);
+					newGroup.ContextMenuStrip = gropupContextMenuStrip;
+					contactsTreeView.Nodes.Add(newGroup);					// Make one					
+				}
 				groupNode = (Group)contactsTreeView.Nodes[group];	// we have Group
 			}
 
