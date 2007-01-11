@@ -6,6 +6,7 @@ using System.Windows.Forms;
 namespace Goodware.Jabber.GUI {
 	class Group : TreeNode, IComparable {
 		public Group(String name) : base(name) {
+			base.Name = name;
 			base.ToolTipText = "Group: " + name;
 		}
 

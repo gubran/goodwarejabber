@@ -5,7 +5,7 @@ using Goodware.Jabber.Library;
 using Goodware.Jabber.GUI;
 
 namespace Goodware.Jabber.Client {
-	public delegate void AddContactDelegate(String jid, String name, String group, Status status);
+	public delegate void UpdateContactDelegate(String jid, String name, String group, Status status);
 
     class RosterHandler : PacketListener {
 		protected JabberModel model;
@@ -30,7 +30,7 @@ namespace Goodware.Jabber.Client {
 				} else if (subscribtion.Equals("both")) {
 					status = Status.unavailable;
 				}
-				AddContactDelegate del = new AddContactDelegate(model.gui.AddContact);
+				UpdateContactDelegate del = new UpdateContactDelegate(model.gui.UpdateContact);
 				model.gui.Invoke(del, new Object[] { jid, name, group, status });                
             }
         }

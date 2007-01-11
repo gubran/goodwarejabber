@@ -43,45 +43,61 @@ namespace Goodware.Jabber.GUI
 			this.exitTrayMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.topMenu = new System.Windows.Forms.MenuStrip();
 			this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contactsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
-			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
 			this.contactsTreeView = new System.Windows.Forms.TreeView();
-			this.contactsViewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contactsImageList = new System.Windows.Forms.ImageList(this.components);
-			this.bottomStatusStrip = new System.Windows.Forms.StatusStrip();
-			this.connectedStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.contactsToolStrip = new System.Windows.Forms.ToolStrip();
 			this.addGroupToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.addContactToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.groupchatToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.mainToolStrip = new System.Windows.Forms.ToolStrip();
+			this.connectToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.optionsToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.goRightToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.statusToolStrip = new System.Windows.Forms.ToolStrip();
 			this.statusToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.awayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.connectToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.optionsToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.groupchatToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.statusMessageToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
+			this.contactsViewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.bottomStatusStrip = new System.Windows.Forms.StatusStrip();
+			this.connectedStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.contactsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.talkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.anotherEditContactStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.anotherRemoveContactToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.editContactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeContactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mainPanel = new System.Windows.Forms.Panel();
+			this.pendingContactContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.defaultGroupContextMenuStrip.SuspendLayout();
 			this.gropupContextMenuStrip.SuspendLayout();
 			this.trayMenu.SuspendLayout();
 			this.topMenu.SuspendLayout();
-			this.toolStripContainer1.ContentPanel.SuspendLayout();
-			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
-			this.toolStripContainer1.SuspendLayout();
-			this.contactsViewContextMenuStrip.SuspendLayout();
-			this.bottomStatusStrip.SuspendLayout();
+			this.toolStripContainer.ContentPanel.SuspendLayout();
+			this.toolStripContainer.TopToolStripPanel.SuspendLayout();
+			this.toolStripContainer.SuspendLayout();
 			this.contactsToolStrip.SuspendLayout();
 			this.mainToolStrip.SuspendLayout();
+			this.statusToolStrip.SuspendLayout();
+			this.contactsViewContextMenuStrip.SuspendLayout();
+			this.bottomStatusStrip.SuspendLayout();
 			this.contactsContextMenuStrip.SuspendLayout();
+			this.mainPanel.SuspendLayout();
+			this.pendingContactContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// defaultGroupContextMenuStrip
@@ -174,10 +190,11 @@ namespace Goodware.Jabber.GUI
 			// 
 			this.topMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.topMenu.Location = new System.Drawing.Point(0, 0);
 			this.topMenu.Name = "topMenu";
-			this.topMenu.Size = new System.Drawing.Size(224, 24);
+			this.topMenu.Size = new System.Drawing.Size(234, 24);
 			this.topMenu.TabIndex = 1;
 			this.topMenu.Text = "topMenu";
 			// 
@@ -186,6 +203,46 @@ namespace Goodware.Jabber.GUI
 			this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
 			this.connectToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
 			this.connectToolStripMenuItem.Text = "Connect";
+			// 
+			// viewToolStripMenuItem
+			// 
+			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolbarsToolStripMenuItem});
+			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+			this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+			this.viewToolStripMenuItem.Text = "View";
+			// 
+			// toolbarsToolStripMenuItem
+			// 
+			this.toolbarsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainToolStripMenuItem,
+            this.contactsToolStripMenuItem,
+            this.statusToolStripMenuItem});
+			this.toolbarsToolStripMenuItem.Name = "toolbarsToolStripMenuItem";
+			this.toolbarsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.toolbarsToolStripMenuItem.Text = "Toolbars";
+			// 
+			// mainToolStripMenuItem
+			// 
+			this.mainToolStripMenuItem.Name = "mainToolStripMenuItem";
+			this.mainToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+			this.mainToolStripMenuItem.Text = "Main";
+			this.mainToolStripMenuItem.Click += new System.EventHandler(this.mainToolStripMenuItem_Click);
+			// 
+			// contactsToolStripMenuItem
+			// 
+			this.contactsToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group;
+			this.contactsToolStripMenuItem.Name = "contactsToolStripMenuItem";
+			this.contactsToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+			this.contactsToolStripMenuItem.Text = "Contacts";
+			this.contactsToolStripMenuItem.Click += new System.EventHandler(this.contactsToolStripMenuItem_Click);
+			// 
+			// statusToolStripMenuItem
+			// 
+			this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
+			this.statusToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+			this.statusToolStripMenuItem.Text = "Status";
+			this.statusToolStripMenuItem.Click += new System.EventHandler(this.statusToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -217,30 +274,29 @@ namespace Goodware.Jabber.GUI
 			this.trayIcon.Text = "Disconnected";
 			this.trayIcon.Visible = true;
 			// 
-			// toolStripContainer1
+			// toolStripContainer
 			// 
 			// 
-			// toolStripContainer1.ContentPanel
+			// toolStripContainer.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.contactsTreeView);
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.bottomStatusStrip);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(224, 293);
-			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.toolStripContainer1.Location = new System.Drawing.Point(0, 24);
-			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(224, 318);
-			this.toolStripContainer1.TabIndex = 2;
-			this.toolStripContainer1.Text = "toolStripContainer1";
+			this.toolStripContainer.ContentPanel.Controls.Add(this.contactsTreeView);
+			this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(234, 268);
+			this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
+			this.toolStripContainer.Name = "toolStripContainer";
+			this.toolStripContainer.Size = new System.Drawing.Size(234, 318);
+			this.toolStripContainer.TabIndex = 2;
+			this.toolStripContainer.Text = "toolStripContainer1";
 			// 
-			// toolStripContainer1.TopToolStripPanel
+			// toolStripContainer.TopToolStripPanel
 			// 
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.contactsToolStrip);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.mainToolStrip);
+			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.contactsToolStrip);
+			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.mainToolStrip);
+			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.statusToolStrip);
 			// 
 			// contactsTreeView
 			// 
 			this.contactsTreeView.AllowDrop = true;
-			this.contactsTreeView.ContextMenuStrip = this.contactsViewContextMenuStrip;
 			this.contactsTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contactsTreeView.ImageIndex = 0;
 			this.contactsTreeView.ImageList = this.contactsImageList;
@@ -249,28 +305,13 @@ namespace Goodware.Jabber.GUI
 			this.contactsTreeView.SelectedImageIndex = 0;
 			this.contactsTreeView.ShowLines = false;
 			this.contactsTreeView.ShowNodeToolTips = true;
-			this.contactsTreeView.Size = new System.Drawing.Size(224, 271);
+			this.contactsTreeView.Size = new System.Drawing.Size(234, 268);
 			this.contactsTreeView.TabIndex = 1;
 			this.contactsTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.contactsTreeView_NodeMouseDoubleClick);
 			this.contactsTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.contactsTreeView_DragDrop);
 			this.contactsTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.contactsTreeView_MouseClick);
 			this.contactsTreeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.contactsTreeView_DragEnter);
 			this.contactsTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.contactsTreeView_ItemDrag);
-			// 
-			// contactsViewContextMenuStrip
-			// 
-			this.contactsViewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addGroupToolStripMenuItem});
-			this.contactsViewContextMenuStrip.Name = "contactsContextMenuStrip";
-			this.contactsViewContextMenuStrip.Size = new System.Drawing.Size(137, 26);
-			// 
-			// addGroupToolStripMenuItem
-			// 
-			this.addGroupToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_add;
-			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
-			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-			this.addGroupToolStripMenuItem.Text = "&Add Group";
-			this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
 			// 
 			// contactsImageList
 			// 
@@ -285,39 +326,22 @@ namespace Goodware.Jabber.GUI
 			this.contactsImageList.Images.SetKeyName(6, "user_inviteSent.png");
 			this.contactsImageList.Images.SetKeyName(7, "user_inviteAcc.png");
 			// 
-			// bottomStatusStrip
-			// 
-			this.bottomStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectedStatus});
-			this.bottomStatusStrip.Location = new System.Drawing.Point(0, 271);
-			this.bottomStatusStrip.Name = "bottomStatusStrip";
-			this.bottomStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.bottomStatusStrip.Size = new System.Drawing.Size(224, 22);
-			this.bottomStatusStrip.TabIndex = 0;
-			this.bottomStatusStrip.Text = "statusStrip1";
-			// 
-			// connectedStatus
-			// 
-			this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
-			this.connectedStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			this.connectedStatus.Name = "connectedStatus";
-			this.connectedStatus.Size = new System.Drawing.Size(87, 17);
-			this.connectedStatus.Text = "Disconnected";
-			// 
 			// contactsToolStrip
 			// 
 			this.contactsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.contactsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addGroupToolStripButton,
-            this.addContactToolStripButton});
+            this.addContactToolStripButton,
+            this.groupchatToolStripButton});
 			this.contactsToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.contactsToolStrip.Name = "contactsToolStrip";
-			this.contactsToolStrip.Size = new System.Drawing.Size(58, 25);
+			this.contactsToolStrip.Size = new System.Drawing.Size(81, 25);
 			this.contactsToolStrip.TabIndex = 1;
 			// 
 			// addGroupToolStripButton
 			// 
 			this.addGroupToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.addGroupToolStripButton.Enabled = false;
 			this.addGroupToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_add;
 			this.addGroupToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addGroupToolStripButton.Name = "addGroupToolStripButton";
@@ -329,6 +353,7 @@ namespace Goodware.Jabber.GUI
 			// addContactToolStripButton
 			// 
 			this.addContactToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.addContactToolStripButton.Enabled = false;
 			this.addContactToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_add;
 			this.addContactToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addContactToolStripButton.Name = "addContactToolStripButton";
@@ -337,54 +362,28 @@ namespace Goodware.Jabber.GUI
 			this.addContactToolStripButton.ToolTipText = "Add Contact";
 			this.addContactToolStripButton.Click += new System.EventHandler(this.addContactToolStripButton_Click);
 			// 
+			// groupchatToolStripButton
+			// 
+			this.groupchatToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.groupchatToolStripButton.Enabled = false;
+			this.groupchatToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_chat;
+			this.groupchatToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.groupchatToolStripButton.Name = "groupchatToolStripButton";
+			this.groupchatToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.groupchatToolStripButton.Text = "Group Chat";
+			this.groupchatToolStripButton.Click += new System.EventHandler(this.groupchatToolStripButton_Click);
+			// 
 			// mainToolStrip
 			// 
 			this.mainToolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusToolStripDropDownButton,
             this.connectToolStripButton,
             this.optionsToolStripButton,
-            this.groupchatToolStripButton});
-			this.mainToolStrip.Location = new System.Drawing.Point(61, 0);
+            this.goRightToolStripButton});
+			this.mainToolStrip.Location = new System.Drawing.Point(84, 0);
 			this.mainToolStrip.Name = "mainToolStrip";
-			this.mainToolStrip.Size = new System.Drawing.Size(163, 25);
+			this.mainToolStrip.Size = new System.Drawing.Size(81, 25);
 			this.mainToolStrip.TabIndex = 0;
-			// 
-			// statusToolStripDropDownButton
-			// 
-			this.statusToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.onlineToolStripMenuItem,
-            this.awayToolStripMenuItem,
-            this.busyToolStripMenuItem});
-			this.statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
-			this.statusToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.statusToolStripDropDownButton.Name = "statusToolStripDropDownButton";
-			this.statusToolStripDropDownButton.Size = new System.Drawing.Size(67, 22);
-			this.statusToolStripDropDownButton.Text = "Status";
-			// 
-			// onlineToolStripMenuItem
-			// 
-			this.onlineToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
-			this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-			this.onlineToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-			this.onlineToolStripMenuItem.Text = "Online";
-			this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineToolStripMenuItem_Click);
-			// 
-			// awayToolStripMenuItem
-			// 
-			this.awayToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
-			this.awayToolStripMenuItem.Name = "awayToolStripMenuItem";
-			this.awayToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-			this.awayToolStripMenuItem.Text = "Away";
-			this.awayToolStripMenuItem.Click += new System.EventHandler(this.awayToolStripMenuItem_Click);
-			// 
-			// busyToolStripMenuItem
-			// 
-			this.busyToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
-			this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
-			this.busyToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-			this.busyToolStripMenuItem.Text = "Busy";
-			this.busyToolStripMenuItem.Click += new System.EventHandler(this.busyToolStripMenuItem_Click);
 			// 
 			// connectToolStripButton
 			// 
@@ -408,23 +407,121 @@ namespace Goodware.Jabber.GUI
 			this.optionsToolStripButton.ToolTipText = "Options";
 			this.optionsToolStripButton.Click += new System.EventHandler(this.optionsToolStripButton_Click);
 			// 
-			// groupchatToolStripButton
+			// goRightToolStripButton
 			// 
-			this.groupchatToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.groupchatToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_chat;
-			this.groupchatToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.groupchatToolStripButton.Name = "groupchatToolStripButton";
-			this.groupchatToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.groupchatToolStripButton.Text = "toolStripButton2";
-			this.groupchatToolStripButton.Click += new System.EventHandler(this.groupchatToolStripButton_Click);
+			this.goRightToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.goRightToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.monitorArrow;
+			this.goRightToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.goRightToolStripButton.Name = "goRightToolStripButton";
+			this.goRightToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.goRightToolStripButton.Text = "Move to top right corner ";
+			this.goRightToolStripButton.Click += new System.EventHandler(this.goRightToolStripButton_Click);
+			// 
+			// statusToolStrip
+			// 
+			this.statusToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+			this.statusToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusToolStripDropDownButton,
+            this.toolStripSeparator5,
+            this.statusMessageToolStripComboBox});
+			this.statusToolStrip.Location = new System.Drawing.Point(3, 25);
+			this.statusToolStrip.Name = "statusToolStrip";
+			this.statusToolStrip.Size = new System.Drawing.Size(170, 25);
+			this.statusToolStrip.TabIndex = 2;
+			// 
+			// statusToolStripDropDownButton
+			// 
+			this.statusToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.statusToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.onlineToolStripMenuItem,
+            this.awayToolStripMenuItem,
+            this.busyToolStripMenuItem});
+			this.statusToolStripDropDownButton.Enabled = false;
+			this.statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
+			this.statusToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.statusToolStripDropDownButton.Name = "statusToolStripDropDownButton";
+			this.statusToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
+			this.statusToolStripDropDownButton.Text = "Status";
+			// 
+			// onlineToolStripMenuItem
+			// 
+			this.onlineToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
+			this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+			this.onlineToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+			this.onlineToolStripMenuItem.Text = "Chat";
+			this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineToolStripMenuItem_Click_1);
+			// 
+			// awayToolStripMenuItem
+			// 
+			this.awayToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
+			this.awayToolStripMenuItem.Name = "awayToolStripMenuItem";
+			this.awayToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+			this.awayToolStripMenuItem.Text = "Away";
+			this.awayToolStripMenuItem.Click += new System.EventHandler(this.awayToolStripMenuItem_Click_1);
+			// 
+			// busyToolStripMenuItem
+			// 
+			this.busyToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
+			this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
+			this.busyToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+			this.busyToolStripMenuItem.Text = "Do Not Disturb";
+			this.busyToolStripMenuItem.Click += new System.EventHandler(this.busyToolStripMenuItem_Click_1);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+			// 
+			// statusMessageToolStripComboBox
+			// 
+			this.statusMessageToolStripComboBox.Enabled = false;
+			this.statusMessageToolStripComboBox.Name = "statusMessageToolStripComboBox";
+			this.statusMessageToolStripComboBox.Size = new System.Drawing.Size(121, 25);
+			this.statusMessageToolStripComboBox.ToolTipText = "Status Message";
+			this.statusMessageToolStripComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.statusMessageToolStripComboBox_KeyPress);
+			this.statusMessageToolStripComboBox.Click += new System.EventHandler(this.statusMessageToolStripComboBox_Click);
+			// 
+			// contactsViewContextMenuStrip
+			// 
+			this.contactsViewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addGroupToolStripMenuItem});
+			this.contactsViewContextMenuStrip.Name = "contactsContextMenuStrip";
+			this.contactsViewContextMenuStrip.Size = new System.Drawing.Size(137, 26);
+			// 
+			// addGroupToolStripMenuItem
+			// 
+			this.addGroupToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.group_add;
+			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
+			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.addGroupToolStripMenuItem.Text = "&Add Group";
+			this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
+			// 
+			// bottomStatusStrip
+			// 
+			this.bottomStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectedStatus});
+			this.bottomStatusStrip.Location = new System.Drawing.Point(0, 320);
+			this.bottomStatusStrip.Name = "bottomStatusStrip";
+			this.bottomStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
+			this.bottomStatusStrip.Size = new System.Drawing.Size(234, 22);
+			this.bottomStatusStrip.TabIndex = 0;
+			this.bottomStatusStrip.Text = "statusStrip1";
+			// 
+			// connectedStatus
+			// 
+			this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
+			this.connectedStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+			this.connectedStatus.Name = "connectedStatus";
+			this.connectedStatus.Size = new System.Drawing.Size(87, 17);
+			this.connectedStatus.Text = "Disconnected";
 			// 
 			// contactsContextMenuStrip
 			// 
 			this.contactsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.talkToolStripMenuItem,
             this.toolStripSeparator3,
-            this.editContactToolStripMenuItem,
-            this.removeContactToolStripMenuItem});
+            this.anotherEditContactStripMenuItem,
+            this.anotherRemoveContactToolStripMenuItem2});
 			this.contactsContextMenuStrip.Name = "contactsContextMenuStrip";
 			this.contactsContextMenuStrip.Size = new System.Drawing.Size(166, 76);
 			// 
@@ -441,12 +538,27 @@ namespace Goodware.Jabber.GUI
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(162, 6);
 			// 
+			// anotherEditContactStripMenuItem
+			// 
+			this.anotherEditContactStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_edit;
+			this.anotherEditContactStripMenuItem.Name = "anotherEditContactStripMenuItem";
+			this.anotherEditContactStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.anotherEditContactStripMenuItem.Text = "&Edit Contact";
+			// 
+			// anotherRemoveContactToolStripMenuItem2
+			// 
+			this.anotherRemoveContactToolStripMenuItem2.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_delete;
+			this.anotherRemoveContactToolStripMenuItem2.Name = "anotherRemoveContactToolStripMenuItem2";
+			this.anotherRemoveContactToolStripMenuItem2.Size = new System.Drawing.Size(165, 22);
+			this.anotherRemoveContactToolStripMenuItem2.Text = "&Remove Contact";
+			// 
 			// editContactToolStripMenuItem
 			// 
 			this.editContactToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.user_edit;
 			this.editContactToolStripMenuItem.Name = "editContactToolStripMenuItem";
 			this.editContactToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.editContactToolStripMenuItem.Text = "&Edit Contact";
+			this.editContactToolStripMenuItem.Click += new System.EventHandler(this.editContactToolStripMenuItem_Click);
 			// 
 			// removeContactToolStripMenuItem
 			// 
@@ -456,38 +568,64 @@ namespace Goodware.Jabber.GUI
 			this.removeContactToolStripMenuItem.Text = "&Remove Contact";
 			this.removeContactToolStripMenuItem.Click += new System.EventHandler(this.removeContactToolStripMenuItem_Click);
 			// 
+			// mainPanel
+			// 
+			this.mainPanel.Controls.Add(this.toolStripContainer);
+			this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.mainPanel.Location = new System.Drawing.Point(0, 24);
+			this.mainPanel.Name = "mainPanel";
+			this.mainPanel.Size = new System.Drawing.Size(234, 318);
+			this.mainPanel.TabIndex = 2;
+			// 
+			// pendingContactContextMenuStrip
+			// 
+			this.pendingContactContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editContactToolStripMenuItem,
+            this.removeContactToolStripMenuItem});
+			this.pendingContactContextMenuStrip.Name = "contextMenuStrip1";
+			this.pendingContactContextMenuStrip.Size = new System.Drawing.Size(166, 70);
+			// 
 			// JustTalk
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(224, 342);
+			this.ClientSize = new System.Drawing.Size(234, 342);
 			this.ContextMenuStrip = this.trayMenu;
-			this.Controls.Add(this.toolStripContainer1);
+			this.Controls.Add(this.bottomStatusStrip);
+			this.Controls.Add(this.mainPanel);
 			this.Controls.Add(this.topMenu);
+			this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::Goodware.Jabber.GUI.Properties.Settings.Default, "WindowLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Location = global::Goodware.Jabber.GUI.Properties.Settings.Default.WindowLocation;
 			this.MainMenuStrip = this.topMenu;
 			this.Name = "JustTalk";
 			this.Text = "JustTalk";
 			this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+			this.Shown += new System.EventHandler(this.JustTalk_Shown);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.JustTalk_FormClosing);
+			this.Load += new System.EventHandler(this.JustTalk_Load);
 			this.defaultGroupContextMenuStrip.ResumeLayout(false);
 			this.gropupContextMenuStrip.ResumeLayout(false);
 			this.trayMenu.ResumeLayout(false);
 			this.topMenu.ResumeLayout(false);
 			this.topMenu.PerformLayout();
-			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
-			this.toolStripContainer1.ContentPanel.PerformLayout();
-			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
-			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
-			this.toolStripContainer1.ResumeLayout(false);
-			this.toolStripContainer1.PerformLayout();
-			this.contactsViewContextMenuStrip.ResumeLayout(false);
-			this.bottomStatusStrip.ResumeLayout(false);
-			this.bottomStatusStrip.PerformLayout();
+			this.toolStripContainer.ContentPanel.ResumeLayout(false);
+			this.toolStripContainer.TopToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer.TopToolStripPanel.PerformLayout();
+			this.toolStripContainer.ResumeLayout(false);
+			this.toolStripContainer.PerformLayout();
 			this.contactsToolStrip.ResumeLayout(false);
 			this.contactsToolStrip.PerformLayout();
 			this.mainToolStrip.ResumeLayout(false);
 			this.mainToolStrip.PerformLayout();
+			this.statusToolStrip.ResumeLayout(false);
+			this.statusToolStrip.PerformLayout();
+			this.contactsViewContextMenuStrip.ResumeLayout(false);
+			this.bottomStatusStrip.ResumeLayout(false);
+			this.bottomStatusStrip.PerformLayout();
 			this.contactsContextMenuStrip.ResumeLayout(false);
+			this.mainPanel.ResumeLayout(false);
+			this.pendingContactContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -503,14 +641,10 @@ namespace Goodware.Jabber.GUI
         private System.Windows.Forms.ToolStripMenuItem connectTrayMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitTrayMenuItem;
-		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+		private System.Windows.Forms.ToolStripContainer toolStripContainer;
 		private System.Windows.Forms.StatusStrip bottomStatusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel connectedStatus;
 		private System.Windows.Forms.ToolStrip mainToolStrip;
-		private System.Windows.Forms.ToolStripDropDownButton statusToolStripDropDownButton;
-		private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem awayToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem busyToolStripMenuItem;
         private System.Windows.Forms.ImageList contactsImageList;
         private System.Windows.Forms.ContextMenuStrip gropupContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addContactToolStripMenuItem;
@@ -535,6 +669,23 @@ namespace Goodware.Jabber.GUI
 		private System.Windows.Forms.ContextMenuStrip defaultGroupContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem addContactDefaultToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton groupchatToolStripButton;
+		private System.Windows.Forms.Panel mainPanel;
+		private System.Windows.Forms.ToolStrip statusToolStrip;
+		private System.Windows.Forms.ToolStripDropDownButton statusToolStripDropDownButton;
+		private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem awayToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem busyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripComboBox statusMessageToolStripComboBox;
+		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolbarsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mainToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem contactsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton goRightToolStripButton;
+		private System.Windows.Forms.ContextMenuStrip pendingContactContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem anotherEditContactStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem anotherRemoveContactToolStripMenuItem2;
     }
 }
 

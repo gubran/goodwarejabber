@@ -89,6 +89,25 @@ namespace Goodware.Jabber.Server {
             } else if (activeSession.getPriority() < session.getPriority()) {
                 activeSession = session;
             }
+
+
+			//isprakjanje na Roster (ne e spored stadard)
+
+			Packet packet = new Packet("iq");
+			packet["type"] = "set";
+			JabberID jidTo = session.getJID();
+			packet.To = jidTo.User + "@" + jidTo.Domain;
+
+			getRoster().getPacket().setParent(packet);
+			MessageHandler.deliverPacket(packet);
+
+
+			// kraj na isprakjanje a roster
+
+
+
+
+
             deliverMessages();
         }
 

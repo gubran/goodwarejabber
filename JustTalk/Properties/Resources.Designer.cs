@@ -81,6 +81,13 @@ namespace Goodware.Jabber.GUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap group {
+            get {
+                object obj = ResourceManager.GetObject("group", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap group_add {
             get {
                 object obj = ResourceManager.GetObject("group_add", resourceCulture);
@@ -155,6 +162,13 @@ namespace Goodware.Jabber.GUI.Properties {
             get {
                 object obj = ResourceManager.GetObject("lightbulboff", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap monitorArrow {
+            get {
+                object obj = ResourceManager.GetObject("monitorArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

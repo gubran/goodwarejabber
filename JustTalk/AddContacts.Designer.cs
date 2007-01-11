@@ -51,9 +51,9 @@ namespace Goodware.Jabber.GUI {
 			this.label.AutoSize = true;
 			this.label.Location = new System.Drawing.Point(1, 15);
 			this.label.Name = "label";
-			this.label.Size = new System.Drawing.Size(35, 13);
+			this.label.Size = new System.Drawing.Size(38, 13);
 			this.label.TabIndex = 7;
-			this.label.Text = "Name";
+			this.label.Text = "Name:";
 			// 
 			// nameTextBox
 			// 
@@ -81,9 +81,9 @@ namespace Goodware.Jabber.GUI {
 			this.serverLabel.AutoSize = true;
 			this.serverLabel.Location = new System.Drawing.Point(1, 41);
 			this.serverLabel.Name = "serverLabel";
-			this.serverLabel.Size = new System.Drawing.Size(53, 13);
+			this.serverLabel.Size = new System.Drawing.Size(56, 13);
 			this.serverLabel.TabIndex = 13;
-			this.serverLabel.Text = "Jabber ID";
+			this.serverLabel.Text = "Jabber ID:";
 			// 
 			// jabberIDTextBox
 			// 
@@ -106,9 +106,9 @@ namespace Goodware.Jabber.GUI {
 			this.groupLabel.AutoSize = true;
 			this.groupLabel.Location = new System.Drawing.Point(1, 68);
 			this.groupLabel.Name = "groupLabel";
-			this.groupLabel.Size = new System.Drawing.Size(36, 13);
+			this.groupLabel.Size = new System.Drawing.Size(39, 13);
 			this.groupLabel.TabIndex = 16;
-			this.groupLabel.Text = "Group";
+			this.groupLabel.Text = "Group:";
 			// 
 			// AddContact
 			// 
