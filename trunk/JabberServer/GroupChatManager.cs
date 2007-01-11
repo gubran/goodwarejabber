@@ -51,7 +51,7 @@ namespace Goodware.Jabber.Server {
 			return man;
 		}
 
-		Dictionary<String, Group> groups = new Dictionary<string, Group>();
+		public Dictionary<String, Group> groups = new Dictionary<string, Group>();
 
 		public Group this[String name] {
 			get {
@@ -206,7 +206,7 @@ namespace Goodware.Jabber.Server {
 				return;
 			}
 			group.jid2nick.Remove(jabberID);
-			group.nick2jid.Remove(jabberID);
+			group.nick2jid.Remove(nick);
 			group.jid2presence.Remove(jabberID);
 
 			if (group.jid2nick.Count == 0) {
