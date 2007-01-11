@@ -9,6 +9,26 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Goodware.Jabber.GUI</RootNamespace>
     <AssemblyName>JustTalk</AssemblyName>
+    <ManifestCertificateThumbprint>DFFF9B7ADEB8A48FFBFBF41D4EE74602A1B8EBCE</ManifestCertificateThumbprint>
+    <ManifestKeyFile>JustTalk_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <PublishUrl>c:\Temp\JustTalk\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>false</CreateWebPageOnPublish>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ApplicationIcon>online.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +68,12 @@
     </Compile>
     <Compile Include="AddGroup.Designer.cs">
       <DependentUpon>AddGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditContact.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditContact.Designer.cs">
+      <DependentUpon>EditContact.cs</DependentUpon>
     </Compile>
     <Compile Include="GroupchatDialog.cs">
       <SubType>Form</SubType>
@@ -117,6 +144,10 @@
     <EmbeddedResource Include="ConverstationWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConverstationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditContact.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditContact.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GroupchatDialog.resx">
       <SubType>Designer</SubType>
@@ -226,6 +257,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\group_chat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\monitorArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="online.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

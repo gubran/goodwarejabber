@@ -20,6 +20,7 @@ namespace Goodware.Jabber.Client {
 		String sPort;
 		String user;
 		String resource;
+		public Contact Me;
 
 		public JabberModel(JustTalk gui) {
 			this.gui = gui;
@@ -38,6 +39,8 @@ namespace Goodware.Jabber.Client {
 			//marko
 			queueThread.addPacketListener(new RosterHandler(this), "jabber:iq:roster");
 			//kraj marko
+
+			queueThread.addPacketListener(new PresenceHandler(this), "presence");
 			queueThread.setDaemon(true);
 			queueThread.start();
 		}
@@ -196,7 +199,22 @@ namespace Goodware.Jabber.Client {
 			session.Writer.Flush();
 		}
 
+		public void sendPresence(Status status, String statusMessage) {
+			switch(status) {
+				case Status.unavailable :
+					sendPresence(null, "unavailable", null, statusMessage, null);
+					break;
+				case Status.chat:
+				case Status.away:
+				case Status.xa:
+				case Status.dnd:
+					sendPresence(null, "available", status.ToString(), statusMessage, null);
+					break;
 
+			}
+
+
+		}
 
 		//Додадено од Милош/Васко
 		/// <summary>

@@ -23,6 +23,7 @@ namespace Goodware.Jabber.GUI {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConverstationWindow));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.dialogView = new System.Windows.Forms.RichTextBox();
 			this.keyboardImage = new System.Windows.Forms.PictureBox();
@@ -71,7 +72,7 @@ namespace Goodware.Jabber.GUI {
 			// 
 			this.keyboardImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.keyboardImage.Image = global::Goodware.Jabber.GUI.Properties.Resources.keyboard;
-			this.keyboardImage.Location = new System.Drawing.Point(265, 5);
+			this.keyboardImage.Location = new System.Drawing.Point(259, 4);
 			this.keyboardImage.Name = "keyboardImage";
 			this.keyboardImage.Size = new System.Drawing.Size(16, 16);
 			this.keyboardImage.TabIndex = 1;
@@ -81,24 +82,18 @@ namespace Goodware.Jabber.GUI {
 			// 
 			this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.inputTextBox.Location = new System.Drawing.Point(8, 4);
+			this.inputTextBox.Location = new System.Drawing.Point(0, 2);
 			this.inputTextBox.Name = "inputTextBox";
 			this.inputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.inputTextBox.Size = new System.Drawing.Size(250, 20);
 			this.inputTextBox.TabIndex = 1;
-			this.inputTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputTextBox_KeyPress);
-			this.inputTextBox.TextChanged += new System.EventHandler(this.inputTextBox_TextChanged);
-			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
 			// 
 			// ConverstationWindow
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(292, 271);
 			this.Controls.Add(this.splitContainer1);
-			this.MaximizeBox = false;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ConverstationWindow";
-			this.Text = "ConverstationWindow";
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.Panel2.PerformLayout();

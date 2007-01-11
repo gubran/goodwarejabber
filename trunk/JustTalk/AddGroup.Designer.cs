@@ -47,9 +47,9 @@ namespace Goodware.Jabber.GUI {
 			this.label.AutoSize = true;
 			this.label.Location = new System.Drawing.Point(1, 15);
 			this.label.Name = "label";
-			this.label.Size = new System.Drawing.Size(35, 13);
+			this.label.Size = new System.Drawing.Size(38, 13);
 			this.label.TabIndex = 7;
-			this.label.Text = "Name";
+			this.label.Text = "Name:";
 			// 
 			// nameTextBox
 			// 

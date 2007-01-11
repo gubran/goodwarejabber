@@ -11,8 +11,14 @@ namespace Goodware.Jabber.GUI {
     public partial class ConverstationWindow : Form {
 		// private StreamWriter writer;
 		private Contact contact;
-		String username;
-		JustTalk mainWindow;
+		private String username;
+		private JustTalk mainWindow;
+		private String[] messages = new String[] {
+			"",
+			"- User does not want to be disturbed -",
+			"- User is offline and will receive messages upon logon -",
+			"- Users is away and may not read messages at the moment -",			
+		};
 
         public ConverstationWindow(Contact c, JustTalk mainWind) {
             InitializeComponent();
@@ -20,6 +26,11 @@ namespace Goodware.Jabber.GUI {
 			mainWindow = mainWind;
 			this.Text = contact.Name + " - JustTalk";
 			username = Properties.Settings.Default.Username;
+
+			if(!contact.StatusMessage.Equals("Chat"))
+				this.ReceiveMessage(contact.StatusMessage);
+			if(contact.Status != Status.chat)
+				this.ReceiveMessage(messages[(int)contact.Status - 1]);			
         }
 
 		private bool modified = false;
@@ -41,8 +52,18 @@ namespace Goodware.Jabber.GUI {
 			mainWindow.SendMessage(contact.JabberID, body);
 		}
 
-		internal void ReceiveMessage(string body) {
+		public void ReceiveMessage(string body) {
 			dialogView.AppendText(contact.Name + ": " + body + "\n");
+		}
+
+		public void UpdateContactPresence(Status status, String message) {
+			contact.Status = status;
+			contact.StatusMessage = message;
+
+			if(contact.Status != Status.chat) {
+				int i = (int)contact.Status;
+				this.ReceiveMessage(messages[i-1]);
+			}
 		}
 
 		private void inputTextBox_KeyPress(object sender, KeyPressEventArgs e) {
@@ -56,6 +77,12 @@ namespace Goodware.Jabber.GUI {
 				inputTextBox.Clear();
 				modified = false;
 			}*/
+		}
+
+		protected override void OnClosing(CancelEventArgs e) {
+			this.Hide();
+			e.Cancel = true;
+			base.OnClosing(e);
 		}
 	}
 }
