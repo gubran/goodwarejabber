@@ -127,6 +127,28 @@ namespace Goodware.Jabber.Server{
                     //it is not tested, but it should work
                     //end
 
+
+
+						  //send groupchat presence unavailable & remove from groups
+						  String jid = userid.ToString();
+
+						  Packet presence = new Packet("presence");
+						  presence.Type = "unavailable";
+						  foreach (KeyValuePair<String, GroupChatManager.Group> kvp in GroupChatManager.Manager.groups) {
+
+							  GroupChatManager.Group group = kvp.Value;
+							  try {
+
+								  String nick = group.jid2nick[jid]; // test whether the user is in the group
+								  presence.From = group.JabberID + "/" + nick;
+								  GroupChatManager.Manager.removeUser(group, jid);   // first remove then deliver so that the packet does not come back
+								  GroupChatManager.Manager.deliverToGroup(group, presence);
+
+							  } catch (Exception ex) {
+							  }
+						  }
+						  // end groupchar clean-up	
+
                     //session.Socket.Close();
                     userIndex.removeSession(session);
                     //      Log.trace("Closed session");
