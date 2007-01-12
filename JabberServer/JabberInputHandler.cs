@@ -144,7 +144,7 @@ namespace Goodware.Jabber.Server{
 								  GroupChatManager.Manager.removeUser(group, jid);   // first remove then deliver so that the packet does not come back
 								  GroupChatManager.Manager.deliverToGroup(group, presence);
 
-							  } catch (Exception ex) {
+							  } catch (Exception e) {
 							  }
 						  }
 						  // end groupchar clean-up	
