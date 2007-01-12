@@ -194,7 +194,7 @@ namespace Goodware.Jabber.GUI
             this.helpToolStripMenuItem});
 			this.topMenu.Location = new System.Drawing.Point(0, 0);
 			this.topMenu.Name = "topMenu";
-			this.topMenu.Size = new System.Drawing.Size(234, 24);
+			this.topMenu.Size = new System.Drawing.Size(201, 24);
 			this.topMenu.TabIndex = 1;
 			this.topMenu.Text = "topMenu";
 			// 
@@ -280,11 +280,11 @@ namespace Goodware.Jabber.GUI
 			// toolStripContainer.ContentPanel
 			// 
 			this.toolStripContainer.ContentPanel.Controls.Add(this.contactsTreeView);
-			this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(234, 268);
+			this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(201, 268);
 			this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer.Name = "toolStripContainer";
-			this.toolStripContainer.Size = new System.Drawing.Size(234, 318);
+			this.toolStripContainer.Size = new System.Drawing.Size(201, 318);
 			this.toolStripContainer.TabIndex = 2;
 			this.toolStripContainer.Text = "toolStripContainer1";
 			// 
@@ -305,7 +305,7 @@ namespace Goodware.Jabber.GUI
 			this.contactsTreeView.SelectedImageIndex = 0;
 			this.contactsTreeView.ShowLines = false;
 			this.contactsTreeView.ShowNodeToolTips = true;
-			this.contactsTreeView.Size = new System.Drawing.Size(234, 268);
+			this.contactsTreeView.Size = new System.Drawing.Size(201, 268);
 			this.contactsTreeView.TabIndex = 1;
 			this.contactsTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.contactsTreeView_NodeMouseDoubleClick);
 			this.contactsTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.contactsTreeView_DragDrop);
@@ -503,7 +503,7 @@ namespace Goodware.Jabber.GUI
 			this.bottomStatusStrip.Location = new System.Drawing.Point(0, 320);
 			this.bottomStatusStrip.Name = "bottomStatusStrip";
 			this.bottomStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.bottomStatusStrip.Size = new System.Drawing.Size(234, 22);
+			this.bottomStatusStrip.Size = new System.Drawing.Size(201, 22);
 			this.bottomStatusStrip.TabIndex = 0;
 			this.bottomStatusStrip.Text = "statusStrip1";
 			// 
@@ -523,7 +523,7 @@ namespace Goodware.Jabber.GUI
             this.anotherEditContactStripMenuItem,
             this.anotherRemoveContactToolStripMenuItem2});
 			this.contactsContextMenuStrip.Name = "contactsContextMenuStrip";
-			this.contactsContextMenuStrip.Size = new System.Drawing.Size(166, 76);
+			this.contactsContextMenuStrip.Size = new System.Drawing.Size(166, 98);
 			// 
 			// talkToolStripMenuItem
 			// 
@@ -544,6 +544,7 @@ namespace Goodware.Jabber.GUI
 			this.anotherEditContactStripMenuItem.Name = "anotherEditContactStripMenuItem";
 			this.anotherEditContactStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.anotherEditContactStripMenuItem.Text = "&Edit Contact";
+			this.anotherEditContactStripMenuItem.Click += new System.EventHandler(this.editContactToolStripMenuItem_Click);
 			// 
 			// anotherRemoveContactToolStripMenuItem2
 			// 
@@ -551,6 +552,7 @@ namespace Goodware.Jabber.GUI
 			this.anotherRemoveContactToolStripMenuItem2.Name = "anotherRemoveContactToolStripMenuItem2";
 			this.anotherRemoveContactToolStripMenuItem2.Size = new System.Drawing.Size(165, 22);
 			this.anotherRemoveContactToolStripMenuItem2.Text = "&Remove Contact";
+			this.anotherRemoveContactToolStripMenuItem2.Click += new System.EventHandler(this.removeContactToolStripMenuItem_Click);
 			// 
 			// editContactToolStripMenuItem
 			// 
@@ -574,7 +576,7 @@ namespace Goodware.Jabber.GUI
 			this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mainPanel.Location = new System.Drawing.Point(0, 24);
 			this.mainPanel.Name = "mainPanel";
-			this.mainPanel.Size = new System.Drawing.Size(234, 318);
+			this.mainPanel.Size = new System.Drawing.Size(201, 318);
 			this.mainPanel.TabIndex = 2;
 			// 
 			// pendingContactContextMenuStrip
@@ -583,13 +585,13 @@ namespace Goodware.Jabber.GUI
             this.editContactToolStripMenuItem,
             this.removeContactToolStripMenuItem});
 			this.pendingContactContextMenuStrip.Name = "contextMenuStrip1";
-			this.pendingContactContextMenuStrip.Size = new System.Drawing.Size(166, 70);
+			this.pendingContactContextMenuStrip.Size = new System.Drawing.Size(166, 48);
 			// 
 			// JustTalk
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(234, 342);
+			this.ClientSize = new System.Drawing.Size(201, 342);
 			this.ContextMenuStrip = this.trayMenu;
 			this.Controls.Add(this.bottomStatusStrip);
 			this.Controls.Add(this.mainPanel);

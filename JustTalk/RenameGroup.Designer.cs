@@ -93,8 +93,10 @@ namespace Goodware.Jabber.GUI {
 			// 
 			// RenameGroup
 			// 
+			this.AcceptButton = this.OkButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(254, 91);
 			this.Controls.Add(this.newNameTextBox);
 			this.Controls.Add(this.newNameLabel);

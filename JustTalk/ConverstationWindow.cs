@@ -36,12 +36,11 @@ namespace Goodware.Jabber.GUI {
 		private bool modified = false;
 		private void inputTextBox_KeyDown(object sender, KeyEventArgs e) {
 			if(e.KeyCode == Keys.Enter) {
-				//if (!inputTextBox.Text.EndsWith("\n")) {
-				SendMessage(inputTextBox.Text);
-				dialogView.AppendText(username + ": " + inputTextBox.Text/*.Substring(1, inputTextBox.Text.Length - 1)*/ + "\n");
-				dialogView.ScrollToCaret();
-				//Console.WriteLine();
-				//}
+				if(!inputTextBox.Text.EndsWith("\n")) {
+					SendMessage(inputTextBox.Text);
+					dialogView.AppendText(username + ": " + inputTextBox.Text/*.Substring(1, inputTextBox.Text.Length - 1)*/ + "\n");
+					dialogView.ScrollToCaret();
+				}
 				inputTextBox.Clear();
 				modified = true;
 			}

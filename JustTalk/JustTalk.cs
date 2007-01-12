@@ -8,16 +8,13 @@ using System.Windows.Forms;
 using Goodware.Jabber.Client;
 using Goodware.Jabber.Library;
 
-delegate void del(String text);	// A delegate for status
-
 namespace Goodware.Jabber.GUI {
     public partial class JustTalk : Form {
-        private bool connected;
-        private TreeNode NodeToBeMoved;
-		private JabberModel model;
-		private Dictionary<string, ConverstationWindow> conversations;
-		private Dictionary<string, Contact> contacts;
-		private Dictionary<string, Group> groups;
+        private bool connected;													// To save the connected state
+        private TreeNode NodeToBeMoved;											// For drag and drop purposes 
+		private JabberModel model;												// The model is the key class, which most of the communication goes through
+		private Dictionary<string, ConverstationWindow> conversations;			// A hashtable to store references to all open conversations
+		private Dictionary<string, Contact> contacts;							// Hashtable for easy access to the contacts (Without checking all the tree nodes)
 
         public JustTalk() {
             InitializeComponent();
@@ -30,9 +27,31 @@ namespace Goodware.Jabber.GUI {
         }
 
 		private void JustTalk_Shown(object sender, EventArgs e) {
+			// Set the values of the menu items to the real values (maintained by the ToolStripManager)		
 			this.mainToolStripMenuItem.Checked = this.mainToolStrip.Visible;
 			this.statusToolStripMenuItem.Checked = this.statusToolStrip.Visible;
 			this.contactsToolStripMenuItem.Checked = this.contactsToolStrip.Visible;
+		}
+
+		private void JustTalk_Load(object sender, EventArgs e) {
+			// Load size from settings
+			if(Properties.Settings.Default.WindowSize != null) {
+				this.Size = Properties.Settings.Default.WindowSize;
+			}
+		}
+
+		private void JustTalk_FormClosing(object sender, FormClosingEventArgs e) {
+
+			// Save size
+			if(this.WindowState == FormWindowState.Normal) {
+				Properties.Settings.Default.WindowSize = this.Size;
+			} else {
+				Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+			}
+
+			Properties.Settings.Default.Save();			// Save setting manually
+			ToolStripManager.SaveSettings(this);		// Save toolstrips state
+			this.disconnect();							// Disconnect from server
 		}
 
 		// Exit
@@ -41,7 +60,7 @@ namespace Goodware.Jabber.GUI {
             this.Dispose(true);
         }
 		
-		// Connect switch
+		// Connect switch (connect or disconnect, and update the gui)
         private void connectTrayMenuItem_Click(object sender, EventArgs e) {
             if(!this.connected) {
 				if (this.connect()) {
@@ -58,9 +77,12 @@ namespace Goodware.Jabber.GUI {
 
 		// Update the gui to a connected state
 		private void connectGUI() {
+			// Enable contacts strip
 			foreach(ToolStripItem item in this.contactsToolStrip.Items) {
 				item.Enabled = true;
 			}
+
+			// Update visual components
 			this.connectTrayMenuItem.Text = "Disconnect";
 			this.connectTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
 			this.connectToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
@@ -81,16 +103,18 @@ namespace Goodware.Jabber.GUI {
 			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;	// Sorter to sort the contacts in the groups
 			conversations = new Dictionary<string, ConverstationWindow>();
 			contacts = new Dictionary<string, Contact>();
-			groups = new Dictionary<string, Group>();
 
-			this.connected = true;
+			this.connected = true;			// Set state to connected
 		}
 
 
 		private void disconnectGUI() {
+			// Disable contacts strip
 			foreach(ToolStripItem item in this.contactsToolStrip.Items) {
 				item.Enabled = false;
 			}
+
+			// Update visual components
 			this.connectTrayMenuItem.Text = "Connect";
 			this.connectTrayMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 			this.connectToolStripButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
@@ -115,14 +139,13 @@ namespace Goodware.Jabber.GUI {
 			}
 			conversations = null;		
 			contacts = null;
-			groups = null;
 
-			this.connected = false;
+			this.connected = false;		// Set state to disconnected
 		}
-
 		
 		public bool connect() {			// Actual connect
-			try {				
+			try {
+				// Initialize model
 				model.ServerName = Properties.Settings.Default.ServerName;
 				model.ServerAddress = Properties.Settings.Default.ServerAddress;
 				model.Port = Properties.Settings.Default.Port;
@@ -132,10 +155,12 @@ namespace Goodware.Jabber.GUI {
 				model.Password = Properties.Settings.Default.Password;
 				model.Me = new Contact(model.User + "@" + model.ServerName);
 				model.Me.Status = Status.chat;
+
+				// Send initial messages
 				model.connect();
 				model.authenticate();
-				model.sendRosterGet();
-				model.sendPresence(model.Me.Status, model.Me.StatusMessage);
+				model.sendRosterGet();											// Request contacts
+				model.sendPresence(model.Me.Status, model.Me.StatusMessage);	// Send my presence
 			} catch (Exception ex) {
 				Console.WriteLine("Exception while connecting" + ex.StackTrace);
 				return false;
@@ -154,46 +179,45 @@ namespace Goodware.Jabber.GUI {
 
         // Add a new contact
         private void addContactToolStripMenuItem_Click(object sender, EventArgs e) {
+			// Initialize dialog
 			AddContact dialog = new AddContact();
 			dialog.groupComboBox.DataSource = contactsTreeView.Nodes;
 			dialog.groupComboBox.SelectedItem = contactsTreeView.SelectedNode;
-			if(dialog.ShowDialog() == DialogResult.OK) {				
-				model.sendPresence(dialog.jabberIDTextBox.Text.ToLower(), "subscribe", null, null, null);
-				if(dialog.groupComboBox.SelectedItem != null && !dialog.groupComboBox.SelectedItem.ToString().Equals("Default Group"))
-					model.sendRosterSet(dialog.jabberIDTextBox.Text.ToLower(), dialog.nameTextBox.Text, dialog.groupComboBox.SelectedItem.ToString());
-				else
-					model.sendRosterSet(dialog.jabberIDTextBox.Text.ToLower(), dialog.nameTextBox.Text, (String)null);
-			}
-/*			AddContact dialog = new AddContact();
-			dialog.groupComboBox.DataSource = contactsTreeView.Nodes;
-			dialog.groupComboBox.SelectedItem = contactsTreeView.SelectedNode;
 			if(dialog.ShowDialog() == DialogResult.OK) {
-				Contact temp = new Contact();				
-				temp.JabberID = dialog.jabberIDTextBox.Text;
-				temp.Name = dialog.nameTextBox.Text;
-				temp.Status = (Status)((new Random()).Next(1, 4));	// TODO: Delete test line
-				temp.ContextMenuStrip = contactsContextMenuStrip;
-				contacts[temp.JabberID] = temp;
-				TreeNode group = ((TreeNode)dialog.groupComboBox.SelectedItem);
-				group.Nodes.Add(temp);
-				contactsTreeView.Sort();
-			}*/
+				model.sendPresence(dialog.jabberIDTextBox.Text.ToLower(), "subscribe", null, null, null);			// Subscribe to contacts presence notifications
+				if(dialog.groupComboBox.SelectedItem != null && !dialog.groupComboBox.SelectedItem.ToString().Equals("Default Group"))
+					model.sendRosterSet(dialog.jabberIDTextBox.Text.ToLower(), dialog.nameTextBox.Text, dialog.groupComboBox.SelectedItem.ToString());	// Set contacts name and group
+				else
+					model.sendRosterSet(dialog.jabberIDTextBox.Text.ToLower(), dialog.nameTextBox.Text, (String)null);		// Set contacts name
+			}
         }
 
         // Remove a group
         private void removeGroupToolStripMenuItem_Click(object sender, EventArgs e) {
             if(MessageBox.Show("The group '" + contactsTreeView.SelectedNode.Text 
-                + "' will be removed. Proceed?", "Remove Group", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-                contactsTreeView.SelectedNode.Remove();
+                + "' will be removed. Proceed?", "Remove Group", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+				if(MessageBox.Show("Do you also want to delete the contacts in the group '" + contactsTreeView.SelectedNode.Text + "'",
+					"Remove Contacts", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes) {
+					foreach(TreeNode node in contactsTreeView.SelectedNode.Nodes) {
+						Contact c = (Contact)node;
+						model.sendPresence(c.JabberID, "unsubscribe", null, null, null);			// Unsubscribe to contacts presence notifications
+						model.sendPresence(c.JabberID, "unsubscribed", null, null, null);			
+					}
+				} else {
+					foreach(TreeNode node in contactsTreeView.SelectedNode.Nodes) {
+						Contact c = (Contact)node;
+						model.sendRosterSet(c.JabberID, c.Name, (String)null);	// Move to default group
+					}
+				}
+				contactsTreeView.SelectedNode.Remove();
             }
         }
 
-        // Add a new group
+        // Add a new group (a group is added only to the GUI, if no contact is put in it the group will be lost)
         private void addGroupToolStripMenuItem_Click(object sender, EventArgs e) {
             AddGroup dialog = new AddGroup();
             if(dialog.ShowDialog() == DialogResult.OK) {                
 				Group newGroup = new Group(dialog.nameTextBox.Text);
-				groups[dialog.nameTextBox.Text] = newGroup;
 				newGroup.ContextMenuStrip = gropupContextMenuStrip;
 				contactsTreeView.Nodes.Add(newGroup);
             }
@@ -207,24 +231,27 @@ namespace Goodware.Jabber.GUI {
         // Remove a contact
         private void removeContactToolStripMenuItem_Click(object sender, EventArgs e) {
             if(MessageBox.Show("The contact '" + contactsTreeView.SelectedNode.Text
-                + "' will be removed. Proceed?", "Remove Contact", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                + "' will be removed. Proceed?", "Remove Contact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
                 if(MessageBox.Show("The contact '" + contactsTreeView.SelectedNode.Text
-                    + "' could actually be a cool person. Proceed?", "Really Remove Contact", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-                    //contactsTreeView.SelectedNode.Remove();
+					+ "' could actually be a cool person. Proceed?", "Really Remove Contact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+					Contact c = (Contact)contactsTreeView.SelectedNode;
+					model.sendPresence(c.JabberID, "unsubscribe", null, null, null);			// Unsubscribe to contacts presence notifications
+					model.sendPresence(c.JabberID, "unsubscribed", null, null, null);			
+                    contactsTreeView.SelectedNode.Remove();
                 }
             }
         }
 
         // Open a conversation window
         private void talkToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(contactsTreeView.SelectedNode.Level == 1) {
-				Contact contact = (Contact)contactsTreeView.SelectedNode;
+			if(contactsTreeView.SelectedNode.Level == 1) {						// If a contact is double clicked			
+				Contact contact = (Contact)contactsTreeView.SelectedNode;		// Extract it
 				try {
-					conversations[contact.JabberID].Show();
-					conversations[contact.JabberID].Focus();
+					conversations[contact.JabberID].Show();						// Conversation is open
+					conversations[contact.JabberID].Focus();					// Focus on it
 				} catch(KeyNotFoundException ex) {
-					conversations[contact.JabberID] = new ConverstationWindow(contact, this);
-					conversations[contact.JabberID].Show();
+					conversations[contact.JabberID] = new ConverstationWindow(contact, this);	// Make a new conversation
+					conversations[contact.JabberID].Show();										// Show it
 				} catch(Exception ex) {
 					// TODO: Do something here if needed
 				} finally {
@@ -234,15 +261,15 @@ namespace Goodware.Jabber.GUI {
 
         // Open a conversation window
         private void contactsTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
-            if(e.Node.Level == 1) {
+			if(e.Node.Level == 1) {																			// See if a contact is double clicked
 				Contact contact = (Contact)e.Node;
-				if(contact.Status == Status.inviteAccepted || contact.Status == Status.inviteSent)
+				if(contact.Status == Status.inviteAccepted || contact.Status == Status.inviteSent)			// If contats is not yet confirmed
 					return;
 				try {
-					conversations[contact.JabberID].Show();
+					conversations[contact.JabberID].Show();													// Try to show the conversation window
 					conversations[contact.JabberID].Focus();
 				} catch (KeyNotFoundException ex) {
-					conversations[contact.JabberID] = new ConverstationWindow(contact, this);
+					conversations[contact.JabberID] = new ConverstationWindow(contact, this);				// Make a conversation window
 					conversations[contact.JabberID].Show();
 				} catch(Exception ex) {
 					// TODO: Do something here if needed
@@ -267,20 +294,20 @@ namespace Goodware.Jabber.GUI {
 
 		// Move a contact to a another group
         private void contactsTreeView_DragDrop(object sender, DragEventArgs e) {
-			Point position = new Point(e.X, e.Y);
+			Point position = new Point(e.X, e.Y);							// Get coordinates
             position = contactsTreeView.PointToClient(position);
             TreeNode dropNode = contactsTreeView.GetNodeAt(position);
-            if(dropNode.Level == 1) {
+            if(dropNode.Level == 1) {										// Select parent if dropped on another contact
                 dropNode = dropNode.Parent;
             }
 			Group group = (Group)dropNode;
 			Contact contact = (Contact)NodeToBeMoved;
-			model.sendRosterSet(contact.JabberID, contact.Name, group.Name);            
+			model.sendRosterSet(contact.JabberID, contact.Name, group.Name);	// Move to other group     
         }
 
 		// Rename a group
 		private void renameGroupToolStripMenuItem_Click(object sender, EventArgs e) {
-			Group group = (Group)contactsTreeView.SelectedNode;
+			Group group = (Group)contactsTreeView.SelectedNode;				
 			RenameGroup dialog = new RenameGroup(group.Name);
 			String newGroup;
 			if(dialog.ShowDialog() == DialogResult.OK) {
@@ -307,21 +334,6 @@ namespace Goodware.Jabber.GUI {
 		// Connect from tool strip
 		private void connectToolStripButton_Click(object sender, EventArgs e) {
 			connectTrayMenuItem_Click(sender, e);
-		}
-
-		// Set status chat
-		private void onlineToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb;
-		}
-
-		// Set status away
-		private void awayToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_off;
-		}
-
-		// Set status dnd
-		private void busyToolStripMenuItem_Click(object sender, EventArgs e) {
-			statusToolStripDropDownButton.Image = global::Goodware.Jabber.GUI.Properties.Resources.lightbulb_delete;
 		}
 
 		// Add contact from menu
@@ -357,10 +369,9 @@ namespace Goodware.Jabber.GUI {
 				conversations[from.User + "@" + from.Domain].Activate();							// Just activate if already opened
 			}
 			conversations[from.User + "@" + from.Domain].ReceiveMessage(body);						// Receive message
-			//del rcvm = conversations[from.User + "@" + from.Domain].ReceiveMessage;
-			//conversations[from.User + "@" + from.Domain].Invoke(rcvm, new Object[] { body });*/
 		}
 
+		// Update contact's information
 		public void UpdateContact(String jid, String name, String group, Status status) {
 			Console.WriteLine("Adding: " + jid + ", " + name+ ", " + group + ", " + status);
 
@@ -382,7 +393,6 @@ namespace Goodware.Jabber.GUI {
 			if(contacts.ContainsKey(jid)) {					// Such contact exists
 				contact = contacts[jid];					// use it
 				if(contact.Parent != groupNode) {			// We should change group
-					//TreeNode parent = contact.Parent;
 					contact.Remove();						// Remove from original
 					groupNode.Nodes.Add(contact);			// Add to new
 				}
@@ -402,19 +412,20 @@ namespace Goodware.Jabber.GUI {
 			contact.Status = status;			
 		}
 
+		// Update contact's presence information
 		public void UpdateContactPresence(String jid, Status status, String statusMessage) {
 			try {
 				Contact contact = contacts[jid];
 				contact.Status = status;
 
-				// Set context menu
+				// Set context menu accordingly
 				if(status != Status.inviteSent && status != Status.inviteAccepted)
 					contact.ContextMenuStrip = this.contactsContextMenuStrip;
 				else
 					contact.ContextMenuStrip = this.pendingContactContextMenuStrip;
 
 				contact.StatusMessage = statusMessage;
-				if(conversations.ContainsKey(jid))
+				if(conversations.ContainsKey(jid))		// If a conversation window is opened update it
 					conversations[jid].UpdateContactPresence(status, statusMessage);
 			} catch (KeyNotFoundException ex) {
 				Console.WriteLine("Contact not present " + ex.StackTrace);
@@ -426,14 +437,6 @@ namespace Goodware.Jabber.GUI {
 				return contacts[jid];
 			else
 				return null;
-		}
-
-		private void groupchatToolStripButton_Click(object sender, EventArgs e) {
-			GroupchatDialog dialog = new GroupchatDialog();
-			if(dialog.ShowDialog() == DialogResult.OK) {
-				GroupchatWindow groupWindow = new GroupchatWindow();
-				groupWindow.Show();
-			}
 		}
 
 		// Just bring up dialog when a invitation arrives
@@ -449,25 +452,13 @@ namespace Goodware.Jabber.GUI {
 				return false;
 		}
 
-		private void JustTalk_Load(object sender, EventArgs e) {
-			// Load size from settings
-			if(Properties.Settings.Default.WindowSize != null) {
-				this.Size = Properties.Settings.Default.WindowSize;
+		// Remove contact from gui and hashtable
+		public void RemoveContact(String jid) {
+			if(contacts.ContainsKey(jid)) {
+				Contact c = contacts[jid];
+				c.Remove();
+				contacts.Remove(jid);
 			}
-		}
-
-		private void JustTalk_FormClosing(object sender, FormClosingEventArgs e) {			
-
-			// Save size
-			if(this.WindowState == FormWindowState.Normal) {
-				Properties.Settings.Default.WindowSize = this.Size;
-			} else {
-				Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
-			}
-
-			Properties.Settings.Default.Save();
-			ToolStripManager.SaveSettings(this);
-			this.disconnect();
 		}
 
 		// Toolbars visibility
@@ -489,34 +480,35 @@ namespace Goodware.Jabber.GUI {
 		private void goRightToolStripButton_Click(object sender, EventArgs e) {
 			this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Size.Width, Screen.PrimaryScreen.Bounds.Top);
 		}
-		//--------------------
+		//////////////////////////////////////////////////////////////////////////		
 
 		// Set presence status (show)
+		// Set status chat
 		private void onlineToolStripMenuItem_Click_1(object sender, EventArgs e) {
 			model.Me.Status = Status.chat;
 			model.sendPresence(model.Me.Status, model.Me.StatusMessage);
 			this.statusToolStripDropDownButton.Image = Properties.Resources.lightbulb;
-			Properties.Settings.Default.Save();
 		}
 
+		// Set status away
 		private void awayToolStripMenuItem_Click_1(object sender, EventArgs e) {
 			model.Me.Status = Status.away;
 			model.sendPresence(model.Me.Status, model.Me.StatusMessage);
 			this.statusToolStripDropDownButton.Image = Properties.Resources.lightbulb_off;
-			Properties.Settings.Default.Save();
 		}
 
+		// Set status dnd
 		private void busyToolStripMenuItem_Click_1(object sender, EventArgs e) {
 			model.Me.Status = Status.dnd;
 			model.sendPresence(model.Me.Status, model.Me.StatusMessage);
 			this.statusToolStripDropDownButton.Image = Properties.Resources.lightbulb_delete;			
-			Properties.Settings.Default.Save();
 		}
 
 		private void statusMessageToolStripComboBox_Click(object sender, EventArgs e) {
 			this.statusMessageToolStripComboBox.SelectAll();
 		}
 
+		// Set the status message and keep old ones in history
 		private String previousStatusMessage;
 		private void statusMessageToolStripComboBox_KeyPress(object sender, KeyPressEventArgs e) {
 			if(e.KeyChar == '\r') {
@@ -528,8 +520,9 @@ namespace Goodware.Jabber.GUI {
 				previousStatusMessage = this.statusMessageToolStripComboBox.Text;
 			}
 		}
-		//----------------------
+		//////////////////////////////////////////////////////////////////////////		
 
+		// Bring the edit contact dialog and set information accordingly
 		private void editContactToolStripMenuItem_Click(object sender, EventArgs e) {
 			if(contactsTreeView.SelectedNode.Level == 1) {
 				Contact contact = (Contact)contactsTreeView.SelectedNode;
@@ -545,6 +538,16 @@ namespace Goodware.Jabber.GUI {
 					else
 						model.sendRosterSet(contact.JabberID, dialog.nameTextBox.Text, (String)null);
 				}
+			}
+		}
+
+		// Open a group chat
+		private void groupchatToolStripButton_Click(object sender, EventArgs e) {
+			GroupchatDialog dialog = new GroupchatDialog();
+			if(dialog.ShowDialog() == DialogResult.OK) {
+				GroupchatWindow groupWindow = new GroupchatWindow();
+				groupWindow.Show();
+				// TODO: Make groupchat!
 			}
 		}
 	}
