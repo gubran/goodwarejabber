@@ -8,6 +8,7 @@ namespace Goodware.Jabber.Client {
 	public delegate Contact GetContactDelegate(String jid);
 	public delegate void UpdateContactPresenceDelegate(String jid, Status status, String statusMessage);
 	public delegate bool AcceptInvitationDelegate(String jid);
+	public delegate void RemoveContactDelegate(String jid);
 
 	public class PresenceHandler : PacketListener {
 		JabberModel model;
@@ -103,6 +104,9 @@ namespace Goodware.Jabber.Client {
 						// do Nothing : immediately after this packet comes an "unsubscribed" packet and then things are handled
 					
 					} else if (type.Equals("unsubscribed")) {
+
+						RemoveContactDelegate rcd = new RemoveContactDelegate(model.gui.RemoveContact);
+						model.gui.Invoke(rcd, new Object[] { from });
 
 						// delegate : void removeContact(String jid) - actual invocation : removeContact(from)
 						// removes the contact <jid> from the structures containing the contacts
