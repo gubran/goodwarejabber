@@ -23,12 +23,23 @@ namespace Goodware.Jabber.Client {
                 String group = item.getChildValue("group");
                 Status status = Status.unavailable;
 
-				if(subscribtion.Equals("none") && ask.Equals("subscribe")) {
+				if(subscribtion.Equals("none") && ask != null && ask.Equals("subscribe")) {
 					status = Status.inviteSent;
 				} else if (subscribtion.Equals("to")) {
 					status = Status.inviteAccepted;
 				} else if (subscribtion.Equals("both")) {
 					status = Status.unavailable;
+					model.sendPresence(model.Me.Status, model.Me.StatusMessage);
+				} else if (subscribtion.Equals("none")) {//unsubscribed
+					RemoveContactDelegate rcd = new RemoveContactDelegate(model.gui.RemoveContact);
+					model.gui.Invoke(rcd, new Object[] { jid });
+
+					//remove from client
+					//send roster-remove
+					//model.sendRosterRemove(jid);   DO NOT !!!!!!!!!!!  UNCOMMENT THIS LINE IN ANY CASE
+					return;
+				} else {
+					return;
 				}
 				UpdateContactDelegate del = new UpdateContactDelegate(model.gui.UpdateContact);
 				model.gui.Invoke(del, new Object[] { jid, name, group, status });                

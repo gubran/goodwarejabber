@@ -237,7 +237,7 @@ namespace Goodware.Jabber.GUI {
 					Contact c = (Contact)contactsTreeView.SelectedNode;
 					model.sendPresence(c.JabberID, "unsubscribe", null, null, null);			// Unsubscribe to contacts presence notifications
 					model.sendPresence(c.JabberID, "unsubscribed", null, null, null);			
-                    contactsTreeView.SelectedNode.Remove();
+                    //c.Remove();
                 }
             }
         }
