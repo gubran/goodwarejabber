@@ -19,7 +19,7 @@ namespace Goodware.Jabber.Client {
                 String jid = item["jid"];
                 String name = item["name"];
                 String subscribtion = item["subscription"];
-                String ask = item["ask"];
+                String ask = item["ask"];						// TODO: Revise (can be null sometimes and brakes the execution)
                 String group = item.getChildValue("group");
                 Status status = Status.unavailable;
 

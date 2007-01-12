@@ -27,7 +27,8 @@ namespace Goodware.Jabber.GUI {
 			Properties.Settings.Default.Password = passwordMaskedTextBox.Text;
 			Properties.Settings.Default.Resource = resourceTextBox.Text;
 			Properties.Settings.Default.AuthMode = authModeComboBox.Text;
-			Properties.Settings.Default.Save();
+			// TODO: Revise this
+			// Properties.Settings.Default.Save();
 		}
 	}
 }

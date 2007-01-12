@@ -11,7 +11,7 @@
     <AssemblyName>JustTalk</AssemblyName>
     <ManifestCertificateThumbprint>DFFF9B7ADEB8A48FFBFBF41D4EE74602A1B8EBCE</ManifestCertificateThumbprint>
     <ManifestKeyFile>JustTalk_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>true</SignManifests>
     <PublishUrl>c:\Temp\JustTalk\</PublishUrl>
     <Install>true</Install>
@@ -29,6 +29,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ApplicationIcon>online.ico</ApplicationIcon>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -262,6 +263,7 @@
     <None Include="Resources\group.png" />
   </ItemGroup>
   <ItemGroup>
+    <BaseApplicationManifest Include="Properties\app.manifest" />
     <None Include="Resources\monitorArrow.png" />
   </ItemGroup>
   <ItemGroup>

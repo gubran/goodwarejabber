@@ -72,7 +72,7 @@ namespace Goodware.Jabber.GUI {
 			// 
 			this.keyboardImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.keyboardImage.Image = global::Goodware.Jabber.GUI.Properties.Resources.keyboard;
-			this.keyboardImage.Location = new System.Drawing.Point(259, 4);
+			this.keyboardImage.Location = new System.Drawing.Point(259, 1);
 			this.keyboardImage.Name = "keyboardImage";
 			this.keyboardImage.Size = new System.Drawing.Size(16, 16);
 			this.keyboardImage.TabIndex = 1;
@@ -82,11 +82,12 @@ namespace Goodware.Jabber.GUI {
 			// 
 			this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.inputTextBox.Location = new System.Drawing.Point(0, 2);
+			this.inputTextBox.Location = new System.Drawing.Point(0, -1);
 			this.inputTextBox.Name = "inputTextBox";
 			this.inputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.inputTextBox.Size = new System.Drawing.Size(250, 20);
 			this.inputTextBox.TabIndex = 1;
+			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
 			// 
 			// ConverstationWindow
 			// 

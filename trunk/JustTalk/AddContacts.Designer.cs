@@ -112,8 +112,10 @@ namespace Goodware.Jabber.GUI {
 			// 
 			// AddContact
 			// 
+			this.AcceptButton = this.OkButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(220, 134);
 			this.Controls.Add(this.groupLabel);
 			this.Controls.Add(this.groupComboBox);
