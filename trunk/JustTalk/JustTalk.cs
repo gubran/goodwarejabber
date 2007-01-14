@@ -200,6 +200,7 @@ namespace Goodware.Jabber.GUI {
 					"Remove Contacts", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes) {
 					foreach(TreeNode node in contactsTreeView.SelectedNode.Nodes) {
 						Contact c = (Contact)node;
+						model.sendRosterSet(c.JabberID, c.Name, (String)null);						// Quick fix: first move to default group
 						model.sendPresence(c.JabberID, "unsubscribe", null, null, null);			// Unsubscribe to contacts presence notifications
 						model.sendPresence(c.JabberID, "unsubscribed", null, null, null);			
 					}
@@ -416,7 +417,9 @@ namespace Goodware.Jabber.GUI {
 		public void UpdateContactPresence(String jid, Status status, String statusMessage) {
 			try {
 				Contact contact = contacts[jid];
+				Contact previous = new Contact(contact);
 				contact.Status = status;
+				contact.StatusMessage = statusMessage;
 
 				// Set context menu accordingly
 				if(status != Status.inviteSent && status != Status.inviteAccepted)
@@ -424,8 +427,7 @@ namespace Goodware.Jabber.GUI {
 				else
 					contact.ContextMenuStrip = this.pendingContactContextMenuStrip;
 
-				contact.StatusMessage = statusMessage;
-				if(conversations.ContainsKey(jid))		// If a conversation window is opened update it
+				if(conversations.ContainsKey(jid) && previous.Status != contact.Status)		// If a conversation window is opened update it
 					conversations[jid].UpdateContactPresence(status, statusMessage);
 			} catch (KeyNotFoundException ex) {
 				Console.WriteLine("Contact not present " + ex.StackTrace);

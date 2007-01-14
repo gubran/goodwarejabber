@@ -17,6 +17,13 @@ namespace Goodware.Jabber.GUI {
 		public Contact() {
 			Status = Status.unavailable;						
 		}
+
+		public Contact(Contact other) {
+			this.JabberID = other.jabberID;
+			this.Name = other.name;
+			this.Status = other.status;
+			this.StatusMessage = other.statusMessage;
+		}
 		
 		/// <summary>
 		/// Makes a new contact from a jabber ID

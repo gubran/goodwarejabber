@@ -26,12 +26,10 @@ namespace Goodware.Jabber.GUI {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConverstationWindow));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.dialogView = new System.Windows.Forms.RichTextBox();
-			this.keyboardImage = new System.Windows.Forms.PictureBox();
 			this.inputTextBox = new System.Windows.Forms.TextBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.keyboardImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -49,7 +47,6 @@ namespace Goodware.Jabber.GUI {
 			// 
 			// splitContainer1.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.keyboardImage);
 			this.splitContainer1.Panel2.Controls.Add(this.inputTextBox);
 			this.splitContainer1.Size = new System.Drawing.Size(292, 271);
 			this.splitContainer1.SplitterDistance = 245;
@@ -59,6 +56,7 @@ namespace Goodware.Jabber.GUI {
 			// dialogView
 			// 
 			this.dialogView.BackColor = System.Drawing.SystemColors.Window;
+			this.dialogView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.dialogView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dialogView.Location = new System.Drawing.Point(0, 0);
 			this.dialogView.Name = "dialogView";
@@ -68,24 +66,13 @@ namespace Goodware.Jabber.GUI {
 			this.dialogView.TabIndex = 0;
 			this.dialogView.Text = "";
 			// 
-			// keyboardImage
-			// 
-			this.keyboardImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.keyboardImage.Image = global::Goodware.Jabber.GUI.Properties.Resources.keyboard;
-			this.keyboardImage.Location = new System.Drawing.Point(259, 1);
-			this.keyboardImage.Name = "keyboardImage";
-			this.keyboardImage.Size = new System.Drawing.Size(16, 16);
-			this.keyboardImage.TabIndex = 1;
-			this.keyboardImage.TabStop = false;
-			// 
 			// inputTextBox
 			// 
-			this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.inputTextBox.Location = new System.Drawing.Point(0, -1);
+			this.inputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.inputTextBox.Location = new System.Drawing.Point(0, 0);
 			this.inputTextBox.Name = "inputTextBox";
 			this.inputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.inputTextBox.Size = new System.Drawing.Size(250, 20);
+			this.inputTextBox.Size = new System.Drawing.Size(292, 20);
 			this.inputTextBox.TabIndex = 1;
 			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
 			// 
@@ -99,7 +86,6 @@ namespace Goodware.Jabber.GUI {
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.Panel2.PerformLayout();
 			this.splitContainer1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.keyboardImage)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -108,7 +94,6 @@ namespace Goodware.Jabber.GUI {
 
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.TextBox inputTextBox;
-		private System.Windows.Forms.PictureBox keyboardImage;
 		private System.Windows.Forms.RichTextBox dialogView;
 
 
