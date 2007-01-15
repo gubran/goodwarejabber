@@ -98,6 +98,7 @@ namespace Goodware.Jabber.Server {
 
 			Group group = this[recipient.User];
 			String nick = recipient.Resource;
+			String jid = packet.From;
 
 			if (group.nick2jid.ContainsKey(nick)) {
 				if (group.nick2jid[nick] == packet.From) {
@@ -107,7 +108,13 @@ namespace Goodware.Jabber.Server {
 					sendConflictingNicknameError(packet);
 				}
 			} else {
-				joinGroup(group, packet);
+				if(group.jid2nick.ContainsKey(jid)) {
+
+					sendConflictingUserError(packet);
+					
+				} else {
+					joinGroup(group, packet);
+				}
 			}
 		}
 
@@ -153,18 +160,34 @@ namespace Goodware.Jabber.Server {
 		public void sendConflictingNicknameError(Packet packet) {
 			try {
 				Packet presence = new Packet("presence");
-				presence.From = packet.From;
-				presence.To = packet.To;
+				presence.From = packet.To;
+				presence.To = packet.From;
 
 				Packet ePacket = new Packet("error");
 				ePacket["code"] = 409.ToString();
 				ePacket.Children.Add("Conflict: nickname taken");
 				ePacket.Parent = presence;
 				packet.Session.Writer.Write(presence.ToString());
+				packet.Session.Writer.Flush();
 			} catch (Exception ex) {			
 			}
 		}
 
+		public void sendConflictingUserError(Packet packet) {
+			try {
+				Packet presence = new Packet("presence");
+				presence.From = packet.To;
+				presence.To = packet.From;
+
+				Packet ePacket = new Packet("error");
+				ePacket["code"] = 409.ToString();
+				ePacket.Children.Add("Conflict: cannot sign in twice in the same group");
+				ePacket.Parent = presence;
+				packet.Session.Writer.Write(presence.ToString());
+				packet.Session.Writer.Flush();
+			} catch(Exception ex) {
+			}
+		}
 		public void handleChatMessage(Packet packet) {
 			JabberID recipient = new JabberID(packet.To);
 			Group group = this[recipient.User];
