@@ -24,10 +24,10 @@ namespace Goodware.Jabber.GUI {
 		/// </summary>
 		private void InitializeComponent() {
 			this.mainContainer = new System.Windows.Forms.SplitContainer();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.groupBox = new System.Windows.Forms.GroupBox();
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.membersListBox = new System.Windows.Forms.ListBox();
+			this.dialogView = new System.Windows.Forms.RichTextBox();
+			this.inputTextBox = new System.Windows.Forms.TextBox();
 			this.mainContainer.Panel1.SuspendLayout();
 			this.mainContainer.Panel2.SuspendLayout();
 			this.mainContainer.SuspendLayout();
@@ -46,33 +46,16 @@ namespace Goodware.Jabber.GUI {
 			// 
 			// mainContainer.Panel2
 			// 
-			this.mainContainer.Panel2.Controls.Add(this.richTextBox1);
-			this.mainContainer.Panel2.Controls.Add(this.textBox1);
+			this.mainContainer.Panel2.Controls.Add(this.dialogView);
+			this.mainContainer.Panel2.Controls.Add(this.inputTextBox);
 			this.mainContainer.Size = new System.Drawing.Size(435, 268);
 			this.mainContainer.SplitterDistance = 145;
 			this.mainContainer.TabIndex = 1;
 			// 
-			// textBox1
-			// 
-			this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.textBox1.Location = new System.Drawing.Point(0, 248);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(286, 20);
-			this.textBox1.TabIndex = 0;
-			// 
-			// richTextBox1
-			// 
-			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(286, 248);
-			this.richTextBox1.TabIndex = 1;
-			this.richTextBox1.Text = "";
-			// 
 			// groupBox
 			// 
 			this.groupBox.AutoSize = true;
-			this.groupBox.Controls.Add(this.listBox1);
+			this.groupBox.Controls.Add(this.membersListBox);
 			this.groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBox.Location = new System.Drawing.Point(0, 0);
 			this.groupBox.Name = "groupBox";
@@ -81,14 +64,36 @@ namespace Goodware.Jabber.GUI {
 			this.groupBox.TabStop = false;
 			this.groupBox.Text = "Members";
 			// 
-			// listBox1
+			// membersListBox
 			// 
-			this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(3, 16);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(139, 238);
-			this.listBox1.TabIndex = 0;
+			this.membersListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.membersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+			this.membersListBox.FormattingEnabled = true;
+			this.membersListBox.Location = new System.Drawing.Point(3, 16);
+			this.membersListBox.Name = "membersListBox";
+			this.membersListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
+			this.membersListBox.Size = new System.Drawing.Size(139, 249);
+			this.membersListBox.TabIndex = 0;
+			this.membersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.membersListBox_DrawItem);
+			// 
+			// dialogView
+			// 
+			this.dialogView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dialogView.Location = new System.Drawing.Point(0, 0);
+			this.dialogView.Name = "dialogView";
+			this.dialogView.ReadOnly = true;
+			this.dialogView.Size = new System.Drawing.Size(286, 248);
+			this.dialogView.TabIndex = 1;
+			this.dialogView.Text = "";
+			// 
+			// inputTextBox
+			// 
+			this.inputTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.inputTextBox.Location = new System.Drawing.Point(0, 248);
+			this.inputTextBox.Name = "inputTextBox";
+			this.inputTextBox.Size = new System.Drawing.Size(286, 20);
+			this.inputTextBox.TabIndex = 0;
+			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
 			// 
 			// GroupchatWindow
 			// 
@@ -111,9 +116,9 @@ namespace Goodware.Jabber.GUI {
 		#endregion
 
 		private System.Windows.Forms.SplitContainer mainContainer;
-		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.RichTextBox dialogView;
+		private System.Windows.Forms.TextBox inputTextBox;
 		private System.Windows.Forms.GroupBox groupBox;
-		private System.Windows.Forms.ListBox listBox1;
+		private System.Windows.Forms.ListBox membersListBox;
 	}
 }

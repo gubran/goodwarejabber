@@ -12,9 +12,10 @@ namespace Goodware.Jabber.GUI {
     public partial class JustTalk : Form {
         private bool connected;													// To save the connected state
         private TreeNode NodeToBeMoved;											// For drag and drop purposes 
-		private JabberModel model;												// The model is the key class, which most of the communication goes through
+		internal JabberModel model;												// The model is the key class, which most of the communication goes through
 		private Dictionary<string, ConverstationWindow> conversations;			// A hashtable to store references to all open conversations
 		private Dictionary<string, Contact> contacts;							// Hashtable for easy access to the contacts (Without checking all the tree nodes)
+		private Dictionary<string, GroupchatWindow> groupChats;						// Hashtable for groupChats
 
         public JustTalk() {
             InitializeComponent();
@@ -103,6 +104,7 @@ namespace Goodware.Jabber.GUI {
 			contactsTreeView.TreeViewNodeSorter = Comparer<IComparable>.Default;	// Sorter to sort the contacts in the groups
 			conversations = new Dictionary<string, ConverstationWindow>();
 			contacts = new Dictionary<string, Contact>();
+			groupChats = new Dictionary<string, GroupchatWindow>();
 
 			this.connected = true;			// Set state to connected
 		}
@@ -546,11 +548,48 @@ namespace Goodware.Jabber.GUI {
 		// Open a group chat
 		private void groupchatToolStripButton_Click(object sender, EventArgs e) {
 			GroupchatDialog dialog = new GroupchatDialog();
+			dialog.groupSufixLabel.Text += "@" + model.ServerName;
 			if(dialog.ShowDialog() == DialogResult.OK) {
-				GroupchatWindow groupWindow = new GroupchatWindow();
-				groupWindow.Show();
-				// TODO: Make groupchat!
+				model.sendPresence(dialog.groupTextBox.Text+".group" + "@" + model.ServerName + @"/" + dialog.nickTextBox.Text, null, null, null, null);
+// 				GroupchatWindow groupWindow = new GroupchatWindow();
+// 				groupWindow.Show();
+// 				// TODO: Make groupchat!
 			}
 		}
+
+		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
+			if(this.WindowState == FormWindowState.Minimized)
+				this.WindowState = FormWindowState.Normal;
+			this.Show();
+			this.Activate();
+		}
+
+		// Group chat
+		public void UpdateGroupPresence(String groupName, String userNick, Show show, String statusMessage) {
+			if(groupChats.ContainsKey(groupName))
+				groupChats[groupName].ReceivePresence(userNick, show, statusMessage);
+			else {
+				groupChats[groupName] = new GroupchatWindow(groupName, userNick, this);
+				groupChats[groupName].Show();
+			}
+		}
+
+		public void ShowGroupError(String code, String description) {
+			MessageBox.Show(this, "Error: " + code + "\n" + description, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public void RemoveGroupChat(String groupName) {
+			if(groupChats.ContainsKey(groupName)) {
+				groupChats.Remove(groupName);
+			}
+		}
+
+		public void RemoveGroupMember(String groupName, String nick) {
+			if(groupChats.ContainsKey(groupName))
+				groupChats[groupName].RemoveMember(nick);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		
 	}
 }

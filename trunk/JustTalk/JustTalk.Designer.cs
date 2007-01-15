@@ -273,6 +273,7 @@ namespace Goodware.Jabber.GUI
 			this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
 			this.trayIcon.Text = "Disconnected";
 			this.trayIcon.Visible = true;
+			this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
 			// 
 			// toolStripContainer
 			// 
@@ -321,10 +322,10 @@ namespace Goodware.Jabber.GUI
 			this.contactsImageList.Images.SetKeyName(1, "");
 			this.contactsImageList.Images.SetKeyName(2, "");
 			this.contactsImageList.Images.SetKeyName(3, "");
-			this.contactsImageList.Images.SetKeyName(4, "user_away.png");
-			this.contactsImageList.Images.SetKeyName(5, "user_xa.png");
-			this.contactsImageList.Images.SetKeyName(6, "user_inviteSent.png");
-			this.contactsImageList.Images.SetKeyName(7, "user_inviteAcc.png");
+			this.contactsImageList.Images.SetKeyName(4, "");
+			this.contactsImageList.Images.SetKeyName(5, "");
+			this.contactsImageList.Images.SetKeyName(6, "");
+			this.contactsImageList.Images.SetKeyName(7, "");
 			// 
 			// contactsToolStrip
 			// 
@@ -523,7 +524,7 @@ namespace Goodware.Jabber.GUI
             this.anotherEditContactStripMenuItem,
             this.anotherRemoveContactToolStripMenuItem2});
 			this.contactsContextMenuStrip.Name = "contactsContextMenuStrip";
-			this.contactsContextMenuStrip.Size = new System.Drawing.Size(166, 98);
+			this.contactsContextMenuStrip.Size = new System.Drawing.Size(166, 76);
 			// 
 			// talkToolStripMenuItem
 			// 

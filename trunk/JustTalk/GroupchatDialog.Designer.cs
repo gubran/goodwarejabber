@@ -116,12 +116,12 @@ namespace Goodware.Jabber.GUI {
 
 		#endregion
 
-		private System.Windows.Forms.TextBox groupTextBox;
-		private System.Windows.Forms.TextBox nickTextBox;
-		private System.Windows.Forms.Label groupSufixLabel;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button joinCreateButton;
 		private System.Windows.Forms.Button cancelButton;
+		public System.Windows.Forms.TextBox groupTextBox;
+		public System.Windows.Forms.TextBox nickTextBox;
+		public System.Windows.Forms.Label groupSufixLabel;
 	}
 }

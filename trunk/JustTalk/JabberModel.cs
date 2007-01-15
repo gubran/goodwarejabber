@@ -172,6 +172,8 @@ namespace Goodware.Jabber.Client {
 			if (body != null) {
 				packet.Children.Add(new Packet("body", body));
 			}
+			packet.From = Me.JabberID;
+			
 			session.Writer.Write(packet.ToString()); ;
 			session.Writer.Flush();
 		}
@@ -195,6 +197,8 @@ namespace Goodware.Jabber.Client {
 			if (prioriry != null) {
 				packet.Children.Add(new Packet("priority", prioriry));
 			}
+
+			packet.From = Me.JabberID;
 			session.Writer.Write(packet.ToString());
 			session.Writer.Flush();
 		}
