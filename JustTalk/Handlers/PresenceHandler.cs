@@ -9,6 +9,9 @@ namespace Goodware.Jabber.Client {
 	public delegate void UpdateContactPresenceDelegate(String jid, Status status, String statusMessage);
 	public delegate bool AcceptInvitationDelegate(String jid);
 	public delegate void RemoveContactDelegate(String jid);
+	public delegate void UpdateGroupPresenceDelegate(String groupJID, String userNick, Show show, String statusMessage);
+	public delegate void ShowGroupErrorDelegate(String code, String description);
+	public delegate void RemoveGroupMemberDelegate(String groupName, String userNick);
 
 	public class PresenceHandler : PacketListener {
 		JabberModel model;
@@ -33,13 +36,47 @@ namespace Goodware.Jabber.Client {
 			String statusMessage = packet.getChildValue("status");
 			
 			//test whether the presence is a groupchat presence or regular presence
-			String user = new JabberID(from).User;
+			JabberID jid = new JabberID(from);
+			String user = jid.User;
 			if (user != null && user.EndsWith(".group")) { // groupchat presence
+				Packet error = packet.getFirstChild("error"); // possible error packet
+				if (error != null) {  // there was an error
+					String code = error["code"];
+					String description = error.getValue();
+					ShowGroupErrorDelegate sged = new ShowGroupErrorDelegate(model.gui.ShowGroupError);
+					model.gui.Invoke(sged, new Object[] { code, description });
+					//delegate : ShowError(String code, String description);
+					return;
+				}
+
+				// delegate signature : void UpdateGroupPresence(String groupJID, String userNick, Show show, String statusMessage) 
+				UpdateGroupPresenceDelegate ugpd = new UpdateGroupPresenceDelegate(model.gui.UpdateGroupPresence);
+
+				Goodware.Jabber.GUI.Show showStatus = Show.chat;
+				String groupName = user.Substring(0, user.LastIndexOf(".group"));
+				String userNick = jid.Resource;
+				
+
+				if (show.Equals("chat")) {
+					showStatus = Show.chat;
+				} else if (show.Equals("away")) {
+					showStatus = Show.away;
+				} else if (show.Equals("xa")) {
+					showStatus = Show.xa;
+				} else if (show.Equals("dnd")) {
+					showStatus = Show.dnd;
+				}
 
 
-
-
-
+				if (type.Equals("available")) {
+					// UpdateGroupPresence(groupName, userNick, showStatus, statusMessage);
+					model.gui.Invoke(ugpd, new Object[] { groupName, userNick, showStatus, statusMessage });
+					// UpdateGroupPresence(groupName, userNick, showStatus, statusMessage);
+				} else if (type.Equals("unavailable")) {
+					RemoveGroupMemberDelegate rgmd = new RemoveGroupMemberDelegate(model.gui.RemoveGroupMember);
+					model.gui.Invoke(rgmd, new Object[] {groupName, userNick});
+					// RemoveGroupMember(groupName, userNick);
+				}
 
 
 

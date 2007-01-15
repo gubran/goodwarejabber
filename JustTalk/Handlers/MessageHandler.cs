@@ -21,9 +21,22 @@ namespace Goodware.Jabber.Client {
 			Console.WriteLine("  From: " + packet.From);
 			JabberID jid = new JabberID(packet.From);
 
-			RecieveMessageDelegate del = new RecieveMessageDelegate(model.gui.ReceiveMessage);
-			model.gui.Invoke(del, new Object[] { jid, packet.getChildValue("body") });
-			//model.gui.ReceiveMessage(jid, packet.getChildValue("body"));
+			if (jid.User != null && jid.User.EndsWith(".group")) { // groupchar message
+				//void ReceiveGroupMessage(String groupJID, String userNick, String message)
+				
+				String user = jid.User;
+				String groupJID = user.Substring(0, user.LastIndexOf(".group"));
+				String userNick = jid.Resource;
+
+				//ReceiveGroupMessage(groupJID, userNick, packet.getChildValue("body");
+
+
+			} else { // regular message
+
+				RecieveMessageDelegate del = new RecieveMessageDelegate(model.gui.ReceiveMessage);
+				model.gui.Invoke(del, new Object[] { jid, packet.getChildValue("body") });
+				//model.gui.ReceiveMessage(jid, packet.getChildValue("body"));
+			}
 		}
 	}
 }
