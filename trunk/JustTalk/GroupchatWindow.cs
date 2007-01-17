@@ -34,6 +34,7 @@ namespace Goodware.Jabber.GUI {
 		private StringBuilder stringBuilder;
 		private String nick;
 		private JustTalk gui;
+		private String groupName;
 		private Color[] colors = new Color[] {
 			Color.Gray,
 			Color.Blue,
@@ -52,7 +53,8 @@ namespace Goodware.Jabber.GUI {
 
 		public GroupchatWindow(String groupName, String nick, JustTalk gui) {
 			InitializeComponent();
-			this.Text = groupName + "Group Chat";
+			this.groupName = groupName;
+			this.Text = groupName + " Group Chat";
 			this.nick = nick;
 			this.gui = gui;
 
@@ -87,7 +89,8 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		private void SendMessage(String body) {
-			gui.SendMessage(this.Text + ".group@" + gui.model.ServerName + @"/" + nick, body);
+			//gui.SendMessage(this.Text + ".group@" + gui.model.ServerName + @"/" + nick, body);
+			gui.model.sendMessage(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, null, "groupchat", null, body);
 		}
 
 		public void ReceivePresence(String userNick, Show show, String statusMessage) {
@@ -102,6 +105,25 @@ namespace Goodware.Jabber.GUI {
 			}
 		}
 
+		public void ReceiveMessage(String userNick, String body) {
+			body = body.Replace('\\', ' ');
+			body = body.Replace(":)", @"{\b:)}");
+			body = body.Replace(";)", @"{\b;)}");
+			body = body.Replace(":D", @"{\b:D}");
+			body = body.Replace(":(", @"{\b:(}");
+			body = body.Replace("8)", @"{\b8)}");
+			body = body.Replace(":P", @"{\b:P}");
+			if(userNick != null && members.ContainsKey(userNick)) {
+				Member m = members[userNick];
+				stringBuilder.Append(@"{\cf" + (m.colorIndex + 1) + @"{\b " + userNick + @": }" + body + @"}\par");
+			} else {
+				stringBuilder.Append(@"{\cf1" + body + @"}\par");
+			}
+			dialogView.Rtf = stringBuilder.ToString() + "}";
+			dialogView.Select(dialogView.TextLength, 0);
+			dialogView.ScrollToCaret();
+		}
+
 		public void RemoveMember(String userNick) {
 			if(members.ContainsKey(userNick)) {
 				Member m = members[userNick]; 
@@ -111,7 +133,7 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		protected override void OnClosing(CancelEventArgs e) {
-			gui.model.sendPresence(this.Text + ".group@" + gui.model.ServerName + @"/" + nick, "unavailable", null, null, null);
+			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, "unavailable", null, null, null);
 			RemoveGroupChatDelegate rgcd = new RemoveGroupChatDelegate(gui.RemoveGroupChat);
 			gui.Invoke(rgcd, new Object[] { this.Text });
 

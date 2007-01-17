@@ -29,11 +29,9 @@ namespace Goodware.Jabber.GUI {
 			this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
 			this.mainContainer = new System.Windows.Forms.SplitContainer();
-			this.inputTextBox = new System.Windows.Forms.TextBox();
-			this.dialogView = new System.Windows.Forms.RichTextBox();
+			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.groupBox = new System.Windows.Forms.GroupBox();
 			this.membersListBox = new System.Windows.Forms.ListBox();
-			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusToolStrip = new System.Windows.Forms.ToolStrip();
 			this.statusToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,13 +39,15 @@ namespace Goodware.Jabber.GUI {
 			this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.statusMessageToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
+			this.dialogView = new System.Windows.Forms.RichTextBox();
+			this.inputTextBox = new System.Windows.Forms.TextBox();
 			this.mainContainer.Panel1.SuspendLayout();
 			this.mainContainer.Panel2.SuspendLayout();
 			this.mainContainer.SuspendLayout();
-			this.groupBox.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
+			this.groupBox.SuspendLayout();
 			this.statusToolStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -106,25 +106,23 @@ namespace Goodware.Jabber.GUI {
 			this.mainContainer.SplitterDistance = 155;
 			this.mainContainer.TabIndex = 1;
 			// 
-			// inputTextBox
+			// toolStripContainer1
 			// 
-			this.inputTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.inputTextBox.Location = new System.Drawing.Point(0, 248);
-			this.inputTextBox.Name = "inputTextBox";
-			this.inputTextBox.Size = new System.Drawing.Size(276, 20);
-			this.inputTextBox.TabIndex = 0;
-			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
 			// 
-			// dialogView
+			// toolStripContainer1.ContentPanel
 			// 
-			this.dialogView.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.dialogView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dialogView.Location = new System.Drawing.Point(0, 0);
-			this.dialogView.Name = "dialogView";
-			this.dialogView.ReadOnly = true;
-			this.dialogView.Size = new System.Drawing.Size(276, 248);
-			this.dialogView.TabIndex = 1;
-			this.dialogView.Text = "";
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.groupBox);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(155, 243);
+			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+			this.toolStripContainer1.Name = "toolStripContainer1";
+			this.toolStripContainer1.Size = new System.Drawing.Size(155, 268);
+			this.toolStripContainer1.TabIndex = 1;
+			this.toolStripContainer1.Text = "toolStripContainer1";
+			// 
+			// toolStripContainer1.TopToolStripPanel
+			// 
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.statusToolStrip);
 			// 
 			// groupBox
 			// 
@@ -145,28 +143,9 @@ namespace Goodware.Jabber.GUI {
 			this.membersListBox.FormattingEnabled = true;
 			this.membersListBox.Location = new System.Drawing.Point(3, 16);
 			this.membersListBox.Name = "membersListBox";
-			this.membersListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
 			this.membersListBox.Size = new System.Drawing.Size(149, 224);
 			this.membersListBox.TabIndex = 0;
 			this.membersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.membersListBox_DrawItem);
-			// 
-			// toolStripContainer1
-			// 
-			// 
-			// toolStripContainer1.ContentPanel
-			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.groupBox);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(155, 243);
-			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(155, 268);
-			this.toolStripContainer1.TabIndex = 1;
-			this.toolStripContainer1.Text = "toolStripContainer1";
-			// 
-			// toolStripContainer1.TopToolStripPanel
-			// 
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.statusToolStrip);
 			// 
 			// statusToolStrip
 			// 
@@ -178,7 +157,7 @@ namespace Goodware.Jabber.GUI {
             this.statusMessageToolStripComboBox});
 			this.statusToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.statusToolStrip.Name = "statusToolStrip";
-			this.statusToolStrip.Size = new System.Drawing.Size(152, 25);
+			this.statusToolStrip.Size = new System.Drawing.Size(150, 25);
 			this.statusToolStrip.TabIndex = 3;
 			// 
 			// statusToolStripDropDownButton
@@ -226,6 +205,26 @@ namespace Goodware.Jabber.GUI {
 			this.statusMessageToolStripComboBox.Size = new System.Drawing.Size(110, 25);
 			this.statusMessageToolStripComboBox.ToolTipText = "Status Message";
 			// 
+			// dialogView
+			// 
+			this.dialogView.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.dialogView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dialogView.Location = new System.Drawing.Point(0, 0);
+			this.dialogView.Name = "dialogView";
+			this.dialogView.ReadOnly = true;
+			this.dialogView.Size = new System.Drawing.Size(276, 248);
+			this.dialogView.TabIndex = 1;
+			this.dialogView.Text = "";
+			// 
+			// inputTextBox
+			// 
+			this.inputTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.inputTextBox.Location = new System.Drawing.Point(0, 248);
+			this.inputTextBox.Name = "inputTextBox";
+			this.inputTextBox.Size = new System.Drawing.Size(276, 20);
+			this.inputTextBox.TabIndex = 0;
+			this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
+			// 
 			// GroupchatWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,13 +237,13 @@ namespace Goodware.Jabber.GUI {
 			this.mainContainer.Panel2.ResumeLayout(false);
 			this.mainContainer.Panel2.PerformLayout();
 			this.mainContainer.ResumeLayout(false);
-			this.groupBox.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.PerformLayout();
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
+			this.groupBox.ResumeLayout(false);
 			this.statusToolStrip.ResumeLayout(false);
 			this.statusToolStrip.PerformLayout();
 			this.ResumeLayout(false);
