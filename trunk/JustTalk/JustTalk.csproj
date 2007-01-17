@@ -12,7 +12,7 @@
     <ManifestCertificateThumbprint>DFFF9B7ADEB8A48FFBFBF41D4EE74602A1B8EBCE</ManifestCertificateThumbprint>
     <ManifestKeyFile>JustTalk_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <PublishUrl>c:\Temp\JustTalk\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
