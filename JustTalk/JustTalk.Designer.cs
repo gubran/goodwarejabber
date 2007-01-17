@@ -427,7 +427,7 @@ namespace Goodware.Jabber.GUI
             this.statusMessageToolStripComboBox});
 			this.statusToolStrip.Location = new System.Drawing.Point(3, 25);
 			this.statusToolStrip.Name = "statusToolStrip";
-			this.statusToolStrip.Size = new System.Drawing.Size(170, 25);
+			this.statusToolStrip.Size = new System.Drawing.Size(198, 25);
 			this.statusToolStrip.TabIndex = 2;
 			// 
 			// statusToolStripDropDownButton
