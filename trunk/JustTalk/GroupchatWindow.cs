@@ -52,13 +52,12 @@ namespace Goodware.Jabber.GUI {
 
 		public GroupchatWindow(String groupName, String nick, JustTalk gui) {
 			InitializeComponent();
-			this.Text = groupName;
+			this.Text = groupName + "Group Chat";
 			this.nick = nick;
 			this.gui = gui;
 
 			members = new Dictionary<string, Member>();
 			this.ReceivePresence(nick, Goodware.Jabber.GUI.Show.chat, "");
-			InitTemp();
 
 			stringBuilder = new StringBuilder(@"{\rtf1\ansi{\fonttbl\f0\fswiss Helvetica;}{\colortbl ;");
 			foreach(Color c in colors)	{
@@ -69,37 +68,29 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		private void membersListBox_DrawItem(object sender, DrawItemEventArgs e) {
-			e.DrawBackground();							// Draw the background of the ListBox control for each item.
-			int n = e.Index % colors.Length;
-			//membersNicks[]
-			//Contact c = (Contact)membersListBox.Items[e.Index];
-			//membersListBox.Items.ad
-			Brush brush = new SolidBrush(colors[n]);
+			e.DrawBackground();							// Draw the background of the ListBox control for each item.int n = e.Index % colors.Length;
+
+			Member m = (Member)membersListBox.Items[e.Index];
+			Brush brush = new SolidBrush(colors[m.colorIndex]);		
 			e.Graphics.DrawImage(Properties.Resources.user, e.Bounds.Left + 1, e.Bounds.Top + 1, 12, 12);
 			e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(),
 						e.Font, brush, new Point(e.Bounds.Left + 15, e.Bounds.Top + 1), StringFormat.GenericDefault);
 		}
 
-		private void InitTemp() {
-			//membersListBox.Items.Add(new Member("dfsdf"));
-			//membersNicks["Key"] = "Val";
-		}
-
 		private void inputTextBox_KeyDown(object sender, KeyEventArgs e) {
-			/*if(e.KeyCode == Keys.Enter) {
+			if(e.KeyCode == Keys.Enter) {
 				if(!inputTextBox.Text.EndsWith("\n")) {
-					SendMessage(inputTextBox.Text);
-					ReceiveMessage(username, inputTextBox.Text, 0);
-					/*dialogView.AppendText(username + ": " + inputTextBox.Text/*.Substring(1, inputTextBox.Text.Length - 1) + "\n");
-					dialogView.ScrollToCaret();
+					SendMessage(inputTextBox.Text);					
 				}
 				inputTextBox.Clear();
-				modified = true;
 			}
-			*/
 		}
 
-		public void ReceivePresence(String userNick, /*Goodware.Jabber.GUI.*/Show show, String statusMessage) {
+		private void SendMessage(String body) {
+			gui.SendMessage(this.Text + ".group@" + gui.model.ServerName + @"/" + nick, body);
+		}
+
+		public void ReceivePresence(String userNick, Show show, String statusMessage) {
 			if(members.ContainsKey(userNick)) {
 				members[userNick].show = show;
 				members[userNick].statusMessage = statusMessage;

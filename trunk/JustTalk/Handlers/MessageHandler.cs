@@ -21,7 +21,7 @@ namespace Goodware.Jabber.Client {
 			Console.WriteLine("  From: " + packet.From);
 			JabberID jid = new JabberID(packet.From);
 
-			if (jid.User != null && jid.User.EndsWith(".group")) { // groupchar message
+			if (jid.User != null && jid.User.EndsWith(".group")) { // groupchat message
 				//void ReceiveGroupMessage(String groupJID, String userNick, String message)
 				
 				String user = jid.User;
