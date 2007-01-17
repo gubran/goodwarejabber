@@ -275,6 +275,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="online.ico" />
+    <None Include="Resources\user_away.png" />
+    <None Include="Resources\user_busy.png" />
     <None Include="Resources\user.png" />
     <None Include="Resources\user.bmp" />
   </ItemGroup>

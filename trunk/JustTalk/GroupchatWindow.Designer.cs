@@ -23,6 +23,7 @@ namespace Goodware.Jabber.GUI {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GroupchatWindow));
 			this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -157,7 +158,7 @@ namespace Goodware.Jabber.GUI {
             this.statusMessageToolStripComboBox});
 			this.statusToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.statusToolStrip.Name = "statusToolStrip";
-			this.statusToolStrip.Size = new System.Drawing.Size(150, 25);
+			this.statusToolStrip.Size = new System.Drawing.Size(152, 25);
 			this.statusToolStrip.TabIndex = 3;
 			// 
 			// statusToolStripDropDownButton
@@ -179,6 +180,7 @@ namespace Goodware.Jabber.GUI {
 			this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
 			this.onlineToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
 			this.onlineToolStripMenuItem.Text = "Chat";
+			this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineToolStripMenuItem_Click);
 			// 
 			// awayToolStripMenuItem
 			// 
@@ -186,6 +188,7 @@ namespace Goodware.Jabber.GUI {
 			this.awayToolStripMenuItem.Name = "awayToolStripMenuItem";
 			this.awayToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
 			this.awayToolStripMenuItem.Text = "Away";
+			this.awayToolStripMenuItem.Click += new System.EventHandler(this.awayToolStripMenuItem_Click);
 			// 
 			// busyToolStripMenuItem
 			// 
@@ -193,6 +196,7 @@ namespace Goodware.Jabber.GUI {
 			this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
 			this.busyToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
 			this.busyToolStripMenuItem.Text = "Do Not Disturb";
+			this.busyToolStripMenuItem.Click += new System.EventHandler(this.busyToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -202,8 +206,10 @@ namespace Goodware.Jabber.GUI {
 			// statusMessageToolStripComboBox
 			// 
 			this.statusMessageToolStripComboBox.Name = "statusMessageToolStripComboBox";
-			this.statusMessageToolStripComboBox.Size = new System.Drawing.Size(110, 25);
+			this.statusMessageToolStripComboBox.Size = new System.Drawing.Size(110, 21);
 			this.statusMessageToolStripComboBox.ToolTipText = "Status Message";
+			this.statusMessageToolStripComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.statusMessageToolStripComboBox_KeyPress);
+			this.statusMessageToolStripComboBox.Click += new System.EventHandler(this.statusMessageToolStripComboBox_Click);
 			// 
 			// dialogView
 			// 
@@ -231,6 +237,7 @@ namespace Goodware.Jabber.GUI {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(435, 268);
 			this.Controls.Add(this.mainContainer);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GroupchatWindow";
 			this.Text = "Groupchat";
 			this.mainContainer.Panel1.ResumeLayout(false);

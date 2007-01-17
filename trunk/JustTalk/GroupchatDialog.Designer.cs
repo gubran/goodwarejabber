@@ -107,8 +107,9 @@ namespace Goodware.Jabber.GUI {
 			this.Controls.Add(this.groupSufixLabel);
 			this.Controls.Add(this.nickTextBox);
 			this.Controls.Add(this.groupTextBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "GroupchatDialog";
-			this.Text = "GroupchatDialog";
+			this.Text = "Groupchat";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
