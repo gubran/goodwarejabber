@@ -186,6 +186,20 @@ namespace Goodware.Jabber.GUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap user_away {
+            get {
+                object obj = ResourceManager.GetObject("user_away", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap user_busy {
+            get {
+                object obj = ResourceManager.GetObject("user_busy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap user_comment {
             get {
                 object obj = ResourceManager.GetObject("user_comment", resourceCulture);

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Goodware.Jabber.GUI {
-	public enum Show { chat, away, xa, dnd };
+	public enum Show { chat, away, dnd, xa };
 
 	public partial class GroupchatWindow : Form {
 		private delegate void RemoveGroupChatDelegate(String groupName);
@@ -51,6 +51,12 @@ namespace Goodware.Jabber.GUI {
 			Color.DarkMagenta	
 		};
 
+		private Image[] images = new Image[] {
+			Properties.Resources.user,
+			Properties.Resources.user_away,
+			Properties.Resources.user_busy
+		};
+
 		public GroupchatWindow(String groupName, String nick, JustTalk gui) {
 			InitializeComponent();
 			this.groupName = groupName;
@@ -74,9 +80,12 @@ namespace Goodware.Jabber.GUI {
 
 			Member m = (Member)membersListBox.Items[e.Index];
 			Brush brush = new SolidBrush(colors[m.colorIndex]);		
-			e.Graphics.DrawImage(Properties.Resources.user, e.Bounds.Left + 1, e.Bounds.Top + 1, 12, 12);
-			e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(),
-						e.Font, brush, new Point(e.Bounds.Left + 15, e.Bounds.Top + 1), StringFormat.GenericDefault);
+			e.Graphics.DrawImage(images[(int)m.show], e.Bounds.Left + 1, e.Bounds.Top + 1, 12, 12);
+			String temp = m.nick;
+			if(!String.IsNullOrEmpty(m.statusMessage)) {
+				temp += " (" + m.statusMessage + ")";
+			}
+			e.Graphics.DrawString(temp, e.Font, brush, new Point(e.Bounds.Left + 15, e.Bounds.Top), StringFormat.GenericDefault);
 		}
 
 		private void inputTextBox_KeyDown(object sender, KeyEventArgs e) {
@@ -90,7 +99,7 @@ namespace Goodware.Jabber.GUI {
 
 		private void SendMessage(String body) {
 			//gui.SendMessage(this.Text + ".group@" + gui.model.ServerName + @"/" + nick, body);
-			gui.model.sendMessage(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, null, "groupchat", null, body);
+			gui.model.sendMessage(this.groupName + ".group@" + gui.model.ServerName /*+ @"/" + nick*/, null, null, "groupchat", null, body);
 		}
 
 		public void ReceivePresence(String userNick, Show show, String statusMessage) {
@@ -102,6 +111,20 @@ namespace Goodware.Jabber.GUI {
 				Member member = new Member(userNick, show, statusMessage, new Random().Next(1, colors.Length));
 				members[userNick] = member;
 				membersListBox.Items.Add(member);
+			}
+
+			if(userNick.Equals(nick)) {	// It's me!
+				switch(show) {
+					case Goodware.Jabber.GUI.Show.chat:
+						statusToolStripDropDownButton.Image = Properties.Resources.lightbulb;
+						break;
+					case Goodware.Jabber.GUI.Show.away:
+						statusToolStripDropDownButton.Image = Properties.Resources.lightbulb_off;
+						break;
+					case Goodware.Jabber.GUI.Show.dnd:
+						statusToolStripDropDownButton.Image = Properties.Resources.lightbulb_delete;
+						break;
+				}
 			}
 		}
 
@@ -115,9 +138,9 @@ namespace Goodware.Jabber.GUI {
 			body = body.Replace(":P", @"{\b:P}");
 			if(userNick != null && members.ContainsKey(userNick)) {
 				Member m = members[userNick];
-				stringBuilder.Append(@"{\cf" + (m.colorIndex + 1) + @"{\b " + userNick + @": }" + body + @"}\par");
+				stringBuilder.Append(@"{\cf" + (m.colorIndex + 1) + @"{\b " + " " + userNick + @": }" + body + @"}\par");
 			} else {
-				stringBuilder.Append(@"{\cf1" + body + @"}\par");
+				stringBuilder.Append(@"{\cf1" + "  " + body + @"}\par");
 			}
 			dialogView.Rtf = stringBuilder.ToString() + "}";
 			dialogView.Select(dialogView.TextLength, 0);
@@ -138,6 +161,34 @@ namespace Goodware.Jabber.GUI {
 			gui.Invoke(rgcd, new Object[] { this.Text });
 
 			base.OnClosing(e);
+		}
+
+		private void onlineToolStripMenuItem_Click(object sender, EventArgs e) {
+			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, Goodware.Jabber.GUI.Show.chat.ToString(), members[nick].statusMessage, null);
+		}
+
+		private void awayToolStripMenuItem_Click(object sender, EventArgs e) {
+			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, Goodware.Jabber.GUI.Show.away.ToString(), members[nick].statusMessage, null);
+		}
+
+		private void busyToolStripMenuItem_Click(object sender, EventArgs e) {
+			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, Goodware.Jabber.GUI.Show.dnd.ToString(), members[nick].statusMessage, null);
+		}
+
+		// Set the status message and keep old ones in history
+		private String previousStatusMessage;
+		private void statusMessageToolStripComboBox_KeyPress(object sender, KeyPressEventArgs e) {
+			if(e.KeyChar == '\r') {
+				gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, null, members[nick].show.ToString(), this.statusMessageToolStripComboBox.Text, null);
+				if(!String.IsNullOrEmpty(previousStatusMessage)) {
+					this.statusMessageToolStripComboBox.Items.Add(previousStatusMessage);
+				}
+				previousStatusMessage = this.statusMessageToolStripComboBox.Text;
+			}
+		}
+
+		private void statusMessageToolStripComboBox_Click(object sender, EventArgs e) {
+			this.statusMessageToolStripComboBox.SelectAll();
 		}
 	}
 }
