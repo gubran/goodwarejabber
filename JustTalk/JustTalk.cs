@@ -589,6 +589,13 @@ namespace Goodware.Jabber.GUI {
 				groupChats[groupName].RemoveMember(nick);
 		}
 
+		public void ReceiveGroupMessage(String groupJID, String userNick, String message) {
+			if(groupChats.ContainsKey(groupJID)) {
+				groupChats[groupJID].ReceiveMessage(userNick, message);
+				groupChats[groupJID].Activate();
+			}
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		
 	}

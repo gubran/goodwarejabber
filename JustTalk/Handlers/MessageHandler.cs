@@ -4,7 +4,8 @@ using System.Text;
 using Goodware.Jabber.Library;
 
 namespace Goodware.Jabber.Client {
-	public delegate void RecieveMessageDelegate(JabberID jid, string body);
+	public delegate void RecieveMessageDelegate(JabberID jid, String body);
+	public delegate void RecieveGroupMessageDelegate(String groupJID, String userNick, String body);
 
     public class MessageHandler : PacketListener {
 		private JabberModel model;
@@ -29,8 +30,8 @@ namespace Goodware.Jabber.Client {
 				String userNick = jid.Resource;
 
 				//ReceiveGroupMessage(groupJID, userNick, packet.getChildValue("body");
-
-
+				RecieveGroupMessageDelegate rgmd = new RecieveGroupMessageDelegate(model.gui.ReceiveGroupMessage);
+				model.gui.Invoke(rgmd, new Object[] { groupJID, userNick, packet.getChildValue("body") });
 			} else { // regular message
 
 				RecieveMessageDelegate del = new RecieveMessageDelegate(model.gui.ReceiveMessage);
