@@ -60,7 +60,7 @@ namespace Goodware.Jabber.GUI {
 		public GroupchatWindow(String groupName, String nick, JustTalk gui) {
 			InitializeComponent();
 			this.groupName = groupName;
-			this.Text = groupName + " Group Chat";
+			this.Text = groupName + " - Group Chat as " + nick;
 			this.nick = nick;
 			this.gui = gui;
 
@@ -158,7 +158,7 @@ namespace Goodware.Jabber.GUI {
 		protected override void OnClosing(CancelEventArgs e) {
 			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, "unavailable", null, null, null);
 			RemoveGroupChatDelegate rgcd = new RemoveGroupChatDelegate(gui.RemoveGroupChat);
-			gui.Invoke(rgcd, new Object[] { this.Text });
+			gui.Invoke(rgcd, new Object[] { this.groupName });
 
 			base.OnClosing(e);
 		}
