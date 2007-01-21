@@ -28,22 +28,38 @@ namespace Goodware.Jabber.Server {
         }
 
         String username;
-        public User(String name) { this.username = name; }
-        
+        public User(String name) { 
+			  this.username = name; 
+		  }
+
+		public String getUsername() {
+			return this.username;
+		}
+
+
+
         String pass;
-        public void setPassword(String pass) { this.pass = pass; }
+        public void setPassword(String pass) { 
+			  this.pass = pass; 
+		  }
         public String getPassword() { return this.pass; }
 
         String hash;
-        public void setHash(String value) { hash = value; }
+        public void setHash(String value) {
+			  hash = value; 
+		  }
         public String getHash() { return hash; }
 
         String sequence;
-        public void setSequence(String value) { sequence = value; }
+        public void setSequence(String value) {
+			  sequence = value; 
+		  }
         public String getSequence() { return sequence; }
 
         String token;
-        public void setToken(String value) { token = value; }
+        public void setToken(String value) {
+			  token = value; 
+		  }
         public String getToken() { return token; }
 
         LinkedList<Packet> messageStore = new LinkedList<Packet>();

@@ -7,7 +7,7 @@ using Goodware.Jabber.Library;
 namespace Goodware.Jabber.Server {
     public class UserIndex {
         //User table, key: username (String), value: User
-        Hashtable userIndex = new Hashtable();
+        public Hashtable userIndex = new Hashtable();
 
         //Session table, key: Session, value: User
         Hashtable sessionIndex = new Hashtable();
