@@ -3,28 +3,29 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Goodware.Jabber.Library;
 using System.Collections;
+using System.Data;
+using Goodware.Jabber.Library;
 
 
 namespace Goodware.Jabber.Server {
 	
 
-    public class JabberServer {
+	public class JabberServer {
 
-        //addeed by marko
-        public static Hashtable RosterHashtable = new Hashtable();//needed for new roster managment
-        //end added
-        
-        public static int jabber_port = 5222;
+		public static Hashtable RosterHashtable = new Hashtable();//needed for new roster managment
+
+		public static int jabber_port = 5222;
 		public static String server_name = "localhost";
+		public static String file_name = "users.xml";
 
-        static UserIndex index = new UserIndex();
-        public static UserIndex getUserIndex()
-        { 
-            return index;
-        }
-        PacketQueue packetQueue = new PacketQueue();
+
+		static UserIndex index = new UserIndex();
+		public static UserIndex getUserIndex()
+		{ 
+			return index;
+		}
+		public static PacketQueue packetQueue = new PacketQueue();
 
 		protected JabberServer() {
 /*            Packet temp = new Packet("<iq type='set' id='reg_id'> <query xmlns='jabber:iq:register'> <username> enci </username> <password> encienci </password> </query> </iq>");
@@ -36,15 +37,27 @@ namespace Goodware.Jabber.Server {
             }
             Console.ReadLine();
             return;*/
+
+			restoreFromFile();
+
+
+
             Authenticator.randomToken();
             createQueueThread();
 
-			Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			IPEndPoint ep = new IPEndPoint(IPAddress.Any, jabber_port);
-			serverSocket.Bind(ep);
-			serverSocket.Listen(20);
+//			Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+//			IPEndPoint ep = new IPEndPoint(IPAddress.Any, jabber_port);
+//			serverSocket.Bind(ep);
+//			serverSocket.Listen(20);
+				ListenerThread lt = new ListenerThread(JabberServer.jabber_port);
+
+				//
+				// mozebi dodavanje na staticki promenlivi za polesen pristap od sekade
+				
             // Додадено од Милош/Васко
             // Нов „статички“ јузер
+
+			/*
             User nov=index.addUser("milos");
             nov.setPassword("test");
 
@@ -53,25 +66,33 @@ namespace Goodware.Jabber.Server {
             
             User nov3 = index.addUser("bojan");
             nov3.setPassword("test");
-            
+           */
+ 
             // Крај додадено
 
             
 
-			while (true) {
-				Socket newSock = serverSocket.Accept();
-				Session session = new Session(newSock);
+//			while (true) {
+//				Socket newSock = serverSocket.Accept();
+//				Session session = new Session(newSock);
 
-				ProcessThread processor = new ProcessThread(packetQueue, session);
-				processor.start();
-			}
+//				ProcessThread processor = new ProcessThread(packetQueue, session);
+//				processor.start();
+//			}
+				lt.setDaemon(true);
+				lt.start();
 
+
+
+				while (!Console.ReadLine().Equals("stop")) {
+				}
+				packetQueue.enqueue(new Packet("terminate")); //artificial packet for signaling termination
 		}
 
 		void createQueueThread() {
 			QueueThread qThread = new QueueThread(packetQueue);
 
-			qThread.setDaemon(true);
+			//qThread.setDaemon(true); DO NOT set Daemon
 
 			qThread.addPacketListener(new OpenStreamHandler(index), "stream:stream");
 			qThread.addPacketListener(new CloseStreamHandler(index), "/stream:stream");
@@ -93,8 +114,53 @@ namespace Goodware.Jabber.Server {
 
 		}
 
+		private void restoreFromFile() {
+			DataSet ds = new DataSet();
+			try {
+				ds.ReadXml(file_name);
+			} catch (FileNotFoundException ex) {
+				return;
+			}
 
-		public static void Main(String[] args) {
+
+			foreach (DataRow user in ds.Tables["User"].Rows) {
+				User u = getUserIndex().addUser(user["username"] as String);
+				u.setPassword(user["password"] as String);
+				u.setHash(user["hash"] as String);
+				u.setSequence(user["sequence"] as String);
+				u.setToken(user["token"] as String);
+
+				foreach (DataRow item in user.GetChildRows("Roster")) {
+					UserRoster ur = (UserRoster)RosterHashtable[item["username"]];
+					Hashtable itemsHash = ur.items;
+					Hashtable subscribersHash = ur.subscribers;
+
+					Packet itemPacket = new Packet("item");
+					itemPacket["jid"] = item["jid"] as String;
+					itemPacket["name"] = item["name"] as String;
+					itemPacket["subscription"] = "both";
+					String group = item["group"] as String;
+					if (group != null) {
+						new Packet("group",group).Parent = itemPacket;
+					}
+					itemsHash[item["jid"]] = itemPacket;
+
+					Subscriber s = new Subscriber();
+					s.subscription = "both";
+					subscribersHash[item["jid"]] = s;
+
+				}
+
+
+			}
+
+
+
+
+
+		}
+		 
+		 public static void Main(String[] args) {
 			Console.WriteLine("Jabber Server -- " + server_name + ":" + jabber_port);
 			new JabberServer();
 

@@ -2,8 +2,11 @@ using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Data;
+using System.Collections;
+using System.Collections.Generic;
+using Goodware.Jabber.Library;
 
-namespace Goodware.Jabber.Library {
+namespace Goodware.Jabber.Server {
 	public class QueueThread : AThread {
 		PacketQueue packetQueue;
 
@@ -47,12 +50,10 @@ namespace Goodware.Jabber.Library {
 					matchString = packet.Element;
 				}
 
-/*
 				if (matchString.Equals("terminate")) {
 					saveToFile();
 					return;
 				}
-*/
 
 				try {
 					lock (packetListeners) {
@@ -80,7 +81,8 @@ namespace Goodware.Jabber.Library {
 		private void saveToFile() {  //termination handler
 			DataSet ds = createDataSet();
 			fillDataSet(ds);
-			ds.WriteXml("users.xml");
+			ds.WriteXml(JabberServer.file_name, XmlWriteMode.WriteSchema);
+
 		}
 
 		private DataSet createDataSet() {
@@ -124,6 +126,7 @@ namespace Goodware.Jabber.Library {
 			ds.Tables.Add(items);
 
 			DataRelation roster = new DataRelation("Roster", ds.Tables["User"].Columns["username"], ds.Tables["Item"].Columns["username"]);
+			roster.Nested = true;
 
 			ds.Relations.Add(roster);
 
@@ -147,7 +150,44 @@ namespace Goodware.Jabber.Library {
 			ds.Tables["Item"].Rows.Add(item);
 */
 
-			
+			DataTable usersTable = ds.Tables["User"];
+			DataRow newUser = null;
+			Hashtable usersHash= JabberServer.getUserIndex().userIndex;
+			foreach (User u in usersHash.Values) {
+				newUser = usersTable.NewRow();
+				newUser["username"] = u.getUsername();
+				newUser["password"] = u.getPassword();
+				newUser["hash"] = u.getHash();
+				newUser["sequence"] = u.getSequence();
+				newUser["token"] = u.getToken();
+				usersTable.Rows.Add(newUser);
+			}
+
+
+			DataTable itemsTable = ds.Tables["Item"];
+			DataRow newItem = null;
+			Hashtable rosterHash = JabberServer.RosterHashtable;
+			foreach (UserRoster ur in rosterHash.Values) {
+				String user = ur.user;
+				foreach (Packet p in ur.items.Values) {
+					String jid = p["jid"];
+					String subscription = p["subscription"];
+					String name = p["name"];
+					String group = p.getChildValue("group");
+
+					if (subscription.Equals("both")) {
+						newItem = itemsTable.NewRow();
+						newItem["username"] = user;
+						newItem["jid"] = jid;
+						newItem["name"] = name;
+						newItem["group"] = group;
+						itemsTable.Rows.Add(newItem);
+					}
+				}
+
+			}
+
+
 
 		}
 
