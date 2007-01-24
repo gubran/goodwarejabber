@@ -18,7 +18,7 @@ namespace Goodware.Jabber.GUI {
 			"User is now available",
 			"User does not want to be disturbed",
 			"User is offline and will receive messages upon logon",
-			"Users is away and may not read messages at the moment",			
+			"User is away and may not read messages at the moment",			
 		};
 
         public ConverstationWindow(Contact c, JustTalk mainWind) {
