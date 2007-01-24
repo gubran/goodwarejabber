@@ -96,6 +96,7 @@ namespace Goodware.Jabber.GUI {
 			this.statusMessageToolStripComboBox.Enabled = true;
 			this.contactsTreeView.ContextMenuStrip = contactsViewContextMenuStrip;
 			this.Text = model.User + "@" + model.ServerName + " - JustTalk";
+			this.trayIcon.Text = "Connected";
 
 			// Initialize the structures needed
 			Group def = new Group("Default Group");
@@ -128,7 +129,8 @@ namespace Goodware.Jabber.GUI {
 			this.statusToolStripDropDownButton.Enabled = false;
 			this.statusMessageToolStripComboBox.Enabled = false;
 			this.contactsTreeView.ContextMenuStrip = null;
-			this.Text = "JustTalk";			
+			this.Text = "JustTalk";
+			this.trayIcon.Text = "Disconnected";
 
 			// Release memory
 			foreach(TreeNode node in contactsTreeView.Nodes) {
@@ -551,9 +553,6 @@ namespace Goodware.Jabber.GUI {
 			dialog.groupSufixLabel.Text += "@" + model.ServerName;
 			if(dialog.ShowDialog() == DialogResult.OK) {
 				model.sendPresence(dialog.groupTextBox.Text+".group" + "@" + model.ServerName + @"/" + dialog.nickTextBox.Text, null, null, null, null);
-// 				GroupchatWindow groupWindow = new GroupchatWindow();
-// 				groupWindow.Show();
-// 				// TODO: Make groupchat!
 			}
 		}
 
