@@ -601,10 +601,6 @@ namespace Goodware.Jabber.GUI {
 			}
 		}
 
-		private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
-
-		}
-
 		//////////////////////////////////////////////////////////////////////////
 		
 	}
