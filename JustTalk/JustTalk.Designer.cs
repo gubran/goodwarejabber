@@ -273,6 +273,7 @@ namespace Goodware.Jabber.GUI
 			this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
 			this.trayIcon.Text = "Disconnected";
 			this.trayIcon.Visible = true;
+			this.trayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseClick);
 			this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
 			// 
 			// toolStripContainer
@@ -427,7 +428,7 @@ namespace Goodware.Jabber.GUI
             this.statusMessageToolStripComboBox});
 			this.statusToolStrip.Location = new System.Drawing.Point(3, 25);
 			this.statusToolStrip.Name = "statusToolStrip";
-			this.statusToolStrip.Size = new System.Drawing.Size(198, 25);
+			this.statusToolStrip.Size = new System.Drawing.Size(170, 25);
 			this.statusToolStrip.TabIndex = 2;
 			// 
 			// statusToolStripDropDownButton
@@ -604,6 +605,7 @@ namespace Goodware.Jabber.GUI
 			this.Name = "JustTalk";
 			this.Text = "JustTalk";
 			this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.JustTalk_FormClosed);
 			this.Shown += new System.EventHandler(this.JustTalk_Shown);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.JustTalk_FormClosing);
 			this.Load += new System.EventHandler(this.JustTalk_Load);

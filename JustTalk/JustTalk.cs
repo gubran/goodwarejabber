@@ -42,7 +42,12 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		private void JustTalk_FormClosing(object sender, FormClosingEventArgs e) {
+			this.WindowState = FormWindowState.Minimized;
+			this.ShowInTaskbar = false;
+			e.Cancel = true;
+		}
 
+		private void JustTalk_FormClosed(object sender, FormClosedEventArgs e) {
 			// Save size
 			if(this.WindowState == FormWindowState.Normal) {
 				Properties.Settings.Default.WindowSize = this.Size;
@@ -242,7 +247,6 @@ namespace Goodware.Jabber.GUI {
 					Contact c = (Contact)contactsTreeView.SelectedNode;
 					model.sendPresence(c.JabberID, "unsubscribe", null, null, null);			// Unsubscribe to contacts presence notifications
 					model.sendPresence(c.JabberID, "unsubscribed", null, null, null);			
-                    //c.Remove();
                 }
             }
         }
@@ -559,8 +563,10 @@ namespace Goodware.Jabber.GUI {
 		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
 			if(this.WindowState == FormWindowState.Minimized)
 				this.WindowState = FormWindowState.Normal;
+			this.ShowInTaskbar = true;			
 			this.Show();
 			this.Activate();
+			this.Invalidate();				// The combobox is behaves funny without this
 		}
 
 		// Group chat
@@ -593,6 +599,10 @@ namespace Goodware.Jabber.GUI {
 				groupChats[groupJID].ReceiveMessage(userNick, message);
 				groupChats[groupJID].Activate();
 			}
+		}
+
+		private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
+
 		}
 
 		//////////////////////////////////////////////////////////////////////////
