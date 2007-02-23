@@ -23,9 +23,6 @@ namespace Goodware.Jabber.Library {
 
 			XmlReader reader = XmlReader.Create(session.Reader);
 
-
-
-
 			reader.MoveToContent();
 
 
@@ -91,12 +88,11 @@ namespace Goodware.Jabber.Library {
 				} while (reader.Read());
 
 			} catch (Exception ex) {
-
 				// Bilokakov problem so xml stream-ot
 				// io-exception, invalid xml, zatvoren socket i sl.
-				// treba da se napravi clean-up : zatvori stream </stream:stream>, zatvori socket, trgni Session object i sl.
-				
+				// treba da se napravi clean-up : zatvori stream </stream:stream>, zatvori socket, trgni Session object i sl.				
 				// Ne sekogas znaci greska : posle </stream:stream> se zatvara socket-ot i ne treba da se pravi nisto
+				throw ex;
 			}
 
 			
