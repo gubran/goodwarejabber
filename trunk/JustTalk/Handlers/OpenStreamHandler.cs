@@ -6,8 +6,7 @@ using Goodware.Jabber.Library;
 
 // Stub
 namespace Goodware.Jabber.Client {
-    public class OpenStreamHandler : PacketListener
-    {
+    public class OpenStreamHandler : PacketListener {
 		public void notify(Packet packet) {
 			Session session = packet.Session;
 			session.StreamID = (packet.ID);

@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Handlers\PresenceHandler.cs" />
     <Compile Include="Handlers\RegisterHandler.cs" />
+    <Compile Include="ProcessThread.cs" />
     <Compile Include="RenameGroup.cs">
       <SubType>Form</SubType>
     </Compile>

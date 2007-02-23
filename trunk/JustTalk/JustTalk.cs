@@ -4,18 +4,21 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Goodware.Jabber.Client;
 using Goodware.Jabber.Library;
 
 namespace Goodware.Jabber.GUI {
+	delegate void voidDel();
+
     public partial class JustTalk : Form {
         private bool connected;													// To save the connected state
         private TreeNode NodeToBeMoved;											// For drag and drop purposes 
 		internal JabberModel model;												// The model is the key class, which most of the communication goes through
 		private Dictionary<string, ConverstationWindow> conversations;			// A hashtable to store references to all open conversations
 		private Dictionary<string, Contact> contacts;							// Hashtable for easy access to the contacts (Without checking all the tree nodes)
-		private Dictionary<string, GroupchatWindow> groupChats;						// Hashtable for groupChats
+		private Dictionary<string, GroupchatWindow> groupChats;					// Hashtable for groupChats
 
         public JustTalk() {
             InitializeComponent();
@@ -32,6 +35,10 @@ namespace Goodware.Jabber.GUI {
 			this.mainToolStripMenuItem.Checked = this.mainToolStrip.Visible;
 			this.statusToolStripMenuItem.Checked = this.statusToolStrip.Visible;
 			this.contactsToolStripMenuItem.Checked = this.contactsToolStrip.Visible;
+			if(this.Location.X < 0 || this.Location.Y < 0) {	// Minimizing to trey can make invalid values
+				this.Location = new Point(50, 50);
+				this.Invalidate(true);
+			}
 		}
 
 		private void JustTalk_Load(object sender, EventArgs e) {
@@ -41,12 +48,14 @@ namespace Goodware.Jabber.GUI {
 			}
 		}
 
+		// Don't close, just minimize to tray
 		private void JustTalk_FormClosing(object sender, FormClosingEventArgs e) {
 			this.WindowState = FormWindowState.Minimized;
 			this.ShowInTaskbar = false;
-			e.Cancel = true;
+			e.Cancel = true;		
 		}
 
+		// Save settings when closing
 		private void JustTalk_FormClosed(object sender, FormClosedEventArgs e) {
 			// Save size
 			if(this.WindowState == FormWindowState.Normal) {
@@ -61,8 +70,17 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		// Exit
-        private void exitTrayMenuItem_Click(object sender, EventArgs e) {			
-			this.disconnect();
+        private void exitTrayMenuItem_Click(object sender, EventArgs e) {
+			// Save size
+			if(this.WindowState == FormWindowState.Normal) {
+				Properties.Settings.Default.WindowSize = this.Size;
+			} else {
+				Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+			}
+
+			Properties.Settings.Default.Save();			// Save setting manually
+			ToolStripManager.SaveSettings(this);		// Save toolstrips state
+			this.disconnect();							// Disconnect from server
             this.Dispose(true);
         }
 		
@@ -70,19 +88,21 @@ namespace Goodware.Jabber.GUI {
         private void connectTrayMenuItem_Click(object sender, EventArgs e) {
             if(!this.connected) {
 				if (this.connect()) {
-					connectGUI();					
+					//connectGUI();					
 				} else {
 					MessageBox.Show("Unable to connect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
             } else {
 				if(this.disconnect()) {
-					disconnectGUI();
+					//disconnectGUI();
 				}
 			}			
         }
 
 		// Update the gui to a connected state
 		private void connectGUI() {
+			this.stopConnectingGUI();
+
 			// Enable contacts strip
 			foreach(ToolStripItem item in this.contactsToolStrip.Items) {
 				item.Enabled = true;
@@ -95,6 +115,8 @@ namespace Goodware.Jabber.GUI {
 			this.connectToolStripButton.ToolTipText = "Disconnect";
 			this.connectedStatus.Text = "Connected";
 			this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
+			this.connectToolStripMenuItem.Text = "Disconnect";
+			this.connectToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
 			this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulbico;
 			this.optionsToolStripButton.Enabled = false;
 			this.statusToolStripDropDownButton.Enabled = true;
@@ -111,12 +133,17 @@ namespace Goodware.Jabber.GUI {
 			conversations = new Dictionary<string, ConverstationWindow>();
 			contacts = new Dictionary<string, Contact>();
 			groupChats = new Dictionary<string, GroupchatWindow>();
-
+			
 			this.connected = true;			// Set state to connected
 		}
 
+		// Update the gui to a disconnected state
+		public void disconnectGUI() {
+			this.stopConnectingGUI();
 
-		private void disconnectGUI() {
+			if(!connected)
+				return;			// Nothing to do
+
 			// Disable contacts strip
 			foreach(ToolStripItem item in this.contactsToolStrip.Items) {
 				item.Enabled = false;
@@ -129,6 +156,8 @@ namespace Goodware.Jabber.GUI {
 			this.connectToolStripButton.ToolTipText = "Connect";
 			this.connectedStatus.Text = "Disconnected";
 			this.connectedStatus.Image = global::Goodware.Jabber.GUI.Properties.Resources.disconnect;
+			this.connectToolStripMenuItem.Text = "Connect";
+			this.connectToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 			this.trayIcon.Icon = global::Goodware.Jabber.GUI.Properties.Resources.lightbulboff;
 			this.optionsToolStripButton.Enabled = true;
 			this.statusToolStripDropDownButton.Enabled = false;
@@ -146,7 +175,14 @@ namespace Goodware.Jabber.GUI {
 				cv.Close();
 				cv.Dispose();
 			}
-			conversations = null;		
+
+			foreach(GroupchatWindow gw in groupChats.Values) {
+				gw.Close();
+				gw.Dispose();
+			}
+
+			conversations = null;
+			groupChats = null;
 			contacts = null;
 
 			this.connected = false;		// Set state to disconnected
@@ -166,16 +202,58 @@ namespace Goodware.Jabber.GUI {
 				model.Me.Status = Status.chat;
 
 				// Send initial messages
-				model.connect();
-				model.authenticate();
-				model.sendRosterGet();											// Request contacts
-				model.sendPresence(model.Me.Status, model.Me.StatusMessage);	// Send my presence
+				connectBackgroundWorker.RunWorkerAsync();
+				startConnectingGUI();				
 			} catch (Exception ex) {
 				Console.WriteLine("Exception while connecting" + ex.StackTrace);
+				connectingLabel.Visible = false;
+				connectingProgressBar.Visible = false;
 				return false;
 			}
 			return true;
         }
+
+		// Remove connecting stuff in the gui
+		private void stopConnectingGUI() {
+			connectToolStripButton.Enabled = true;
+			optionsToolStripButton.Enabled = true;
+			connectingLabel.Text = "Connecting...";
+			connectingLabel.Visible = false;
+			connectingProgressBar.Visible = false;
+			this.connectToolStripMenuItem.Enabled = true;
+			this.connectTrayMenuItem.Enabled = true;
+		}
+
+		// Show connecting stuff in the gui
+		private void startConnectingGUI() {
+			connectingLabel.Visible = true;
+			connectingProgressBar.Visible = true;
+			connectToolStripButton.Enabled = false;
+			optionsToolStripButton.Enabled = false;
+			this.connectToolStripMenuItem.Enabled = false;
+			this.connectTrayMenuItem.Enabled = false;
+		}
+
+		// A worker is used to connect in a background thread 
+		private void connectBackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+			try {
+				model.connect();
+				model.authenticate();
+			} catch (Exception ex) {
+				Console.WriteLine("Exception while connecting" + ex.StackTrace);
+				// Can not call directly (cross threading), use delegate
+				voidDel vd = new voidDel(this.stopConnectingGUI);
+				this.Invoke(vd);
+				vd = new voidDel(this.showUnableToConnect);
+				this.Invoke(vd);				
+			}
+		}
+
+		// Must be called from a delegate
+		private void showUnableToConnect() {
+			MessageBox.Show(this, "Unable to connect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			this.Invalidate();
+		}
 
 		public bool disconnect() {		// Actual disconnect
 			try {
@@ -184,6 +262,60 @@ namespace Goodware.Jabber.GUI {
 				return false;
 			}
 			return true;
+		}
+
+		// Call via delegate from authandler
+		public void Authenticated() {
+			model.sendRosterGet();												// Request contacts
+			model.sendPresence(model.Me.Status, model.Me.StatusMessage);		// Send my presence
+			stopConnectingGUI();
+			this.connectGUI();
+		}
+
+		// Call via delegate from authandler
+		public void AuthenticationFailed() {
+			model.disconnect();
+			stopConnectingGUI();
+			MessageBox.Show("Authentication failed, check username and password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		// Register in a background thread
+		private void registerBackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+			try {				
+				// Initialize model
+				model.ServerName = Properties.Settings.Default.ServerName;
+				model.ServerAddress = Properties.Settings.Default.ServerAddress;
+				model.Port = Properties.Settings.Default.Port;
+				model.User = Properties.Settings.Default.Username;
+				model.AuthMode = Properties.Settings.Default.AuthMode;	//Додадено од Милош/Васко
+				model.Resource = Properties.Settings.Default.Resource;
+				model.Password = Properties.Settings.Default.Password;
+				model.Me = new Contact(model.User + "@" + model.ServerName);
+				model.Me.Status = Status.chat;
+
+				model.connect();
+				model.register();
+			} catch(Exception ex) {
+				Console.WriteLine("Exception while connecting: " + ex.ToString() + "\n" + ex.StackTrace);
+				voidDel vd = new voidDel(this.stopConnectingGUI);
+				this.Invoke(vd);
+				vd = new voidDel(this.showUnableToConnect);
+				this.Invoke(vd);
+			}
+		}
+
+		// Call via delegate
+		public void Registered() {
+			model.disconnect();
+			MessageBox.Show(this, "You have successfully registered", "Registered", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			this.Invalidate();
+		}
+
+		// Call via delegate
+		public void RegistrationFailed(String error) {
+			model.disconnect();
+			MessageBox.Show(this, "Registration failed. \nError: " + error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			this.Invalidate();
 		}
 
         // Add a new contact
@@ -272,7 +404,7 @@ namespace Goodware.Jabber.GUI {
         private void contactsTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
 			if(e.Node.Level == 1) {																			// See if a contact is double clicked
 				Contact contact = (Contact)e.Node;
-				if(contact.Status == Status.inviteAccepted || contact.Status == Status.inviteSent)			// If contats is not yet confirmed
+				if(contact.Status == Status.inviteAccepted || contact.Status == Status.inviteSent)			// If contact is not yet confirmed
 					return;
 				try {
 					conversations[contact.JabberID].Show();													// Try to show the conversation window
@@ -352,7 +484,11 @@ namespace Goodware.Jabber.GUI {
 
 		private void optionsToolStripButton_Click(object sender, EventArgs e) {
 			OptionsDialog options = new OptionsDialog();
-			options.ShowDialog();
+			if(options.ShowDialog() == DialogResult.OK && options.registerCheckBox.Checked) {
+				this.connectingLabel.Text = "Registering...";
+				this.startConnectingGUI();
+				registerBackgroundWorker.RunWorkerAsync();
+			}
 		}
 
 		// Communication methods ----------------------------------------------------
@@ -441,7 +577,8 @@ namespace Goodware.Jabber.GUI {
 				Console.WriteLine("Contact not present " + ex.StackTrace);
 			}
 		}
-
+		
+		// Get contact from JID
 		public Contact GetContact(String jid) {
 			if(contacts.ContainsKey(jid))
 				return contacts[jid];
@@ -558,16 +695,7 @@ namespace Goodware.Jabber.GUI {
 			if(dialog.ShowDialog() == DialogResult.OK) {
 				model.sendPresence(dialog.groupTextBox.Text+".group" + "@" + model.ServerName + @"/" + dialog.nickTextBox.Text, null, null, null, null);
 			}
-		}
-
-		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
-			if(this.WindowState == FormWindowState.Minimized)
-				this.WindowState = FormWindowState.Normal;
-			this.ShowInTaskbar = true;			
-			this.Show();
-			this.Activate();
-			this.Invalidate();				// The combobox is behaves funny without this
-		}
+		}		
 
 		// Group chat
 		public void UpdateGroupPresence(String groupName, String userNick, Show show, String statusMessage) {
@@ -600,8 +728,16 @@ namespace Goodware.Jabber.GUI {
 				groupChats[groupJID].Activate();
 			}
 		}
-
 		//////////////////////////////////////////////////////////////////////////
-		
+
+		// Open window from tray
+		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
+			if(this.WindowState == FormWindowState.Minimized)
+				this.WindowState = FormWindowState.Normal;
+			this.ShowInTaskbar = true;
+			this.Show();
+			this.Activate();
+			this.Invalidate();				// The combobox is behaves funny without this
+		}
 	}
 }

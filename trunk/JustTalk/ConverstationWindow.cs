@@ -41,9 +41,7 @@ namespace Goodware.Jabber.GUI {
 			if(e.KeyCode == Keys.Enter) {
 				if(!inputTextBox.Text.EndsWith("\n")) {
 					SendMessage(inputTextBox.Text);
-					ReceiveMessage(username, inputTextBox.Text, 0);
-					/*dialogView.AppendText(username + ": " + inputTextBox.Text/*.Substring(1, inputTextBox.Text.Length - 1) + "\n");
-					dialogView.ScrollToCaret();*/
+					ReceiveMessage(username, inputTextBox.Text, 0);					
 				}
 				inputTextBox.Clear();
 				modified = true;

@@ -121,6 +121,7 @@ namespace Goodware.Jabber.GUI {
 			this.Controls.Add(this.nameTextBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "EditContact";
+			this.ShowInTaskbar = false;
 			this.Text = "Edit Contact";
 			this.ResumeLayout(false);
 			this.PerformLayout();
