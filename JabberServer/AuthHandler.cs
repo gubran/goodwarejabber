@@ -17,6 +17,7 @@ namespace Goodware.Jabber.Server
         
         static UserIndex userIndex;
         Packet iq;
+        Packet reply;
         User user;
         
         String username;
@@ -51,12 +52,24 @@ namespace Goodware.Jabber.Server
             iq.getChildren().Clear();
             iq.Type = "result";
 
+            reply = new Packet("query");
+            reply.setAttribute("xmlns", "jabber:iq:auth");
+            reply.Parent = iq;
+
             user = userIndex.getUser(username);
             if (user == null)
             {
                 sendErrorPacket(404, "User not found");
                 return;
             }
+
+            if (userIndex.sessionIndex.ContainsValue(user) == true)
+            {
+                sendErrorPacket(404, "User already Logged In");
+                return;
+            }
+            
+
             if (type.Equals("get"))
             {
                 sendGetPacket();
@@ -79,16 +92,14 @@ namespace Goodware.Jabber.Server
 
         void sendErrorPacket(int code, String message)
         {
-            //ErrorTool.setError(iq, code, message);
+            iq.Type = "error";
+            ErrorTool.setError(reply, code, message);
             MessageHandler.deliverPacket(iq);
         }
 
 
         void sendGetPacket()
         {
-            Packet reply = new Packet("query");
-            reply.setAttribute("xmlns", "jabber:iq:auth");
-            reply.Parent = iq;
             new Packet("username", username).Parent = reply;
             new Packet("resource").Parent = reply;
             new Packet("password").Parent = reply;
@@ -127,8 +138,6 @@ namespace Goodware.Jabber.Server
             }
             sendErrorPacket(401,"Bad user name or password");
         }
-
-
         
         /// TODO SERVERNAME треба да стои во глобална променлива, овде е hard-coded
         void authenticated()

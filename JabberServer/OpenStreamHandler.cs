@@ -22,7 +22,7 @@ namespace Goodware.Jabber.Server {
 
 		public void notify (Packet packet) {
 
-			Console.WriteLine("Opening stream connection");
+			JabberServer.output.WriteLine("Opening stream connection");
 
 	
 
