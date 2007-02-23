@@ -42,7 +42,10 @@ namespace Goodware.Jabber.GUI
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitTrayMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.topMenu = new System.Windows.Forms.MenuStrip();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +56,8 @@ namespace Goodware.Jabber.GUI
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
+			this.connectingLabel = new System.Windows.Forms.Label();
+			this.connectingProgressBar = new System.Windows.Forms.ProgressBar();
 			this.contactsTreeView = new System.Windows.Forms.TreeView();
 			this.contactsImageList = new System.Windows.Forms.ImageList(this.components);
 			this.contactsToolStrip = new System.Windows.Forms.ToolStrip();
@@ -83,6 +88,8 @@ namespace Goodware.Jabber.GUI
 			this.removeContactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainPanel = new System.Windows.Forms.Panel();
 			this.pendingContactContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.connectBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+			this.registerBackgroundWorker = new System.ComponentModel.BackgroundWorker();
 			this.defaultGroupContextMenuStrip.SuspendLayout();
 			this.gropupContextMenuStrip.SuspendLayout();
 			this.trayMenu.SuspendLayout();
@@ -189,7 +196,7 @@ namespace Goodware.Jabber.GUI
 			// topMenu
 			// 
 			this.topMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem,
+            this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.topMenu.Location = new System.Drawing.Point(0, 0);
@@ -198,11 +205,36 @@ namespace Goodware.Jabber.GUI
 			this.topMenu.TabIndex = 1;
 			this.topMenu.Text = "topMenu";
 			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.exitToolStripMenuItem});
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+			this.fileToolStripMenuItem.Text = "File";
+			// 
 			// connectToolStripMenuItem
 			// 
+			this.connectToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.connect;
 			this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-			this.connectToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+			this.connectToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
 			this.connectToolStripMenuItem.Text = "Connect";
+			this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectTrayMenuItem_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(122, 6);
+			// 
+			// exitToolStripMenuItem
+			// 
+			this.exitToolStripMenuItem.Image = global::Goodware.Jabber.GUI.Properties.Resources.door;
+			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.exitToolStripMenuItem.Text = "Exit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitTrayMenuItem_Click);
 			// 
 			// viewToolStripMenuItem
 			// 
@@ -273,7 +305,6 @@ namespace Goodware.Jabber.GUI
 			this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
 			this.trayIcon.Text = "Disconnected";
 			this.trayIcon.Visible = true;
-			this.trayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseClick);
 			this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
 			// 
 			// toolStripContainer
@@ -281,6 +312,8 @@ namespace Goodware.Jabber.GUI
 			// 
 			// toolStripContainer.ContentPanel
 			// 
+			this.toolStripContainer.ContentPanel.Controls.Add(this.connectingLabel);
+			this.toolStripContainer.ContentPanel.Controls.Add(this.connectingProgressBar);
 			this.toolStripContainer.ContentPanel.Controls.Add(this.contactsTreeView);
 			this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(201, 268);
 			this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -295,6 +328,29 @@ namespace Goodware.Jabber.GUI
 			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.contactsToolStrip);
 			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.mainToolStrip);
 			this.toolStripContainer.TopToolStripPanel.Controls.Add(this.statusToolStrip);
+			// 
+			// connectingLabel
+			// 
+			this.connectingLabel.AutoSize = true;
+			this.connectingLabel.BackColor = System.Drawing.SystemColors.Window;
+			this.connectingLabel.Location = new System.Drawing.Point(12, 15);
+			this.connectingLabel.Name = "connectingLabel";
+			this.connectingLabel.Size = new System.Drawing.Size(70, 13);
+			this.connectingLabel.TabIndex = 3;
+			this.connectingLabel.Text = "Connecting...";
+			this.connectingLabel.Visible = false;
+			// 
+			// connectingProgressBar
+			// 
+			this.connectingProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.connectingProgressBar.Location = new System.Drawing.Point(12, 31);
+			this.connectingProgressBar.MarqueeAnimationSpeed = 50;
+			this.connectingProgressBar.Name = "connectingProgressBar";
+			this.connectingProgressBar.Size = new System.Drawing.Size(177, 12);
+			this.connectingProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+			this.connectingProgressBar.TabIndex = 2;
+			this.connectingProgressBar.Visible = false;
 			// 
 			// contactsTreeView
 			// 
@@ -589,6 +645,14 @@ namespace Goodware.Jabber.GUI
 			this.pendingContactContextMenuStrip.Name = "contextMenuStrip1";
 			this.pendingContactContextMenuStrip.Size = new System.Drawing.Size(166, 48);
 			// 
+			// connectBackgroundWorker
+			// 
+			this.connectBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.connectBackgroundWorker_DoWork);
+			// 
+			// registerBackgroundWorker
+			// 
+			this.registerBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.registerBackgroundWorker_DoWork);
+			// 
 			// JustTalk
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -615,6 +679,7 @@ namespace Goodware.Jabber.GUI
 			this.topMenu.ResumeLayout(false);
 			this.topMenu.PerformLayout();
 			this.toolStripContainer.ContentPanel.ResumeLayout(false);
+			this.toolStripContainer.ContentPanel.PerformLayout();
 			this.toolStripContainer.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer.ResumeLayout(false);
@@ -639,8 +704,7 @@ namespace Goodware.Jabber.GUI
         #endregion
 
         private System.Windows.Forms.ContextMenuStrip trayMenu;
-        private System.Windows.Forms.MenuStrip topMenu;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+		private System.Windows.Forms.MenuStrip topMenu;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon trayIcon;
         private System.Windows.Forms.ToolStripMenuItem connectTrayMenuItem;
@@ -691,6 +755,14 @@ namespace Goodware.Jabber.GUI
 		private System.Windows.Forms.ContextMenuStrip pendingContactContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem anotherEditContactStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem anotherRemoveContactToolStripMenuItem2;
+		private System.ComponentModel.BackgroundWorker connectBackgroundWorker;
+		private System.Windows.Forms.ProgressBar connectingProgressBar;
+		private System.Windows.Forms.Label connectingLabel;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.ComponentModel.BackgroundWorker registerBackgroundWorker;
     }
 }
 

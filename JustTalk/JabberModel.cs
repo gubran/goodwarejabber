@@ -27,7 +27,7 @@ namespace Goodware.Jabber.Client {
 			packetQueue = new PacketQueue();
 			queueThread = new QueueThread(packetQueue);
 			queueThread.addPacketListener(new OpenStreamHandler(), "stream:stream");
-			queueThread.addPacketListener(new CloseStreamHandler(), "/stream:stream");
+			queueThread.addPacketListener(new CloseStreamHandler(this), "/stream:stream");
 			queueThread.addPacketListener(new MessageHandler(this), "message");
 
 			//Додадено од Милош/Васко
@@ -41,6 +41,7 @@ namespace Goodware.Jabber.Client {
 			//kraj marko
 
 			queueThread.addPacketListener(new PresenceHandler(this), "presence");
+			queueThread.addPacketListener(new RegisterHandler(this), "jabber:iq:register");
 			queueThread.setDaemon(true);
 			queueThread.start();
 		}
@@ -115,7 +116,7 @@ namespace Goodware.Jabber.Client {
 			TcpClient tempClient = new TcpClient(server, port);		// TcpClient eases connection
 			session = new Session(tempClient.Client);				// Get the socket of the TcpClient
 			session.Status = (Session.SessionStatus.connected);
-			(new ProcessThread(packetQueue, session)).start();
+			(new ProcessThread(packetQueue, session, this)).start();
 			string senderJabID = user + "@" + serverName + "/" + resource;
 			StreamWriter output = session.Writer;
 			session.JID = (new JabberID(User, ServerName, resource));
@@ -133,7 +134,7 @@ namespace Goodware.Jabber.Client {
 			TcpClient tempClient = new TcpClient(ServerAddress, Convert.ToInt32(Port));	// TcpClient eases connection
 			session = new Session(tempClient.Client);									// Get the socket of the TcpClient
 			session.Status = (Session.SessionStatus.connected);
-			(new ProcessThread(packetQueue, session)).start();
+			(new ProcessThread(packetQueue, session, this)).start();
 			string senderJabID = User + "@" + ServerName + "/" + Resource;
 			StreamWriter output = session.Writer;
 			session.JID = (new JabberID(User, ServerName, Resource));
@@ -149,7 +150,7 @@ namespace Goodware.Jabber.Client {
 
 		public void disconnect() {
 			session.Writer.Write("</stream:stream> ");
-			session.Writer.Flush();
+			session.Writer.Flush();		
 		}
 
 		public void sendMessage(string recipient, string subject, string thread, string type, string id, string body) {
@@ -401,8 +402,7 @@ this.user + "</username><password>" + this.Password + "</password></query></iq>"
 
 		//end added by marko
 
-		public void sendRosterSet(String jid, String name, string group)//hashtable type may be changed
-		{
+		public void sendRosterSet(String jid, String name, string group) {			//hashtable type may be changed
 			Packet packet = new Packet("iq");
 			packet.Type = "set";
 			packet.ID = "roster_set";
@@ -421,6 +421,10 @@ this.user + "</username><password>" + this.Password + "</password></query></iq>"
 			}
 			session.Writer.Write(packet.ToString());
 			session.Writer.Flush();
+		}
+
+		public void closeSession() {
+			session.Socket.Disconnect(true);
 		}
 	}
 }

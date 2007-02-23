@@ -156,11 +156,14 @@ namespace Goodware.Jabber.GUI {
 		}
 
 		protected override void OnClosing(CancelEventArgs e) {
-			gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, "unavailable", null, null, null);
-			RemoveGroupChatDelegate rgcd = new RemoveGroupChatDelegate(gui.RemoveGroupChat);
-			gui.Invoke(rgcd, new Object[] { this.groupName });
-
-			base.OnClosing(e);
+			try {
+				gui.model.sendPresence(this.groupName + ".group@" + gui.model.ServerName + @"/" + nick, "unavailable", null, null, null);
+				RemoveGroupChatDelegate rgcd = new RemoveGroupChatDelegate(gui.RemoveGroupChat);
+				gui.Invoke(rgcd, new Object[] { this.groupName });
+				base.OnClosing(e);
+			} catch(Exception ex) {
+				// Do nothing for now
+			}
 		}
 
 		private void onlineToolStripMenuItem_Click(object sender, EventArgs e) {

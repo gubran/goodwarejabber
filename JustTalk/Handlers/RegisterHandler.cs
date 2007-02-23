@@ -2,43 +2,39 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Goodware.Jabber.Library;
-namespace Goodware.Jabber.Client
-{
-    /// <summary>
-    /// Регистрира хендлер за пакети. 
-    /// </summary>
-    public class RegisterHandler : PacketListener
-    {
+using Goodware.Jabber.GUI;
+namespace Goodware.Jabber.Client {
 
-        JabberModel jaberModel;
+	public delegate void RegisterFailedDelegate(String message);
+	/// <summary>
+	/// Регистрира хендлер за пакети. 
+	/// </summary>
+	public class RegisterHandler : PacketListener {
+		JabberModel jaberModel;
 
-        public RegisterHandler(JabberModel model)
-        {
-            this.jaberModel = model;
-        }
+		public RegisterHandler(JabberModel model) {
+			this.jaberModel = model;
+		}
 
-        public void notify(Packet packet)
-        {
-            try
-            {
-                if (packet.Type.Equals("result"))
-                {
-//                    jaberModel.authenticate();
-                }
-                else
-                {
-                    String message = "Failed to register";
-                    if (packet.Type.Equals("error"))
-                    {
-                        message = message + ":" + packet.getChildValue("error");
-                    }
-                    Console.WriteLine(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-    }
+		public void notify(Packet packet) {
+			try {
+				if(packet.Type.Equals("result")) {
+					voidDel vd = new voidDel(jaberModel.gui.Registered);
+					jaberModel.gui.Invoke(vd);
+				} else {
+					String message = null;
+					if(packet.Type.Equals("error")) {
+						Packet err = packet.getFirstChild("error");
+						message = err["code"] + " : " + err.getValue();
+
+						RegisterFailedDelegate rfd = new RegisterFailedDelegate(jaberModel.gui.RegistrationFailed);
+						jaberModel.gui.Invoke(rfd, new Object[] {message});
+					}
+					Console.WriteLine(message);
+				}
+			} catch(Exception ex) {
+				Console.WriteLine(ex.ToString());
+			}
+		}
+	}
 }

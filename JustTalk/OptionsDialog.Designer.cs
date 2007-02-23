@@ -23,12 +23,12 @@ namespace Goodware.Jabber.GUI {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.labelServerName = new System.Windows.Forms.Label();
 			this.labelServerAdress = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.labelUser = new System.Windows.Forms.Label();
 			this.labelPass = new System.Windows.Forms.Label();
-			this.labelResource = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.authModeComboBox = new System.Windows.Forms.ComboBox();
 			this.groupBoxServer = new System.Windows.Forms.GroupBox();
@@ -36,13 +36,17 @@ namespace Goodware.Jabber.GUI {
 			this.serverNameTextBox = new System.Windows.Forms.TextBox();
 			this.textBoxPort = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.passwordReenterMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
 			this.passwordMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
 			this.usernameTextBox = new System.Windows.Forms.TextBox();
-			this.resourceTextBox = new System.Windows.Forms.TextBox();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonOK = new System.Windows.Forms.Button();
+			this.registerCheckBox = new System.Windows.Forms.CheckBox();
+			this.passErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.groupBoxServer.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.passErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// labelServerName
@@ -90,19 +94,10 @@ namespace Goodware.Jabber.GUI {
 			this.labelPass.TabIndex = 8;
 			this.labelPass.Text = "Password";
 			// 
-			// labelResource
-			// 
-			this.labelResource.AutoSize = true;
-			this.labelResource.Location = new System.Drawing.Point(8, 84);
-			this.labelResource.Name = "labelResource";
-			this.labelResource.Size = new System.Drawing.Size(53, 13);
-			this.labelResource.TabIndex = 10;
-			this.labelResource.Text = "Resource";
-			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(8, 114);
+			this.label6.Location = new System.Drawing.Point(8, 116);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(105, 13);
 			this.label6.TabIndex = 12;
@@ -113,10 +108,10 @@ namespace Goodware.Jabber.GUI {
 			this.authModeComboBox.FormattingEnabled = true;
 			this.authModeComboBox.Items.AddRange(new object[] {
             "plain"});
-			this.authModeComboBox.Location = new System.Drawing.Point(193, 111);
+			this.authModeComboBox.Location = new System.Drawing.Point(193, 113);
 			this.authModeComboBox.Name = "authModeComboBox";
 			this.authModeComboBox.Size = new System.Drawing.Size(68, 21);
-			this.authModeComboBox.TabIndex = 6;
+			this.authModeComboBox.TabIndex = 7;
 			this.authModeComboBox.Text = global::Goodware.Jabber.GUI.Properties.Settings.Default.AuthMode;
 			// 
 			// groupBoxServer
@@ -129,7 +124,7 @@ namespace Goodware.Jabber.GUI {
 			this.groupBoxServer.Controls.Add(this.textBoxPort);
 			this.groupBoxServer.Location = new System.Drawing.Point(14, 12);
 			this.groupBoxServer.Name = "groupBoxServer";
-			this.groupBoxServer.Size = new System.Drawing.Size(277, 109);
+			this.groupBoxServer.Size = new System.Drawing.Size(289, 109);
 			this.groupBoxServer.TabIndex = 14;
 			this.groupBoxServer.TabStop = false;
 			this.groupBoxServer.Text = "Server";
@@ -160,20 +155,39 @@ namespace Goodware.Jabber.GUI {
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Controls.Add(this.passwordReenterMaskedTextBox);
 			this.groupBox1.Controls.Add(this.passwordMaskedTextBox);
 			this.groupBox1.Controls.Add(this.labelUser);
 			this.groupBox1.Controls.Add(this.usernameTextBox);
 			this.groupBox1.Controls.Add(this.authModeComboBox);
 			this.groupBox1.Controls.Add(this.labelPass);
 			this.groupBox1.Controls.Add(this.label6);
-			this.groupBox1.Controls.Add(this.resourceTextBox);
-			this.groupBox1.Controls.Add(this.labelResource);
 			this.groupBox1.Location = new System.Drawing.Point(14, 127);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(277, 147);
+			this.groupBox1.Size = new System.Drawing.Size(289, 147);
 			this.groupBox1.TabIndex = 15;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "User";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(10, 84);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(48, 13);
+			this.label1.TabIndex = 14;
+			this.label1.Text = "Re-enter";
+			// 
+			// passwordReenterMaskedTextBox
+			// 
+			this.passwordReenterMaskedTextBox.Enabled = false;
+			this.passwordReenterMaskedTextBox.Location = new System.Drawing.Point(92, 81);
+			this.passwordReenterMaskedTextBox.Name = "passwordReenterMaskedTextBox";
+			this.passwordReenterMaskedTextBox.PasswordChar = '*';
+			this.passwordReenterMaskedTextBox.Size = new System.Drawing.Size(169, 20);
+			this.passwordReenterMaskedTextBox.TabIndex = 6;
+			this.passwordReenterMaskedTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.passwordReenterMaskedTextBox_Validating);
 			// 
 			// passwordMaskedTextBox
 			// 
@@ -192,19 +206,11 @@ namespace Goodware.Jabber.GUI {
 			this.usernameTextBox.TabIndex = 3;
 			this.usernameTextBox.Text = global::Goodware.Jabber.GUI.Properties.Settings.Default.Username;
 			// 
-			// resourceTextBox
-			// 
-			this.resourceTextBox.Location = new System.Drawing.Point(92, 81);
-			this.resourceTextBox.Name = "resourceTextBox";
-			this.resourceTextBox.Size = new System.Drawing.Size(169, 20);
-			this.resourceTextBox.TabIndex = 5;
-			this.resourceTextBox.Text = global::Goodware.Jabber.GUI.Properties.Settings.Default.Resource;
-			// 
 			// buttonCancel
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonCancel.Location = new System.Drawing.Point(216, 287);
+			this.buttonCancel.Location = new System.Drawing.Point(225, 304);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 8;
@@ -215,7 +221,7 @@ namespace Goodware.Jabber.GUI {
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Location = new System.Drawing.Point(135, 286);
+			this.buttonOK.Location = new System.Drawing.Point(144, 303);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 7;
@@ -223,13 +229,29 @@ namespace Goodware.Jabber.GUI {
 			this.buttonOK.UseVisualStyleBackColor = true;
 			this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
 			// 
+			// registerCheckBox
+			// 
+			this.registerCheckBox.AutoSize = true;
+			this.registerCheckBox.Location = new System.Drawing.Point(13, 281);
+			this.registerCheckBox.Name = "registerCheckBox";
+			this.registerCheckBox.Size = new System.Drawing.Size(238, 17);
+			this.registerCheckBox.TabIndex = 16;
+			this.registerCheckBox.Text = "Use this information to regiser a new account";
+			this.registerCheckBox.UseVisualStyleBackColor = true;
+			this.registerCheckBox.CheckedChanged += new System.EventHandler(this.registerCheckBox_CheckedChanged);
+			// 
+			// passErrorProvider
+			// 
+			this.passErrorProvider.ContainerControl = this;
+			// 
 			// OptionsDialog
 			// 
 			this.AcceptButton = this.buttonOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.buttonCancel;
-			this.ClientSize = new System.Drawing.Size(309, 322);
+			this.ClientSize = new System.Drawing.Size(318, 339);
+			this.Controls.Add(this.registerCheckBox);
 			this.Controls.Add(this.buttonOK);
 			this.Controls.Add(this.buttonCancel);
 			this.Controls.Add(this.groupBox1);
@@ -238,12 +260,15 @@ namespace Goodware.Jabber.GUI {
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "OptionsDialog";
+			this.ShowInTaskbar = false;
 			this.Text = "Options";
 			this.groupBoxServer.ResumeLayout(false);
 			this.groupBoxServer.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.passErrorProvider)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -254,7 +279,6 @@ namespace Goodware.Jabber.GUI {
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label labelUser;
 		private System.Windows.Forms.Label labelPass;
-		private System.Windows.Forms.Label labelResource;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.GroupBox groupBoxServer;
 		private System.Windows.Forms.GroupBox groupBox1;
@@ -264,8 +288,11 @@ namespace Goodware.Jabber.GUI {
 		public System.Windows.Forms.TextBox serverAddressTextBox;
 		public System.Windows.Forms.TextBox textBoxPort;
 		public System.Windows.Forms.TextBox usernameTextBox;
-		public System.Windows.Forms.TextBox resourceTextBox;
 		public System.Windows.Forms.MaskedTextBox passwordMaskedTextBox;
 		public System.Windows.Forms.ComboBox authModeComboBox;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.MaskedTextBox passwordReenterMaskedTextBox;
+		private System.Windows.Forms.ErrorProvider passErrorProvider;
+		public System.Windows.Forms.CheckBox registerCheckBox;
 	}
 }
