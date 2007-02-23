@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Goodware.Jabber.Library;
 
-// darkoA
-
 namespace Goodware.Jabber.Server {
 
     class RegisterHandler : PacketListener {
@@ -24,7 +22,7 @@ namespace Goodware.Jabber.Server {
         }
 
         public void notify(Packet packet) {
-            Console.WriteLine("Register handling" + packet.ToString());
+            JabberServer.output.WriteLine("Register handling" + packet.ToString());
 
             String type = packet.getType();
             Packet query = packet.getFirstChild("query");
@@ -35,12 +33,6 @@ namespace Goodware.Jabber.Server {
                 MessageHandler.deliverPacket(required);
                 return;
             } else if (type.Equals("set")) {
-                //String t1 = query.Children[0].ToString();
-                //t1 = query.getFirstChild("username").getValue();
-                //int l = t1.Length;
-                //t1 = query.Children[2].ToString();
-                //t1 = query.Children[3].ToString();
-
                 String username = query.getChildValue("username");
                 User user = userIndex.getUser(username);
                 if (user != null) {
@@ -48,7 +40,8 @@ namespace Goodware.Jabber.Server {
                         Packet iq = new Packet("iq");
                         iq.setSession(packet.getSession());
                         iq.setID(packet.getID());
-                        //ErrorTool.setError(iq, 401, "User account already exists");
+                        iq.Type = "error";
+                        ErrorTool.setError(iq, 401, "User account already exists");
                         MessageHandler.deliverPacket(iq);
                         return;
                     }
@@ -85,14 +78,11 @@ namespace Goodware.Jabber.Server {
                 // packet.getSession().getJID().setResource("none");
                 // userIndex.addSession(packet.getSession());
                 //Log.trace("Register successfully registered " + username + " with password " + query.getChildValue("password"));
-                Console.WriteLine("Register successfully registered " + username + " with password " + query.getChildValue("password"));
+                JabberServer.output.WriteLine("Register successfully registered " + username + " with password " + query.getChildValue("password"));
 
             } else {
-                Console.WriteLine("Register ignoring " + packet.ToString());
+                JabberServer.output.WriteLine("Register ignoring " + packet.ToString());
             }
-
         }
     }
-
-
 }

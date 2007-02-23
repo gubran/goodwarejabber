@@ -20,18 +20,18 @@ namespace Goodware.Jabber.Server {
 		public void notify(Packet packet) {
             /* od Ch 7
             if (packet.Session.Status != Session.SessionStatus.authenticated) {
-                Console.WriteLine("Dropping packet (no auth): " + packet.ToString());
+                JabberServer.output.WriteLine("Dropping packet (no auth): " + packet.ToString());
                 return;
             } */
             String recipient = packet.To;
 
             if (recipient == null) { // to server
-                Console.WriteLine("Dropping packet: " + packet.ToString());
+                JabberServer.output.WriteLine("Dropping packet: " + packet.ToString());
                 return;
             }
 
             if (recipient.Equals(JabberServer.server_name, StringComparison.OrdinalIgnoreCase )) { // to server
-                Console.WriteLine("Dropping packet: " + packet.ToString());
+                JabberServer.output.WriteLine("Dropping packet: " + packet.ToString());
                 return;
             }
 
@@ -42,12 +42,12 @@ namespace Goodware.Jabber.Server {
                 if (chatMan.isChatPacket(packet)) {
                     chatMan.handleChatMessage(packet);
                 } else {
-                    Console.WriteLine("Dropping packet: " + packet.ToString());
+                    JabberServer.output.WriteLine("Dropping packet: " + packet.ToString());
                 }
                 return;
             }
 
-            Console.WriteLine("Delivering packet To: " + packet.To);
+            JabberServer.output.WriteLine("Delivering packet To: " + packet.To);
             deliverPacket(packet);
 
 		}
@@ -62,7 +62,7 @@ namespace Goodware.Jabber.Server {
               if (recipient == null){
                 output = packet.getSession().getWriter();
                 if (output == null){
-                    Console.WriteLine("Undeliverable packet " + packet.ToString());
+                    JabberServer.output.WriteLine("Undeliverable packet " + packet.ToString());
                     return;
                 }
               } else {
@@ -74,27 +74,27 @@ namespace Goodware.Jabber.Server {
                   {
                       return;
                   }
-//				Console.WriteLine("String"+userIndex.getUser(recipient).ToString());
+//				JabberServer.output.WriteLine("String"+userIndex.getUser(recipient).ToString());
               }
               if (output != null){
-                Console.WriteLine("Delivering packet: " + packet.ToString());
+                JabberServer.output.WriteLine("Delivering packet: " + packet.ToString());
                 output.Write(packet.ToString());    // smeneto od DarkoA
                 output.Flush();                     // smeneto od DarkoA
               } else {
                   //begin change by marko
                   if (!packet.Element.Equals("presence") || (packet["type"] != null && (packet["type"].Equals("subscribe") || packet["type"].Equals("subscribed") || packet["type"].Equals("unsubscribe") || packet["type"].Equals("unsubscribed"))))
                   {     //update presence packets (available & unavailable) don't need to be stored for offline use
-                      Console.WriteLine("Store & forward: " + packet.ToString());
+                      JabberServer.output.WriteLine("Store & forward: " + packet.ToString());
                       User user = userIndex.getUser(new JabberID(recipient).getUser());
                       user.storeMessage(packet);
                   }
                   //end change by marko
               }
 			} catch (Exception ex){
-				Console.WriteLine(ex.StackTrace);
+				JabberServer.output.WriteLine(ex.StackTrace);
 
 				
-                Console.WriteLine("MessageHandler: ", ex);
+                JabberServer.output.WriteLine("MessageHandler: ", ex);
             }
 
 		}

@@ -10,7 +10,7 @@ namespace Goodware.Jabber.Server {
         public Hashtable userIndex = new Hashtable();
 
         //Session table, key: Session, value: User
-        Hashtable sessionIndex = new Hashtable();
+        public Hashtable sessionIndex = new Hashtable();
 
         public User addUser(String name) {
             User user = getUser(name);

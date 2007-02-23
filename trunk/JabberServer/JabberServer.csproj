@@ -54,7 +54,20 @@
     <Compile Include="ListenerThread.cs" />
     <Compile Include="MessageHandler.cs" />
     <Compile Include="ProcessThread.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="QueueThread.cs" />
+    <Compile Include="SaveStateHandler.cs" />
+    <Compile Include="JabberServer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JabberServer.Designer.cs">
+      <DependentUpon>JabberServer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserRoster.cs" />
     <Compile Include="OpenStreamHandler.cs" />
     <Compile Include="PresenceHandler.cs" />
@@ -63,14 +76,16 @@
     <Compile Include="Roster.cs" />
     <Compile Include="RosterHandler.cs" />
     <Compile Include="SessionIndex.cs" />
-    <Compile Include="JabberServer.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -78,5 +93,11 @@
       <Project>{5D2DFAD3-E5F7-496B-88AB-0FBBAD3F1B43}</Project>
       <Name>JabberLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

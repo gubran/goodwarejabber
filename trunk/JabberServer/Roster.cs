@@ -98,7 +98,7 @@ namespace Goodware.Jabber.Server
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Error in incoming priority, setting priority to default: 1");
+                        JabberServer.output.WriteLine("Error in incoming priority, setting priority to default: 1");
                         session.setPriority(0);
                     }
                 }
@@ -113,7 +113,7 @@ namespace Goodware.Jabber.Server
             {
 
                 //needed for server to server communication!!!!
-                Console.WriteLine("Roster: We don't handle probes yet " + presence.ToString());
+                JabberServer.output.WriteLine("Roster: We don't handle probes yet " + presence.ToString());
                 return;
 
 

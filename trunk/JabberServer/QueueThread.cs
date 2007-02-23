@@ -42,7 +42,7 @@ namespace Goodware.Jabber.Server {
 			for (Packet packet = packetQueue.dequeue(); packet != null; packet = packetQueue.dequeue()) {
 				Packet child;
 				String matchString;
-				Console.WriteLine("Receiving packet: " + packet.ToString());
+				JabberServer.output.WriteLine("Receiving packet: " + packet.ToString());
 				if (packet.Element.Equals("iq", StringComparison.OrdinalIgnoreCase)) {
 					child = packet.getFirstChild("query");
 					if (child == null) { matchString = "jabber:iq:register"; } else { matchString = child.Namespace; }
@@ -52,6 +52,7 @@ namespace Goodware.Jabber.Server {
 
 				if (matchString.Equals("terminate")) {
 					saveToFile();
+                    JabberServer.output.Close();
 					return;
 				}
 
@@ -62,7 +63,7 @@ namespace Goodware.Jabber.Server {
 						}
 					}
 				} catch (Exception ex) {
-					Console.WriteLine("Exception in QueueThread: " + ex.ToString());
+					JabberServer.output.WriteLine("Exception in QueueThread: " + ex.ToString());
 				} // try/catch 1
 				try {
 					lock (packetListeners) {
@@ -78,14 +79,16 @@ namespace Goodware.Jabber.Server {
 
 		}
 
-		private void saveToFile() {  //termination handler
+		public static void saveToFile() {  //termination handler
 			DataSet ds = createDataSet();
 			fillDataSet(ds);
-			ds.WriteXml(JabberServer.file_name, XmlWriteMode.WriteSchema);
+			ds.WriteXml(JabberServer.users_file_name, XmlWriteMode.WriteSchema);
+
+            JabberServer.output.Flush();
 
 		}
 
-		private DataSet createDataSet() {
+		private static DataSet createDataSet() {
 			DataSet ds = new DataSet("UsersInformation");
 
 			DataTable users = new DataTable("User");
@@ -134,7 +137,7 @@ namespace Goodware.Jabber.Server {
 		
 		}
 
-		private void fillDataSet(DataSet ds) {
+		private static void fillDataSet(DataSet ds) {
 /*
 			DataRow user = ds.Tables["User"].NewRow();
 			user["username"] = "darko";
