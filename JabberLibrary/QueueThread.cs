@@ -77,7 +77,7 @@ namespace Goodware.Jabber.Library {
 
 		}
 
-		private void saveToFile() {  //termination handler
+		/*private void saveToFile() {  //termination handler
 			DataSet ds = createDataSet();
 			fillDataSet(ds);
 			ds.WriteXml("users.xml");
@@ -145,12 +145,12 @@ namespace Goodware.Jabber.Library {
 			item["name"] = "Bojan";
 			item["group"] = "Grupa";
 			ds.Tables["Item"].Rows.Add(item);
-*/
+
 
 			
 
 		}
-
+	*/
 
 	}
 
