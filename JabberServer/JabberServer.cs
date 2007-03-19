@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections;
 using System.Data;
 using System.Threading;
+using System.Xml.Serialization;
 using System.ServiceProcess;
 using Goodware.Jabber.Library;
 
@@ -17,10 +18,11 @@ namespace Goodware.Jabber.Server {
         public static String server_name = "localhost";
 
         static System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-        public static String users_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + @"users.xml";
+		 public static String conf_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + @"conf.xml";
+		 public static String users_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + @"users.xml";
         public static String log_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + @"log.log";
 
-        public static TextWriter output = File.CreateText(log_file_name);
+		  public static TextWriter output = File.CreateText(log_file_name);//System.Console.Out;
 
         public static int dueTime = 1000;
         public static int period = 60000;
@@ -37,7 +39,8 @@ namespace Goodware.Jabber.Server {
         }
 
         protected void JabberServerStart() {
-            restoreFromFile();
+			  readConfiguration();
+			  restoreFromFile();
 
             Authenticator.randomToken();
             createQueueThread();
@@ -106,6 +109,58 @@ namespace Goodware.Jabber.Server {
             qThread.addPacketListener(new SaveStateHandler(index), "savestate");
             qThread.start();
         }
+		 [System.Xml.Serialization.XmlRoot("conf")]
+		 public class Conf {
+			 [System.Xml.Serialization.XmlElement("serverName")]
+			 public String serverName;
+			 [System.Xml.Serialization.XmlElement("serverPort")]
+			 public int serverPort;
+			 [System.Xml.Serialization.XmlElement("usersFile")]
+			 public String usersFile;
+			 [System.Xml.Serialization.XmlElement("logFile")]
+			 public String logFile;
+			 [System.Xml.Serialization.XmlElement("dueTime")]
+			 public int dueTime;
+			 [System.Xml.Serialization.XmlElement("period")]
+			 public int period;
+		 }
+
+
+
+		 private void readConfiguration() {
+			 try {
+				 Conf conf;
+				 TextReader reader = new StreamReader(conf_file_name);
+				 XmlSerializer serializer = new XmlSerializer(typeof(Conf));
+				 conf = (Conf)serializer.Deserialize(reader);
+				 reader.Close();
+
+				 if (conf.serverName != null) {
+					 JabberServer.server_name = conf.serverName;
+				 }
+				 if (conf.serverPort > 0) {
+					 JabberServer.jabber_port = conf.serverPort;
+				 }
+				 if (conf.usersFile != null) {
+					 JabberServer.users_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + conf.usersFile;
+				 }
+				 if (conf.logFile != null) {
+					 JabberServer.log_file_name = a.Location.Remove(a.Location.LastIndexOf(@"\") + 1) + conf.logFile;
+				 }
+				 if (conf.dueTime > 0) {
+					 JabberServer.dueTime = conf.dueTime;
+				 }
+				 if (conf.period > 0) {
+					 JabberServer.period = conf.period;
+				 }
+		
+
+			 } catch (Exception e) {
+				 Console.Out.WriteLine(e + e.StackTrace);
+			 }
+
+		 }
+
 
         private void restoreFromFile() {
             DataSet ds = new DataSet();

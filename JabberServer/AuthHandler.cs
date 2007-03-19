@@ -44,6 +44,7 @@ namespace Goodware.Jabber.Server
         /// <param name="packet"></param>
         public void notify(Packet packet)
         {
+		
             String type = packet.Type;
             Packet query = packet.getFirstChild("query");
             username = query.getChildValue("username");
@@ -78,6 +79,10 @@ namespace Goodware.Jabber.Server
             else if (type.Equals("set"))
             {
                 session = packet.Session;
+					 if (session.Status != Session.SessionStatus.streaming) {
+						 sendErrorPacket(400, "Server name does not match");
+						 return;
+					 }
                 resource = query.getChildValue("resource");
                 if (resource == null)
                 {
@@ -139,7 +144,7 @@ namespace Goodware.Jabber.Server
             sendErrorPacket(401,"Bad user name or password");
         }
         
-        /// TODO SERVERNAME треба да стои во глобална променлива, овде е hard-coded
+        // TODO: SERVERNAME треба да стои во глобална променлива, овде е hard-coded
         void authenticated()
         {
             MessageHandler.deliverPacket(iq);
