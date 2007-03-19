@@ -276,7 +276,7 @@ namespace Goodware.Jabber.GUI {
 		public void AuthenticationFailed() {
 			model.disconnect();
 			stopConnectingGUI();
-			MessageBox.Show("Authentication failed, check username and password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show("Authentication failed, check username, password and server information", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		// Register in a background thread

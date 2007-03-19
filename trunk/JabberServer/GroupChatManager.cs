@@ -99,6 +99,11 @@ namespace Goodware.Jabber.Server {
 			Group group = this[recipient.User];
 			String nick = recipient.Resource;
 			String jid = packet.From;
+			if (String.IsNullOrEmpty(nick)) {
+				sendEmptyNicknameError(packet);
+				return;
+			}
+
 
 			if (group.nick2jid.ContainsKey(nick)) {
 				if (group.nick2jid[nick] == packet.From) {
@@ -188,6 +193,24 @@ namespace Goodware.Jabber.Server {
 			} catch(Exception ex) {
 			}
 		}
+
+		public void sendEmptyNicknameError(Packet packet) {
+			try {
+				Packet presence = new Packet("presence");
+				presence.From = packet.To;
+				presence.To = packet.From;
+
+				Packet ePacket = new Packet("error");
+				ePacket["code"] = 405.ToString();
+				ePacket.Children.Add("Not allowed : nickname must not be empty");
+				ePacket.Parent = presence;
+				packet.Session.Writer.Write(presence.ToString());
+				packet.Session.Writer.Flush();
+			} catch (Exception ex) {
+			}
+		}
+
+
 		public void handleChatMessage(Packet packet) {
 			JabberID recipient = new JabberID(packet.To);
 			Group group = this[recipient.User];
