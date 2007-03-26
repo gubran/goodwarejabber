@@ -23,6 +23,7 @@ namespace Goodware.Jabber.GUI {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.groupTextBox = new System.Windows.Forms.TextBox();
 			this.nickTextBox = new System.Windows.Forms.TextBox();
 			this.groupSufixLabel = new System.Windows.Forms.Label();
@@ -30,6 +31,8 @@ namespace Goodware.Jabber.GUI {
 			this.label2 = new System.Windows.Forms.Label();
 			this.joinCreateButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
+			this.nickErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.nickErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupTextBox
@@ -38,6 +41,7 @@ namespace Goodware.Jabber.GUI {
 			this.groupTextBox.Name = "groupTextBox";
 			this.groupTextBox.Size = new System.Drawing.Size(142, 20);
 			this.groupTextBox.TabIndex = 0;
+			this.groupTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.groupTextBox_Validating);
 			// 
 			// nickTextBox
 			// 
@@ -45,6 +49,7 @@ namespace Goodware.Jabber.GUI {
 			this.nickTextBox.Name = "nickTextBox";
 			this.nickTextBox.Size = new System.Drawing.Size(142, 20);
 			this.nickTextBox.TabIndex = 1;
+			this.nickTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.nickTextBox_Validating);
 			// 
 			// groupSufixLabel
 			// 
@@ -93,6 +98,10 @@ namespace Goodware.Jabber.GUI {
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseVisualStyleBackColor = true;
 			// 
+			// nickErrorProvider
+			// 
+			this.nickErrorProvider.ContainerControl = this;
+			// 
 			// GroupchatDialog
 			// 
 			this.AcceptButton = this.joinCreateButton;
@@ -111,6 +120,7 @@ namespace Goodware.Jabber.GUI {
 			this.Name = "GroupchatDialog";
 			this.ShowInTaskbar = false;
 			this.Text = "Groupchat";
+			((System.ComponentModel.ISupportInitialize)(this.nickErrorProvider)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -125,5 +135,6 @@ namespace Goodware.Jabber.GUI {
 		public System.Windows.Forms.TextBox groupTextBox;
 		public System.Windows.Forms.TextBox nickTextBox;
 		public System.Windows.Forms.Label groupSufixLabel;
+		private System.Windows.Forms.ErrorProvider nickErrorProvider;
 	}
 }
