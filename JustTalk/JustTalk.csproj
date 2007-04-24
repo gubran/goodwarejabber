@@ -13,6 +13,9 @@
     <ManifestKeyFile>JustTalk_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>online.ico</ApplicationIcon>
+    <TargetZone>LocalIntranet</TargetZone>
     <PublishUrl>c:\Temp\JustTalk\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,11 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>false</CreateWebPageOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationVersion>0.6.6.%2a</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <ApplicationIcon>online.ico</ApplicationIcon>
-    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
