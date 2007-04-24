@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Goodware.Jabber.Client;
 using Goodware.Jabber.Library;
+using System.Reflection;
 
 namespace Goodware.Jabber.GUI {
 	delegate void voidDel();
@@ -738,6 +739,11 @@ namespace Goodware.Jabber.GUI {
 			this.Show();
 			this.Activate();
 			this.Invalidate();				// The combobox is behaves funny without this
+		}
+
+		private void helpToolStripMenuItem1_Click(object sender, EventArgs e) {
+			Console.WriteLine(Assembly.GetExecutingAssembly().Location.Replace("JustTalk.exe", "JustTalkHelp.chm"));
+			System.Diagnostics.Process.Start(Assembly.GetExecutingAssembly().Location.Replace("JustTalk.exe", "JustTalkClientHelp.chm"));			
 		}
 	}
 }
